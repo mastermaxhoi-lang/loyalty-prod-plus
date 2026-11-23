@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Альфа-Пятница: прод и доработки</title>
+<link rel="stylesheet" href="assets/общее.css">
+<style>
+  .aphero { padding: 24px 0 136px; }
+  .aphero .g { display: grid; grid-template-columns: 1fr 558px; gap: 24px; align-items: center; }
+  .aphero .lead { margin-top: 24px; max-width: 520px; }
+  .act { display: flex; margin-top: 40px; align-items: stretch; flex-wrap: wrap; gap: 0; }
+  .act .btn { border-radius: 12px 0 0 12px; }
+  .act .tbox { background: var(--dark-2); border-radius: 0 12px 12px 0; padding: 8px 16px; font-size: 14px; line-height: 18px; min-width: 220px; }
+  .act .tbox span { display: block; color: var(--red); font-weight: 700; font-size: 15px; }
+  @media (max-width: 960px) { .aphero .g { grid-template-columns: 1fr; } .aphero img { max-width: 80%; margin: 0 auto; } }
+
+  .cal-row { display: grid; grid-template-columns: 364px 1fr; gap: 24px; padding: 48px 0; border-bottom: 1px solid #E7E8EB; }
+  .cal-row:first-child { padding-top: 0; } .cal-row:last-child { border-bottom: 0; }
+  .cal-row .cap { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-2); margin-bottom: 4px; }
+  .howto { background: var(--dark) url(assets/img/ap-howto.png) no-repeat right center / cover; color: var(--inv); border-radius: 32px; padding: 32px; }
+  .howto ol { max-width: 440px; }
+  .howto ol { margin: 16px 0 0; padding: 0; list-style: none; counter-reset: s; }
+  .howto li { counter-increment: s; display: grid; grid-template-columns: 22px 1fr; margin-top: 10px; font-size: 15px; line-height: 21px; }
+  .howto li::before { content: counter(s) '.'; color: var(--red); font-weight: 500; }
+  .howto .btns { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .pcard { background: var(--grey) no-repeat right center / cover; border-radius: 32px; padding: 32px; min-height: 200px; display: block; }
+  .pcard p { max-width: 360px; }
+  .pcard .h4 { display: flex; align-items: center; gap: 8px; }
+  .pcard p { margin-top: 8px; font-size: 15px; line-height: 21px; color: var(--text); }
+  @media (max-width: 768px) { .cal-row { grid-template-columns: 1fr; gap: 16px; padding: 32px 0; } .howto, .pcard { padding: 24px; padding-bottom: 180px; background-position: right bottom; background-size: auto 170px; } }
+
+  .why .card { padding: 0 0 32px; min-height: 356px; }
+  .why .card img { width: 100%; border-radius: 32px 32px 0 0; }
+  .why .card .h4, .why .card p { padding: 0 24px; } .why .card .h4 { margin-top: 24px; }
+  .why .card p { margin-top: 8px; color: var(--text); font-size: 15px; }
+
+  /* плавающая оценка страницы (прод: FeedbackFloatingForm, только десктоп) */
+  .fb { position: fixed; right: 16px; top: 50%; z-index: 80; }
+  .fb > button { width: 56px; height: 56px; border-radius: 14px; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(239, 49, 36, .35); }
+  .fb .pan { position: absolute; right: 68px; top: -40px; width: 300px; background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, .18); display: none; }
+  .fb.open .pan { display: block; }
+  .fb .rb { display: flex; gap: 8px; margin-top: 12px; } .fb .rb button { flex: 1; height: 40px; border-radius: 10px; background: var(--grey); }
+  .fb .rb button.on { background: var(--dark); color: #fff; }
+  .fb .stars button { font-size: 22px; color: #C9CAD0; background: none; height: 36px; }
+  .fb .stars button.on { background: none; color: #FFB800; }
+  .fb textarea { width: 100%; margin-top: 12px; border: 0; background: var(--field); border-radius: 10px; padding: 10px; font: inherit; font-size: 14px; resize: none; height: 80px; }
+
+  /* подгонка под прод 20.11 */
+  .aphero { padding: 0 0 96px; } .aphero .g { margin-top: -6px; }
+  .act { display: inline-flex; background: rgba(225, 225, 248, .09); border-radius: 12px; gap: 16px; }
+  .act .btn { border-radius: 12px; }
+  .act .tbox { background: none; border-radius: 0; padding: 8px 24px 8px 0; min-width: 0; font-size: 14px; line-height: 20px; }
+  .act .tbox span { font-size: 14px; line-height: 20px; }
+  .cal-row { padding: 72px 0; }
+  .howto .h4, .pcard .h4 { font-size: 22px; line-height: 26px; }
+  .howto li { font-size: 16px; line-height: 24px; margin-top: 8px; }
+  .pcard { background-size: contain; background-position: 100% 50%; }
+  .pcard p { font-size: 16px; line-height: 24px; }
+  .why { margin-top: 160px !important; } .why .h2 { max-width: none !important; margin-bottom: 72px !important; }
+  .fb { top: auto; bottom: 24px; right: 24px; }
+  .fb .pan { top: auto; bottom: 68px; right: 0; }
+
+  /* гипотезы строк 19 и 23 сняты Максимом 20.11: игра выглядела некрасиво, SEO-статья про Пятницу уехала в новостной виджет Главной */
+  body:not(.off-apcal) #offer .cal-row:not(:first-child), body:not(.off-apcal) #offer .cal-row:first-child > div:first-child { display: none; } /* с карточками календарь прода не дублируем */
+  body:not(.off-apcal) #offer .cal-row:first-child { grid-template-columns: 1fr; padding-top: 0; border-bottom: 0; }
+  body:not(.off-nav) .aphero { padding-top: 32px; } @media (max-width: 768px) { body:not(.off-nav) .aphero { padding-top: 24px; } }
+  /* календарь Пятниц карточками по образцу Альфа Будущего (скрин Максима 20.11) */
+  .apcal { margin: 24px 0 72px; } .apcal .sec-head { margin-bottom: 24px; justify-content: center; text-align: center; } /* под «Как получить кэшбэк» (Максим 22.11) */
+  .apcal .arrows { display: flex; gap: 8px; } .apcal .arrows button { width: 32px; height: 32px; border-radius: 50%; background: var(--grey); color: var(--text); display: flex; align-items: center; justify-content: center; } .apcal .arrows button:disabled { opacity: .35; cursor: default; }
+  /* барабан: действующая крупно в центре, соседние ниже, при наведении вырастают (Максим 22.11) */
+  .apcal .row { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.9fr) minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: center; height: 464px; }
+  .apc { position: relative; box-sizing: border-box; height: 344px; border-radius: 28px; background: #29292C no-repeat right bottom / 100% auto; color: #fff; padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
+  .apc .st { align-self: flex-start; flex: none; font-size: 12px; line-height: 16px; font-weight: 700; border-radius: 6px; padding: 2px 8px; background: rgba(255, 255, 255, .16); }
+  .apc .wd { font-size: 14px; line-height: 18px; color: rgba(255, 255, 255, .7); }
+  .apc .tt { font-size: 18px; line-height: 22px; font-weight: 700; }
+  .apc .vv { font-size: 13px; line-height: 17px; color: rgba(255, 255, 255, .75); }
+  .apc .reg { margin-top: 4px; font-size: 13px; line-height: 17px; font-weight: 500; color: #fff; }
+  .apc .art { position: absolute; left: 16px; right: 16px; bottom: 16px; height: 46%; background: no-repeat center bottom / contain; }
+  .apc .lg { position: absolute; right: 16px; bottom: 16px; width: 72px; height: 72px; border-radius: 18px; }
+  .apc.now { height: 440px; border-radius: 32px; padding: 28px; box-shadow: inset 0 0 0 3px var(--red); z-index: 2; } .apc.now .st { background: var(--red); }
+  .apc.now .tt { font-size: 30px; line-height: 34px; } .apc.now .vv { font-size: 15px; line-height: 20px; }
+  .apc.past { height: 312px; background: #EBEBEF !important; color: #8B8B8F; cursor: not-allowed; } .apc.past .st { background: #D7D7DC; color: #5C5C61; } .apc.past .wd, .apc.past .vv { color: #8B8B8F; } .apc.past .lg { filter: grayscale(1); opacity: .5; }
+  .apc.next .st { background: #fff; color: var(--text); }
+  .apc.far { height: 312px; }
+  .apc.soon { background: #fff; border: 2px dashed #C9CAD0; color: var(--text); } .apc.soon .wd, .apc.soon .vv { color: var(--text-2); } .apc.soon .reg { color: var(--text); } .apc.soon .st { background: var(--grey); color: var(--text); }
+  @media (min-width: 1101px) {
+    .apc.next:hover, .apc.next:focus-visible { transform: scale(1.24); z-index: 3; }
+    .apc.next.far:hover, .apc.next.far:focus-visible { transform: scale(1.34); transform-origin: right center; }
+    .apcal .row:has(.apc.next:hover) .apc.now, .apcal .row:has(.apc.next:focus-visible) .apc.now { transform: scale(.88); }
+  }
+  @media (max-width: 1100px) {
+    .apcal .row { display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; padding: 0 calc(50% - 140px); scroll-snap-type: x proximity; scrollbar-width: none; }
+    .apcal .row::-webkit-scrollbar { display: none; }
+    .apc { flex: none; width: 200px; scroll-snap-align: center; } .apc.now { width: 280px; height: 420px; } .apc.far { height: 324px; }
+    .apc.next:hover, .apc.next:focus-visible { transform: scale(1.06); z-index: 3; }
+  }
+  @media (max-width: 600px) { .apc.now { padding: 24px 20px; } .apc.now .tt { font-size: 24px; line-height: 28px; } }
+  @media (prefers-reduced-motion: reduce) { .apc { transition: none; } }
+  /* ===== отступы, сверка со снимком прода 22.11 (блок последний, он главнее старых правок) ===== */
+  .ftr .map { display: none; } .ftr .legal { margin-top: 0; } /* на проде Пятницы подвал без карты сайта (снимок 18.11) */
+  .apform { margin-top: 56px; }
+  .why { margin-top: 128px !important; } .why .h2 { margin-bottom: 40px !important; }
+  .aplast { padding-top: 56px; } .aplast .acc-q .q { max-width: 800px; }
+  .howto ol { max-width: 466px; margin-top: 12px; } .howto li { margin-top: 12px; }
+  @media (min-width: 961px) {
+    .aphero { padding: 0 0 64px; } .aphero .g { margin-top: 24px; }
+    body:not(.off-nav) .aphero { padding-top: 16px; padding-bottom: 96px; }
+  }
+  body:not(.off-apcal) #offer .cal-row:first-child { padding-bottom: 0; }
+  body:not(.off-apcal) .apcal { margin: 128px 0; } body:not(.off-apcal) .apcal .sec-head { margin-bottom: 40px; }
+  body:not(.off-apcal) .apcal .row { height: 440px; }
+  @media (max-width: 1100px) { body:not(.off-apcal) .apcal .row { height: 420px; } }
+  @media (max-width: 768px) {
+    .why { margin-top: 64px !important; } .why .h2 { margin-bottom: 24px !important; }
+    .aplast { padding-top: 16px; } .aplast > h2 { margin-bottom: 24px !important; }
+    body:not(.off-apcal) .apcal { margin: 64px 0; } body:not(.off-apcal) .apcal .sec-head { margin-bottom: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sec-black">
+  <div id="hdr" data-solo></div>
+  <section class="aphero"><div class="wrap"><div class="g">
+    <div>
+      <h1 class="h1 inv" data-asis-f="words">Кэшбэк до 3000 баллов в Авито Путешествиях</h1><h1 class="h1 inv" data-f="words" data-dr="Формулировки · стандарт, строка 7" data-mk="words">До 3 000 баллов за оплату Авито Путешествий бизнес-картой 20 ноября</h1>
+      <p class="lead inv">20 ноября оплатите бронирование в Авито Путешествиях бизнес‑картой Альфа‑Банка</p>
+      <div class="act"><a class="btn btn-red" href="#offer">Хочу забрать!</a><div class="tbox inv">До конца акции<span data-timer="2026-11-20T23:59:59+03:00"></span></div></div>
+    </div>
+    <img src="assets/img/ap-hero.png" alt="Альфа-Пятница для бизнеса">
+  </div></div></section>
+</div>
+
+<div class="sec-light">
+  <div class="wrap pad" id="calendar">
+    <div id="offer">
+      <div class="cal-row">
+        <div><div class="cap">Текущая акция</div><div class="h2">20 ноября</div></div>
+        <div class="howto"><div class="h4 inv">Как получить кэшбэк</div><ol><li>Откройте счёт для бизнеса в Альфа‑Банке, <br class="d">если у вас его нет</li><li>Перейдите в раздел Альфа‑Выгодно через мобильное приложение или интернет-банк для бизнеса и выполните условия для участия в акции</li><li>20 ноября оплатите бронирование в Авито Путешествиях бизнес‑картой Альфа‑Банка</li><li>Получите кэшбэк баллами до 100% за первую оплату в Альфа‑Пятницу</li></ol>
+          <div class="btns"><a class="btn btn-m btn-red" href="#form">Открыть счёт</a><a class="btn btn-m btn-dark" href="https://link.alfabank.ru/partner-offers/friday?utm_medium=site_landing" target="_blank" rel="noopener">Перейти в Альфа‑Выгодно</a></div></div>
+      </div>
+      <div class="cal-row">
+        <div class="h2">23 — 27 ноября</div>
+        <a class="pcard" href="#form" style="background-image:url(assets/img/ap-week.png)"><div class="h4">Неделя выгоды <span class="tip right"><img src="assets/img/info.png" alt="" style="width:20px;height:20px"><span class="tt">Не является предложением. Содержит информацию о планируемых мероприятиях, которые могут быть изменены по усмотрению банка, пока нет правил акции</span></span></div><p>Яндекс Директ, HeadHunter, Ситилинк, <br class="d">ВсеИнструменты.ру, билайн, Якитория</p></a>
+      </div>
+      <div class="cal-row">
+        <div class="h2">4 декабря</div>
+        <a class="pcard" href="#form" style="background-image:url(assets/img/ap-lenta.png)"><div class="h4">Лента PRO <span class="tip right"><img src="assets/img/info.png" alt="" style="width:20px;height:20px"><span class="tt">Не является предложением. Содержит информацию о планируемых мероприятиях, которые могут быть изменены по усмотрению банка, пока нет правил акции</span></span></div><p>Получите кэшбэк баллами до 100% <br class="d">за оплату любых покупок с применением <br class="d">карты Лента PRO</p></a>
+      </div>
+      <div class="cal-row">
+        <div class="h2">11 декабря</div>
+        <a class="pcard" href="#form" style="background-image:url(assets/img/ap-soon.png)"><div class="h4">Скоро добавим</div><p>Если у вас нет счёта для бизнеса или карты, <br class="d">оформите их заранее, чтобы участвовать в акции</p></a>
+      </div>
+    </div>
+
+
+    <!-- Календарь Пятниц карточками (доработка Максима 20.11, ключ apcal) -->
+    <div class="apcal" data-f="apcal" id="apcal" data-dr="Календарь Пятниц карточками · доработка Максима 20.11" data-mk="apcal">
+      <div class="sec-head"><h2 class="h2">Календарь Альфа‑Пятниц</h2></div>
+      <div class="row" id="acRow"></div>
+    </div>
+
+    <div class="form-outer apform" id="form" data-form="Отправить заявку"></div>
+
+    <div class="block why">
+      <h2 class="h2" style="max-width:640px;margin-bottom:40px">Почему выгодно быть клиентом <br class="d">Альфа‑Банка</h2>
+      <div class="grid3">
+        <div class="card"><img src="assets/img/why-1.png" alt=""><div class="h4">Простой старт без затрат</div><p>Подключим счёт онлайн за 5 минут, без платы за открытие и обслуживание</p></div>
+        <div class="card"><img src="assets/img/why-2.png" alt=""><div class="h4">Лучшая программа лояльности</div><p>Начисляем баллы за действия по счёту — тратьте их на услуги банка и партнёров или меняйте на рубли</p></div>
+        <div class="card"><img src="assets/img/why-3.png" alt=""><div class="h4">Кэшбэк баллами до 10%</div><p>Возвращаем до 10% за расходы по бизнес-карте в 5 категориях на выбор или в 4 категориях и 1% на всё каждый месяц</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-light last" style="margin-top:0">
+  <div class="wrap aplast" style="padding-bottom:128px">
+    <h2 class="h2" style="margin-bottom:40px">Частые вопросы</h2>
+    <div class="acc">
+      <div class="acc-item"><button class="acc-q"><span class="q">Сколько баллов можно получить?</span></button><div class="acc-a"><p>Максимум 3000 баллов.</p></div></div>
+      <div class="acc-item"><button class="acc-q"><span class="q">Как получить баллы?</span></button><div class="acc-a"><p data-asis-f="words">Кэшбэк начисляется баллами на счёт программы лояльности Альфа‑Выгодно для бизнеса. Выплатим его до 25 января.</p><p data-f="words" data-dr="Формулировки · стандарт, строка 18 и «Словарь»" data-mk="words">Баллы появятся на балансе в Альфа‑Выгодно для бизнеса до 25 января.</p></div></div>
+      <div class="acc-item"><button class="acc-q"><span class="q">Почему стоит выбрать партнёра и где можно больше о нём узнать?</span></button><div class="acc-a"><p>Авито Путешествия — сервис, который помогает быстро и безопасно бронировать квартиры, дома и отели посуточно.</p><p>Подробнее о партнёре можно прочитать <a href="https://www.avito.ru/all/travel?segment=travel&utm_campaign=alfafriday&utm_medium=cashback&utm_source=alfabankb2b" target="_blank" rel="noopener">на сайте</a>.</p></div></div>
+      <div class="acc-item"><button class="acc-q"><span class="q">Где можно узнать подробные условия предложения?</span></button><div class="acc-a"><p>Подробности об условиях — <a href="https://alfabank.servicecdn.ru/site-presets/9e/af/391/rules_alfa-friday_20112026.pdf" target="_blank" rel="noopener">по ссылке.</a></p></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="ftr"></div>
+
+<div class="fb" id="fb"><button aria-label="Оценить страницу"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M2 10h4v11H2zM8 21h9.3a2 2 0 0 0 2-1.6l1.6-7.4A2 2 0 0 0 19 9.6h-5.3l.8-4a1.8 1.8 0 0 0-3.2-1.4L8 9.5z"/></svg></button>
+  <div class="pan" id="fbPan"><div class="h5">Насколько просто было принять участие в акции?</div><div class="rb stars"><button data-r="1" aria-label="1">★</button><button data-r="2" aria-label="2">★</button><button data-r="3" aria-label="3">★</button><button data-r="4" aria-label="4">★</button><button data-r="5" aria-label="5">★</button></div><div id="fbMore" hidden><div class="s" style="margin-top:14px;font-weight:700">Что мы можем улучшить?</div><textarea maxlength="200" placeholder="Напишите, пожалуйста, с какими проблемами вы столкнулись. Мы постараемся их исправить"></textarea><button class="btn btn-s btn-red" id="fbSend" style="margin-top:12px;width:100%">Отправить</button></div></div>
+</div>
+
+<script>
+window.PAGE = {
+  id: 'альфа-пятница', title: 'Альфа-Пятница', url: 'alfabank.ru/sme/loyalty/alfa-friday/', snap: '18.11.2026',
+  dr: [
+    // ===== гипотезы и доработки мастер-плана, строки 17–28, и формулировки (20.11) =====
+    { key: 'client', name: 'Уже клиент, сразу в ЛК', link: 'Кнопки календаря прода видны, пока выключен «Календарь Пятниц карточками».', sel: '.howto .btn-red',
+      what: 'Кнопки заявки («Открыть счёт» и карточки календаря прода: Неделя выгоды, Лента PRO, Скоро добавим; они видны, когда календарь карточками выключен) сначала спрашивают: «У вас уже есть счёт в Альфа‑Банке?» (будущие карточки барабана не спрашивают, ведут прямо к анкете). «Да» ведёт в раздел Пятницы в Альфа‑Выгодно (боевая ссылка со страницы), «Нет» к анкете.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 17 (гипотеза): на Главной, витрине и Пятнице у кнопки развилка: «счёт в Альфе уже есть» ведёт в интернет-банк к программе или выбранному офферу, «новый» в анкету РКО. Разнос оппонента 09.11: стратегия/Мастер-план-2027-разнос-кандидата-уже-клиент.md.',
+      cond: 'гипотеза без макета. Развилка самовыбором, без ИНН. На проде рядом уже есть вторая кнопка «Перейти в Альфа‑Выгодно», развилка спрашивает и тех, кто её не заметил.' },
+    { key: 'apcal', name: 'Календарь Пятниц карточками', link: 'Скрывает вертикальный календарь прода, «Как получить кэшбэк» оставляет.', sel: '#apcal',
+      what: 'Под блоком «Как получить кэшбэк» календарь барабаном вместо вертикального календаря прода: действующая или ближайшая Пятница крупно по центру с красной обводкой, слева прошедшая (серая, не выбирается), справа две следующие, они ниже и вырастают при наведении (Максим 22.11). На следующих написано «Зарегистрируйтесь сейчас, чтобы участвовать в этой неделе» (у однодневной акции «в этой Пятнице»), клик ведёт прямо к анкете. Клик по действующей ведёт к «Как получить кэшбэк». На узком экране барабан листается, действующая в центре.',
+      src: 'Доработка Максима 20.11, в мастер-плане строки нет: календарь как на странице Альфа Будущего, прошедшая «серенькая», выбрать её нельзя, действующая или ближайшая «ярко», следующие видны; образец решений Яндекс Плюс. Акции с 20 ноября по 11 декабря из снимка прода 18.11; 20.11 вживую подтверждены 20 ноября, Неделя выгоды, Лента PRO и «Скоро добавим». Прошедшие: Яндекс 360 18 сентября (стандарт формулировок) и Авито Услуги 1–10 июля (карта трёх страниц).',
+      cond: 'вид придуман по скрину карточек Альфа Будущего, макета нет. При дате по умолчанию показана одна прошедшая, Яндекс 360 (снимок 17.09); Авито Услуги (карта трёх страниц) в данных есть и видна с ?d= до 18.09. Анонсы Туту, Купера, Ситилинка, Tasty Coffee и Авито Работа (21.10, только таймер) не показаны. Статус по умолчанию считается на 20.11, день текущей акции в снимке прода 18.11, под неё написан «Как получить кэшбэк»; другую дату можно задать ?d=ГГГГ-ММ-ДД. Решения Яндекс Плюса ещё не смотрел.' },
+    { key: 'nav', name: 'Шапка раздела: название и бургер', sel: '.loynav .wrap',
+      what: 'Шапка раздела вместо шапки прода, по образцу Альфа Будущего, но на чёрном фоне, как шапка прода (красный слишком контрастный, Максим 21.11): красная «А» и название «Программа лояльности для бизнеса» с подписью «Альфа‑Выгодно», две ссылки, на витрину и Пятницу («Как стать участником» и «Частые вопросы» Максим снял из меню 22.11), справа лупа и красная кнопка «Войти». Уже 1180 px ссылки уходят в бургер, лупа скрыта; на телефоне в бургер уходит и «Войти».',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 28 (доработка): бургер-меню по образцу «Альфа-Будущего» и понятное название пункта программы; название «Альфа-Выгодно» не у всех ассоциируется с программой, поэтому сначала проверка.',
+      cond: 'вид по скрину шапки Альфа Будущего от Максима 20.11 (сам сайт автоматический браузер не открыл), макета нет. Название «Программа лояльности для бизнеса» условное, его даёт проверка.' },
+    { key: 'words', name: 'Формулировки по исследованию «Единый язык привилегий»', sel: '.aphero [data-mk="words"]',
+      what: 'Герой по формуле стандарта: «До 3 000 баллов за оплату Авито Путешествий бизнес-картой 20 ноября». В FAQ вместо «Кэшбэк начисляется баллами на счёт программы… Выплатим его до 25 января» написано «Баллы появятся на балансе в Альфа‑Выгодно для бизнеса до 25 января».',
+      src: 'Исследование «Единый язык привилегий» (исследования/единый-язык-привилегий/), лист «Стандарт»: строка 7 (Альфа-Пятница, образец «До 10 000 баллов за оплату Яндекс 360 бизнес-картой 18 сентября»), строка 18 (сроки); лист «Словарь»: «баллы на балансе в Альфа-Выгодно», не «на счёт программы» и не «выплатим».',
+      cond: 'решений PO по стандарту нет, роли отыграли агенты. Строка 7 зависит от решения по слову «кэшбэк» (С1). Вторую часть образца («Нажмите „Забираю“ до …») не переносил: условия текущей акции не снимал. Дата 25 января из текста прода.' },
+  ],
+  notes: [
+    'Айдентика по итогам исследования (направление А) снята Максимом 21.11 («давай пока Айдентику уберём»). Моё предложение: вернуться с единой карточкой предложения или с работой дизайнера.',
+    'Мастер-план, строка 23 «АП: страница SEO привлечения»: не блок на странице Пятницы, а отдельная статья (Максим 20.11). Показана карточкой «готовится» в ленте «Новости и полезное» на Главной (таб «Статьи»).',
+    'Мастер-план, строка 19 «Игра с гейтом регистрации РКО» («Сюрприз месяца»): снята Максимом 20.11, выглядела некрасиво. Вернуть, когда будет макет.',
+    'Счётчик участников Пятницы Максим 20.11 убрал из BRD «Счётчик участников». Доработок из строк 4–12 мастер-плана на этой странице нет, здесь только доработки из строк 17 и 28, формулировки и календарь Пятниц карточками (строки в мастер-плане нет).',
+    'Мастер-план, строка 26 «Опросник VOC»: на Пятнице кнопка оценки уже на проде (ниже), поэтому без свича.',
+    'Мастер-план, строка 30 «Ретаргетинг посетителей, ушедших без заявки» (доработка): тем, кто ушёл с Пятницы или витрины без анкеты, онлайн-продажи показывают рекламу с той же акцией. На странице это не видно, поэтому без свича.',
+    'Октябрьские макеты Пятницы (рендеры в макеты/figma-рендеры-АП-2026-10/) уже на проде: расписание по датам, подсказка «Не является предложением», табы «клиент / не клиент» на Главной, блок Пятницы на витрине. Колесо удачи из того макета снято с 22.10.',
+    'Поиска в шапке на Пятнице нет и на проде (шапка только с логотипом), поэтому AI-помощника здесь нет.',
+    'Красная кнопка оценки справа: это прод, виджет FeedbackForm (codeTeam «ММБ Партнерка»): 5 звёзд, вопрос «Насколько просто было принять участие в акции?», затем «Что мы можем улучшить?». Тексты взяты из снимка страницы, вид звёзд нарисован по описанию, на мобильном не проверял.',
+  ],
+  fork: { link: 'https://link.alfabank.ru/partner-offers/friday?utm_medium=site_landing', yes: 'Откроем раздел Альфа‑Пятницы в Альфа‑Выгодно, заявка не нужна' },
+};
+</script>
+<script src="assets/данные.js"></script>
+<script src="assets/футер.js"></script>
+<script src="assets/общее.js"></script>
+<script>
+(function () {
+  const { nf, plural } = window.fmt;
+  // оценка страницы
+  const fb = document.getElementById('fb'), pan = document.getElementById('fbPan');
+  fb.firstElementChild.onclick = () => fb.classList.toggle('open');
+  pan.addEventListener('click', e => { const r = e.target.closest('[data-r]'); if (r) { const n = +r.dataset.r; pan.querySelectorAll('[data-r]').forEach(x => x.classList.toggle('on', +x.dataset.r <= n)); document.getElementById('fbMore').hidden = false; } });
+  document.getElementById('fbSend').onclick = () => { pan.innerHTML = '<div class="h5">Спасибо за отзыв!</div><p class="s mut" style="margin-top:6px">Прототип: отзыв никуда не отправлен.</p>'; setTimeout(() => fb.classList.remove('open'), 1800); };
+})();
+</script>
+<script>
+// Календарь Пятниц карточками (доработка Максима 20.11). Акции с 20 ноября с прода Пятницы (снимок 20.11);
+// прошедшие только с подтверждённой датой: Яндекс 360 18 сентября (стандарт), Авито Услуги 1–10 июля (карта трёх страниц).
+(function () {
+  const $ = s => document.querySelector(s), O = (window.DATA || {}).offers || [];
+  const lg = n => (O.find(o => o.name === n) || {}).logo || '';
+  const AC = [
+    { d: '2026-07-01', e: '2026-07-10', when: '1–10 июля', t: 'Авито Услуги', v: 'Кэшбэк до 5000 баллов', logo: lg('Авито Услуги') },
+    { d: '2026-09-18', e: '2026-09-18', when: '18 сентября', t: 'Яндекс 360', v: 'Кэшбэк до 10 000 баллов', logo: lg('Яндекс 360 для бизнеса') },
+    { d: '2026-11-20', e: '2026-11-20', when: '20 ноября', t: 'Авито Путешествия', v: 'Кэшбэк до 3 000 баллов за оплату бронирования', art: 'assets/img/ap-hero.png', row: 0 },
+    { d: '2026-11-23', e: '2026-11-27', when: '23–27 ноября', t: 'Неделя выгоды', v: 'Яндекс Директ, HeadHunter, Ситилинк и другие', bg: 'assets/img/vit-ap-week.png', row: 1 },
+    { d: '2026-12-04', e: '2026-12-04', when: '4 декабря', t: 'Лента PRO', v: 'Кэшбэк баллами до 100% с картой Лента PRO', bg: 'assets/img/vit-ap-lenta.png', row: 2 },
+    { d: '2026-12-11', e: '2026-12-11', when: '11 декабря', t: 'Скоро добавим', v: 'Откройте счёт заранее, чтобы участвовать', soon: true, row: 3 },
+  ];
+  const D = s => new Date(s + 'T12:00'), q = new URLSearchParams(location.search).get('d');
+  const T = q && !isNaN(D(q)) ? D(q) : D('2026-11-20'); // по умолчанию дата снимка прода: под неё написан «Как получить кэшбэк»
+  let feat = AC.findIndex(x => D(x.e) >= T); if (feat < 0) feat = AC.length - 1;
+  const rows = [...document.querySelectorAll('#offer .cal-row')]; rows.forEach((r, i) => { r.id = 'apr' + i; });
+  const row = $('#acRow');
+  const from = Math.max(0, feat - 1), SHOW = AC.slice(from, feat + 3);
+  row.innerHTML = SHOW.map((x, k) => {
+    const i = from + k, past = i < feat, now = i === feat, live = now && D(x.d) <= T;
+    const st = past ? 'Прошла' : now ? (live ? (x.d === x.e ? 'Сегодня' : 'Идёт сейчас') : 'Ближайшая') : x.soon ? 'Скоро добавим' : 'Скоро';
+    const cls = 'apc' + (past ? ' past' : now ? ' now' : ' next') + (i - feat > 1 ? ' far' : '') + (x.soon ? ' soon' : '');
+    const reg = !past && !now ? `<span class="reg">Зарегистрируйтесь сейчас, чтобы участвовать в этой ${x.d === x.e ? 'Пятнице' : 'неделе'} →</span>` : ''; // слова Максима 22.11
+    const st2 = `grid-column:${3 + i - feat};${x.bg ? `background-image:url(${x.bg})` : ''}`;
+    return `<a class="${cls}" href="${now ? '#apr0' : past ? '#' : '#form'}"${!past && !now ? ' data-nofork' : ''} data-when="${x.when}"${past ? ' aria-disabled="true" title="Акция прошла"' : ''} style="${st2}"><span class="st">${st}</span><span class="wd">${x.when}</span><span class="tt">${x.soon ? 'Новая акция' : x.t}</span>${x.soon && reg ? '' : `<span class="vv">${x.v}</span>`}${reg}${x.art ? `<span class="art" style="background-image:url(${x.art})"></span>` : ''}${x.logo ? `<img class="lg" src="${x.logo}" alt="">` : ''}</a>`;
+  }).join('');
+  row.addEventListener('click', e => { const c = e.target.closest('.apc.past'); if (!c) return; e.preventDefault(); toast('Эта Альфа‑Пятница уже прошла'); });
+  const center = () => { const n = row.querySelector('.apc.now'); if (n && row.scrollWidth > row.clientWidth) row.scrollLeft = n.offsetLeft + n.offsetWidth / 2 - row.clientWidth / 2; };
+  center(); addEventListener('resize', center); document.addEventListener('drchange', center); addEventListener('load', center);
+})();
+</script>
+</body>
+</html>

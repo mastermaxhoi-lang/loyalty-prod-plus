@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Главная Лояльности: прод и доработки</title>
+<link rel="stylesheet" href="assets/общее.css">
+<style>
+  .hero { padding: 85px 0 136px; }
+  .hero-top { display: grid; grid-template-columns: 576px 1fr; gap: 24px; align-items: center; }
+  .hero-top .lead { margin-top: 16px; max-width: 420px; }
+  .hero-top .btn { margin-top: 40px; }
+  .hero-img { justify-self: end; width: 558px; }
+  @media (min-width: 961px) { .hero-img { margin: -63px 0; } } /* картинка выше колонки текста и не раздувает хиро, замер по срезу прода 18.11 */
+  .hero-act { display: flex; align-items: center; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+  .hero-top .hero-act .btn { margin-top: 0; }
+  .adv { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 64px; }
+  .adv > div { background: rgba(222, 222, 240, .12); backdrop-filter: blur(12px); border-radius: 24px; padding: 24px; height: 200px; position: relative; }
+  .adv p { margin-top: 8px; }
+  .adv img { position: absolute; right: 16px; bottom: 16px; width: 64px; height: 64px; }
+  @media (max-width: 768px) { .adv p { padding-right: 64px; } }
+  @media (max-width: 960px) { .hero-top { grid-template-columns: 1fr; } .hero-img { justify-self: center; width: 80%; } .adv { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .adv { grid-template-columns: 1fr; } .adv > div { height: auto; min-height: 120px; } }
+
+  /* уровни */
+  .lvls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .lvl { background: var(--grey); border-radius: 32px; padding: 0 8px 8px; text-align: center; }
+  .lvls { padding-top: 34px; } /* медаль выступает над карточкой на 25px, как на проде */
+  .lvl > img { display: block; width: calc(100% + 16px); max-width: none; margin: -34px -8px 12px; }
+  .lvl > .h4 { font-size: 22px; line-height: 26px; letter-spacing: .2px; }
+  .lvl .sub { margin: 12px 0 24px; display: inline-flex; align-items: center; gap: 6px; }
+  .lvl .rows { background: #fff; border-radius: 24px; padding: 4px 24px; text-align: left; }
+  .lvl .row { padding: 18px 0; border-bottom: 1px solid #E7E8EB; }
+  .lvl .row:last-child { border-bottom: 0; }
+  .lvl .row .k { font-size: 14px; color: var(--text-2); }
+  .lvl .row .v { font-size: 16px; font-weight: 700; margin-top: 4px; }
+  .lvl.gold { background: var(--dark); color: var(--inv); }
+  .lvl.gold .rows { background: var(--dark-3); } .lvl.gold .row { border-color: rgba(255, 255, 255, .1); } .lvl.gold .row .k { color: var(--inv-2); }
+  @media (max-width: 960px) { .lvls { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
+
+  /* калькулятор (на проде не позже 14.10) */
+  .calc { background: var(--grey); border-radius: 32px; padding: 8px; display: grid; grid-template-columns: 340px 1fr; gap: 8px; }
+  .calc .cond { padding: 24px 16px 24px 24px; }
+  .calc .out { background: #fff; border-radius: 24px; padding: 24px; }
+  .amount { position: relative; background: var(--field); border-radius: 4px 4px 0 0; padding: 8px 12px 10px; margin-top: 24px; }
+  .amount label { display: block; font-size: 12px; color: var(--text-2); }
+  .amount input[type=text] { border: 0; background: transparent; font: inherit; font-weight: 700; font-size: 16px; width: 70%; outline: none; color: var(--text); padding: 2px 0 0; }
+  .amount .tip { position: absolute; right: 12px; top: 16px; }
+  .amount input[type=range] { position: absolute; left: 0; right: 0; bottom: -9px; width: 100%; margin: 0; -webkit-appearance: none; appearance: none; background: transparent; height: 18px; }
+  .amount input[type=range]::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(90deg, var(--red) var(--p, 0%), #B9BAC1 var(--p, 0%)); }
+  .amount input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--red); margin-top: -7px; cursor: pointer; }
+  .amount input[type=range]::-moz-range-track { height: 2px; background: #B9BAC1; } .amount input[type=range]::-moz-range-progress { height: 2px; background: var(--red); }
+  .amount input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border: 0; border-radius: 50%; background: var(--red); }
+  .calc .cap { font-size: 12px; color: var(--text-2); margin-top: 14px; }
+  .chk { display: grid; grid-template-columns: 24px 1fr auto; gap: 12px; margin-top: 24px; cursor: pointer; align-items: start; }
+  .chk input { width: 20px; height: 20px; accent-color: var(--red); margin: 2px 0 0; }
+  .chk small { display: block; font-size: 13px; line-height: 18px; color: var(--text-2); margin-top: 4px; }
+  .lvlbox { background: var(--grey); border-radius: 16px; padding: 16px; display: grid; grid-template-columns: 1fr 78px; gap: 16px; align-items: center; margin-top: 20px; }
+  .lvlbox .bar { height: 6px; border-radius: 3px; background: #E2E3E8; margin: 12px 0 10px; overflow: hidden; }
+  .lvlbox .bar i { display: block; height: 100%; background: repeating-linear-gradient(-45deg, #B9BAC1 0 6px, #D3D4D9 6px 12px); border-radius: 3px; transition: width .3s; }
+  .lvlbox a { font-size: 13px; border-bottom: 1px solid currentColor; }
+  .lvlbox img { width: 78px; height: 78px; border-radius: 50%; }
+  .privs { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 126px 126px; gap: 24px 24px; margin-top: 16px; }
+  .priv { border-radius: 16px; background: var(--grey) no-repeat right center / auto 100%; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; transition: transform .2s; }
+  .priv:hover { transform: scale(1.03); }
+  .priv .n { font-size: 13px; line-height: 16px; color: var(--text-2); max-width: 100px; }
+  .priv .v { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+  .priv .v img { width: 14px; height: 14px; }
+  .priv.tall { grid-column: 3; grid-row: 1 / span 2; background-size: cover; background-position: center; }
+  .calc-disc { font-size: 13px; color: var(--text-2); margin: 16px 24px 0; }
+  .calc-disc a { border-bottom: 1px solid currentColor; }
+  @media (max-width: 960px) { .calc { grid-template-columns: 1fr; } .privs { grid-template-columns: 1fr 1fr; grid-template-rows: auto; } .priv { min-height: 110px; } .priv.tall { grid-column: auto; grid-row: auto; } }
+
+  /* как заработать */
+  .earn-wrap { overflow: hidden; }
+  .earn { display: grid; grid-auto-flow: column; grid-auto-columns: 364px; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+  .earn::-webkit-scrollbar { display: none; }
+  @media (min-width: 1173px) { .earn { margin-right: calc((1140px - 100vw) / 2); padding-right: 24px; } }
+  .earn > * { scroll-snap-align: start; }
+  .earn .col { display: grid; grid-template-rows: 223px 223px; gap: 24px; }
+  .ecard { border-radius: 32px; height: 470px; position: relative; overflow: hidden; display: block; background: var(--grey) no-repeat center bottom / 100% auto; padding: 24px; text-align: left; width: 100%; }
+  .col .ecard { height: 223px; background-size: cover; background-position: right center; }
+  .col .ecard p { max-width: 190px; }
+  .ecard.dark { background-color: var(--dark); color: var(--inv); }
+  .ecard p { margin-top: 6px; font-size: 16px; max-width: 250px; }
+  .ecard .tm { position: absolute; left: 8px; right: 8px; bottom: 8px; background: #fff; border-radius: 24px; padding: 12px; text-align: center; color: var(--text); font-size: 15px; }
+  .arrows { display: flex; gap: 8px; }
+  .arrows button { width: 40px; height: 40px; border-radius: 50%; background: var(--grey-2); display: flex; align-items: center; justify-content: center; }
+  .arrows button:disabled { opacity: .4; cursor: default; }
+  @media (max-width: 640px) { .earn { grid-auto-columns: 82vw; } }
+
+  /* на что потратить */
+  .spend { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  /* ключ earn: плиток в хиро нет, «На что потратить баллы» и «Как заработать баллы» сразу под хиро (Максим 21.11) */
+  .earn-top { padding-top: 144px !important; padding-bottom: 0 !important; } .earn-top .block, .earn-top #earn { margin: 0 !important; } .earn-top + .earn-wrap { margin-bottom: 0; }
+  body:not(.off-earn):not(.off-lenta) .hero { padding-bottom: 0; } body:not(.off-earn) .sec-black + .sec-dark .spend-sec { padding-top: 80px !important; } /* под хиро сразу тёмный виджет: бегущая строка встык, отступы как на проде */
+  @media (max-width: 768px) { .earn-top { padding-top: 80px !important; } body:not(.off-earn) .sec-black + .sec-dark .spend-sec { padding-top: 48px !important; } } /* два виджета под хиро (Максим 21.11) */
+  body:not(.off-earn) .hero { padding-bottom: 96px; } body:not(.off-earn) .hero .hcalc + .lenta, body:not(.off-earn) .hero > .wrap { padding-bottom: 0; }
+ 
+  .video { border-radius: 32px; overflow: hidden; position: relative; background: #000; aspect-ratio: 558 / 560; }
+  .video video { width: 100%; height: 100%; object-fit: cover; }
+  .video .btn { position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); }
+  .video .mute { position: absolute; right: 16px; top: 16px; width: 32px; height: 32px; border-radius: 50%; background: rgba(0, 0, 0, .4); color: #fff; font-size: 14px; }
+  .scards { display: grid; gap: 24px; align-content: start; }
+  .scard { background: var(--dark-2) no-repeat right center / auto 100%; border-radius: 32px; height: 122px; padding: 24px; padding-right: 120px; }
+  .scard p { margin-top: 6px; font-size: 16px; color: var(--inv-2); }
+  @media (max-width: 960px) { .spend { grid-template-columns: 1fr; } }
+
+  /* забирайте */
+  .take { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .take .col { display: grid; gap: 24px; }
+  .tcard { border-radius: 32px; background: var(--grey) no-repeat center bottom / contain; text-align: center; padding: 32px 24px; display: block; }
+  .tcard.tall { height: 432px; } .tcard.half { height: 204px; background-position: center; }
+  .tcard p { font-size: 14px; color: var(--text-2); margin-top: 6px; }
+  @media (max-width: 960px) { .take { grid-template-columns: 1fr; } .tcard.tall { height: 360px; } }
+
+  /* липкий виджет Пятницы (прод) */
+  .ap-sticky { position: fixed; right: 24px; bottom: 24px; width: 290px; background: #E3ECFF; border-radius: 20px; padding: 14px 16px; display: grid; grid-template-columns: 1fr 84px; gap: 8px; z-index: 90; box-shadow: 0 8px 32px rgba(0, 0, 0, .18); transform: translateY(140%); transition: transform .3s; color: var(--text); }
+  .ap-sticky.on { transform: none; }
+  .ap-sticky b { font-size: 15px; line-height: 19px; }
+  .ap-sticky img { width: 84px; height: 84px; object-fit: contain; }
+  .ap-sticky .tm { grid-column: 1 / -1; font-size: 13px; color: var(--red); font-weight: 700; }
+  .ap-sticky .cl { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: #75767c; color: #fff; display: flex; align-items: center; justify-content: center; }
+  .ap-sticky .cl svg { width: 14px; height: 14px; }
+  @media (max-width: 768px) { .ap-sticky { right: 8px; bottom: 76px; width: 250px; } }
+
+  /* подгонка под прод 20.11 */
+  .lvl .rows { padding: 24px; }
+  .lvl .row { padding: 0; border: 0; }
+  .lvl .row + .row { border-top: 1px solid rgba(18, 18, 19, .1); margin-top: 16px; padding-top: 16px; }
+  .lvl .row .k { font-size: 16px; line-height: 24px; color: rgba(4, 4, 19, .55); }
+  .lvl .row .v { font-size: 18px; line-height: 22px; margin-top: 8px; }
+  .lvl.gold .row + .row { border-color: rgba(255, 255, 255, .1); } .lvl.gold .row .k { color: var(--inv-2); }
+  .ecard { padding: 32px; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; }
+  .ecard .h4 { font-size: 22px; line-height: 26px; }
+  .ecard p, .col .ecard p { margin-top: 8px; font-size: 16px; line-height: 24px; max-width: none; }
+  .ecard .tm { padding: 16px 24px 24px; font-size: 16px; line-height: 24px; }
+  .ecard .tm .timer-red { display: block; margin-top: 4px; font-size: 18px; line-height: 22px; font-weight: 700; }
+  .earn-wrap { padding-bottom: 45px; }
+  .sec-light > .wrap.pad:has(#earn) { padding-bottom: 0; } /* прод: заголовок → карусель 40px */
+  #earn { margin-top: 130px; }
+  .spend-sec { padding-bottom: 192px !important; }
+  .after-spend { padding-top: 129px !important; }
+  /* липкий виджет Пятницы как на проде: 360px, верх #D6E6FF 92px, низ серый с таймером, крестик в углу */
+  .ap-sticky { position: fixed; right: 40px; bottom: 40px; width: 360px; display: block; padding: 0; background: var(--grey); border-radius: 24px; box-shadow: 0 8px 32px rgba(0, 0, 0, .18); z-index: 90; grid-template-columns: none; gap: 0; }
+  .ap-sticky .top { display: block; background: #D6E6FF; border-radius: 24px; height: 92px; padding: 16px 16px 0; }
+  .ap-sticky b { display: block; width: 188px; font-size: 16px; line-height: 20px; font-weight: 500; color: var(--text); }
+  .ap-sticky img { position: absolute; right: 18px; top: -26px; width: 112px; height: 112px; object-fit: contain; }
+  .ap-sticky:not(.on) { visibility: hidden; }
+  @media (max-width: 768px) { .ap-sticky { left: 16px; right: 16px; width: auto; bottom: 76px; } .ap-sticky img { width: 84px; height: 84px; top: -18px; right: 12px; } }
+  .ap-sticky .tm { display: block; padding: 12px 16px 16px; font-size: 14px; line-height: 20px; font-weight: 700; color: var(--red); }
+  .ap-sticky .cl { top: 8px; right: 8px; width: 24px; height: 24px; background: rgba(4, 4, 19, .25); z-index: 2; }
+
+  /* «Выгода под мой бизнес» (мастер-план 2027, строка 10; макета нет, по гипотезе и прототипу «главная-инсайт») */
+  /* «Выгода под мой бизнес» в хиро: два варианта из лаборатории (единый/главная.html: калькулятор раскрывается в баннере; главная-финал.html: по кнопке) */
+  body:not(.off-biz) .hero-img { display: none; }
+  /* логотип программы как на проде и «лучшая» со сноской на премию (Максим 21.11) */
+  .hero-logo { display: block; width: 470px; max-width: 100%; margin: 0 0 20px -12px; }
+  body:not(.off-biz) .hero-top h1 { font-size: 30px; line-height: 36px; font-weight: 500; }
+  body:not(.off-biz) .hero-top .lead { margin-top: 12px; }
+  .hero-top h1 .fn { font-size: .55em; vertical-align: super; line-height: 0; margin-left: 2px; color: rgba(255, 255, 255, .7); }
+  .hchips-cap { margin: 0; font-size: 14px; line-height: 18px; color: rgba(255, 255, 255, .7); } .hchips-cap + .hchips { margin: 10px 0 20px; } .bpanel .hchips button { height: 32px; padding: 0 12px; font-size: 13px; }
+  .hero-fn { margin-top: 24px; font-size: 13px; line-height: 18px; color: rgba(255, 255, 255, .5); max-width: 520px; } .hero-fn a { color: rgba(255, 255, 255, .75); border-bottom: 1px solid currentColor; }
+  @media (max-width: 768px) { .hero-logo { width: 300px; margin: 0 0 12px -8px; } body:not(.off-biz) .hero-top h1 { font-size: 22px; line-height: 28px; } }
+  .bpanel { position: relative; justify-self: end; width: 100%; max-width: 504px; background: var(--dark); border-radius: 32px; padding: 32px; color: #fff; }
+  .bpanel .bl { font-size: 15px; line-height: 20px; color: rgba(255, 255, 255, .7); } .bpanel .bl b { color: #fff; font-weight: 500; }
+  .bpanel .bbig { font-size: 48px; line-height: 56px; font-weight: 700; margin-top: 8px; } .bpanel .bsub { font-size: 14px; line-height: 20px; color: rgba(255, 255, 255, .6); margin-top: 4px; }
+  .bpanel .bl { min-height: 40px; }
+  .bpanel .bbig { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 12px; margin-top: 4px; font-size: 80px; line-height: 88px; color: #2FC26B; } /* в панели одно главное: сумма, под ней две кнопки (Максим 22.11) */
+  .bpanel .bbig span { white-space: nowrap; } .bpanel .bbig small { font-size: 28px; line-height: 32px; color: #fff; white-space: nowrap; }
+  .bpanel .hero-act { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-top: 28px; }
+  .bpanel .hero-act .btn { padding-left: 8px; padding-right: 8px; justify-content: center; }
+  .bpanel .hero-act .cnts { grid-column: 1 / -1; }
+  @media (max-width: 480px) { .bpanel .hero-act { grid-template-columns: minmax(0, 1fr); } }
+  .bpanel .bact { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; } .hero-top .bpanel .bact .btn { margin-top: 0; }
+  .bpanel .bnote { font-size: 13px; line-height: 18px; color: rgba(255, 255, 255, .45); margin-top: 12px; }
+  .bvar { position: absolute; top: -40px; right: 0; display: flex; align-items: center; gap: 4px; background: rgba(18, 18, 19, .92); border: 1px solid rgba(255, 255, 255, .14); border-radius: 10px; padding: 3px; font-size: 12px; color: rgba(255, 255, 255, .6); }
+  .bvar span { padding: 0 6px; } .bvar button { height: 26px; padding: 0 10px; border-radius: 7px; color: rgba(255, 255, 255, .85); font-size: 12px; } .bvar button.on { background: #fff; color: var(--text); }
+  .hchips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; max-width: 560px; }
+  .hchips button { height: 36px; padding: 0 14px; border-radius: 99px; background: rgba(222, 222, 238, .13); color: #fff; font-size: 14px; font-weight: 500; }
+  .hchips button.on { background: #fff; color: var(--text); } .hchips:not(.all) button.x6:not(.on) { display: none; } .hchips [data-more] { color: rgba(255, 255, 255, .7); }
+  .hcalc { margin-top: 40px; background: #fff; color: var(--text); border-radius: 32px; padding: 32px; }
+  .hcalc { position: relative; } .hcalc .hcx { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; font-size: 26px; line-height: 1; color: var(--text-2); }
+  .hcalc .sec-head, #m-bizcalc .sec-head { margin-bottom: 24px; padding-right: 48px; } .hcalc .lvls { margin-bottom: 8px; }
+  .bpanel .blvl { margin-top: 12px; font-size: 14px; line-height: 20px; color: rgba(255, 255, 255, .7); } .bpanel .blvl b { color: #fff; font-weight: 500; }
+  .modal.wide { max-width: 1180px; } #m-bizcalc .calc { margin: 0; }
+  @media (max-width: 960px) { .bpanel { justify-self: stretch; max-width: none; margin-top: 40px; } }
+  @media (max-width: 768px) { .bpanel { padding: 24px; } .bpanel .bbig { font-size: 56px; line-height: 64px; } .bpanel .bbig small { font-size: 22px; line-height: 28px; } .hcalc { padding: 20px; border-radius: 24px; } }
+  .biz { margin-bottom: 120px; }
+  .biz .sub-l { margin-top: 12px; color: var(--text-2); font-size: 18px; line-height: 24px; }
+  .biz .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 32px 0 32px; }
+  .biz .chips button { height: 40px; padding: 0 16px; border-radius: 99px; background: var(--grey); font-size: 15px; font-weight: 500; }
+  .biz .chips button.on { background: var(--dark); color: #fff; }
+  .biz .res { display: block; } .biz .slot-calc { margin-bottom: 24px; }
+  .biz .side2 { display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
+  .biz .side2 .offs { grid-template-columns: 1fr 1fr; }
+  .biz .slot-calc .calc { margin: 0; }
+  /* 20. «Вы недополучаете N ₽» в калькуляторе: сфера бизнеса → сколько в среднем получают такие компании (решение Максима 20.11) */
+  .calc-loss { margin-top: 24px; background: #FFF1F0; border-radius: 20px; padding: 16px 20px; display: grid; gap: 6px; }
+  .calc-loss label { font-size: 14px; color: var(--text-2); }
+  .calc-loss select { font: inherit; font-size: 16px; height: 44px; border: 0; border-radius: 12px; background: #fff; padding: 0 12px; color: var(--text); width: 100%; }
+  .calc-loss > b { font-size: 20px; line-height: 26px; margin-top: 6px; } .calc-loss > span { font-size: 13px; line-height: 18px; color: var(--text-2); }
+  .calc-loss .brows { display: grid; gap: 6px; margin: 4px 0 2px; } .calc-loss .br { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 12px; padding: 10px 12px; font-size: 14px; line-height: 18px; } .calc-loss .br b { margin-left: auto; color: #0B7A3B; font-weight: 700; white-space: nowrap; }
+  .calc-loss .lgs { display: flex; flex: none; } .calc-loss .lgs .off img { display: block; width: 20px; height: 20px; border-radius: 5px; margin-right: -5px; border: 2px solid #fff; } /* разбивка суммы, с 22.11 только здесь */
+  .biz .loss { background: #FFF1F0; border-radius: 24px; padding: 20px 24px; margin-bottom: 24px; }
+  .biz .loss b { font-size: 22px; line-height: 26px; display: block; margin-top: 4px; }
+  .biz .offs { display: grid; gap: 12px; }
+  .biz .off { display: grid; grid-template-columns: 48px 1fr; gap: 12px; align-items: center; background: var(--grey); border-radius: 20px; padding: 14px 16px; }
+  .biz .off img { width: 48px; height: 48px; border-radius: 12px; } .biz .off b { display: block; } .biz .off span { color: var(--text-2); font-size: 14px; }
+  .biz .more { display: inline-block; margin-top: 16px; font-weight: 500; border-bottom: 1px solid currentColor; }
+  @media (max-width: 960px) { .biz .side2, .biz .side2 .offs { grid-template-columns: 1fr; } }
+
+  /* ===== гипотезы мастер-плана, строки 14–28 (20.11) ===== */
+  body:not(.off-lenta) .hero { padding-bottom: 96px; }
+  body:not(.off-lenta) .hero .cnts { display: none !important; } /* счётчики участников и экономии уехали в ленту (решение Максима 20.11) */
+  @keyframes lpulse { 0% { box-shadow: 0 0 0 0 rgba(47, 194, 107, .6); } 70% { box-shadow: 0 0 0 8px rgba(47, 194, 107, 0); } 100% { box-shadow: 0 0 0 0 rgba(47, 194, 107, 0); } }
+  /* 14. welcome-бонус: узкая панель снизу (Максим 22.11: сверху нельзя), выезжает, когда хиро ушло из вида, прячется у анкеты */
+  .welc { position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; background: var(--black); color: #fff; border-top: 1px solid rgba(255, 255, 255, .14); transform: translateY(110%); visibility: hidden; transition: transform .3s, visibility .3s; padding-bottom: env(safe-area-inset-bottom); }
+  .welc.show { transform: none; visibility: visible; }
+  .welc .wrap { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 8px 0; }
+  .welc .wc { width: 32px; height: 32px; flex: none; }
+  .welc .wx { flex: 1; min-width: 0; } .welc .wx b { display: block; font-size: 16px; line-height: 20px; } .welc .wx > span { display: block; font-size: 14px; line-height: 18px; color: rgba(255, 255, 255, .7); } .welc .wx a { color: #fff; border-bottom: 1px solid currentColor; }
+  .welc .btn { flex: none; } .welc .x { flex: none; width: 32px; height: 32px; font-size: 24px; line-height: 1; color: rgba(255, 255, 255, .7); }
+  /* 15. новости и полезное одной лентой высоких карточек, как рилсы Альфа Будущего и календарь Пятниц (Максим 21.11) */
+  .news .sec-head { margin-bottom: 20px; } .news .ab { display: flex; gap: 8px; }
+  .news .cb { width: 32px; height: 32px; border-radius: 50%; background: var(--grey); color: var(--text); display: flex; align-items: center; justify-content: center; }
+  .news .ntabs { margin-bottom: 24px; }
+  .news .reels { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 72px - 88px) / 4); gap: 24px; overflow: hidden; scroll-snap-type: x mandatory; padding: 4px 0; }
+  .rl { position: relative; scroll-snap-align: start; height: 380px; border-radius: 32px; padding: 24px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; color: var(--text); background: var(--grey) no-repeat right bottom / 100% auto; transition: transform .2s; }
+  .rl:hover { transform: translateY(-4px); } .rl[hidden] { display: none; }
+  .rl .st { white-space: nowrap; align-self: flex-start; font-size: 12px; line-height: 16px; font-weight: 700; border-radius: 6px; padding: 2px 8px; background: rgba(0, 0, 0, .06); }
+  .rl .tt { font-size: 22px; line-height: 26px; font-weight: 700; } .rl .vv { font-size: 14px; line-height: 20px; color: var(--text-2); }
+  .rl .rd { margin-top: auto; font-size: 14px; font-weight: 500; color: var(--text-2); }
+  .rl .art { position: absolute; left: 16px; right: 16px; bottom: 12px; height: 44%; background: no-repeat center bottom / contain; }
+  .rl .lg { position: absolute; right: 24px; bottom: 24px; width: 96px; height: 96px; border-radius: 24px; }
+  .rl.ev { background-color: #29292C; color: #fff; } /* цвет как у картинок-подложек Пятницы, иначе виден их край */ .rl.ev .st { background: var(--red); color: #fff; } .rl.ev .vv { color: rgba(255, 255, 255, .7); }
+  .rl.nw { background-color: #fff; box-shadow: inset 0 0 0 2px var(--grey); } .rl.nw .st { background: #E7F7EE; color: #0B7A3B; }
+  .rl.ar .tt { font-size: 20px; line-height: 26px; font-weight: 500; } .rl.ar.soon { background-color: #FFF1F0; } .rl.ar.soon .rd { color: var(--red); }
+  @media (max-width: 960px) { .news .reels { grid-auto-columns: calc((100% - 24px - 72px) / 2); } }
+  @media (max-width: 600px) { .news .reels { grid-auto-columns: calc(100% - 72px); gap: 16px; } .rl { height: 320px; } }
+  @media (max-width: 768px) { .news .reels { overflow-x: auto; scrollbar-width: none; } .news .ab { display: none; } } /* на телефоне свайп, стрелок нет */
+  @media (max-width: 768px) { .news .ab { display: none; } .news .ah { flex-direction: column; gap: 4px; } .news .arow { grid-auto-columns: 78%; } }
+  @media (max-width: 768px) { .welc .wx > span, .welc .wl, .welc .wc { display: none; } .welc .wx b { font-size: 14px; line-height: 18px; } .welc .wrap { gap: 10px; } .welc .wc { width: 24px; height: 24px; } }
+  /* итоговое ревью вёрстки 21.11: стыки после переноса виджетов */
+  body:not(.off-earn) .lsp { display: none; } body:not(.off-earn) .sec-light.last { margin-top: -80px; } /* между ними пустое место от уехавшей тёмной секции */
+  body:not(.off-earn) .sec-black + .sec-dark .spend-sec { padding-top: 112px !important; } .earn-top { padding-top: 128px !important; }
+  .pack h2 + .pgrid, .pack .h2 + .pgrid { margin-top: 40px; } .news .sec-head { margin-bottom: 32px !important; }
+  [id] { scroll-margin-top: 24px; } /* welcome теперь снизу, сверху ничего не липнет */
+  @media (max-width: 600px) { #m-bizcalc [data-tabs="lv"], #heroCalc [data-tabs="lv"] { display: grid; grid-template-columns: auto auto; width: 100%; min-width: 0; box-sizing: border-box; } #m-bizcalc [data-tabs="lv"] button, #heroCalc [data-tabs="lv"] button { min-width: 0; padding: 0 4px; font-size: 13px; } } /* обе вкладки видны целиком: расчёт теперь на второй (22.11) */
+  @media (max-width: 359px) { #m-bizcalc [data-tabs="lv"], #heroCalc [data-tabs="lv"] { grid-template-columns: minmax(0, 1fr); border-radius: 22px; } #m-bizcalc [data-tabs="lv"] button, #heroCalc [data-tabs="lv"] button { height: 36px; } } /* на 320 px вкладки друг под другом */
+  /* welcome снизу: соседи поднимаются на её высоту (--wh), подвал под ней не прячется */
+  body.welc-on:not(.off-welcome) .demo { bottom: calc(var(--wh) + 16px); }
+  body.welc-on:not(.off-welcome) .toast { bottom: calc(var(--wh) + 96px); }
+  body.welc-on:not(.off-welcome) .ap-sticky { bottom: calc(var(--wh) + 24px); }
+  body.welc-on:not(.off-welcome) .fb.voc.fb { bottom: calc(var(--wh) + 24px); }
+  body.welc-on:not(.off-welcome):has(.ap-sticky.on) .fb.voc.fb { bottom: calc(var(--wh) + 204px); }
+  body:not(.off-welcome):not(.welc-closed) .ftr { padding-bottom: calc(40px + var(--wh, 72px)); }
+  @media (max-width: 768px) {
+    body.welc-on:not(.off-welcome) .ap-sticky { display: none; } /* две плашки внизу не помещаются */
+    body.welc-on:not(.off-welcome) .demo { bottom: calc(var(--wh) + 8px); }
+    body.welc-on:not(.off-welcome) .fb.voc.fb, body.welc-on:not(.off-welcome):has(.ap-sticky.on) .fb.voc.fb { bottom: calc(var(--wh) + var(--dh, 44px) + 20px); }
+  }
+  .hero-logo { margin-left: -6px !important; }
+  @media (max-width: 768px) { .hero-act .btn { width: 100%; justify-content: center; } .hero-logo { margin-left: 0 !important; } body:not(.off-earn) .sec-black + .sec-dark .spend-sec { padding-top: 64px !important; } .earn-top { padding-top: 64px !important; } body:not(.off-earn) .sec-light.last { margin-top: -40px; } }
+  /* ===== отступы, сверка со снимком прода 22.11 (блок последний, он главнее старых правок) ===== */
+  body.off-earn .earn-top { display: none; } /* пустая обёртка доработки давала лишние 128 px в режиме прода */
+  .hero-top .lead { margin-top: 24px; } .adv { margin-top: 55px; } .adv img { width: 48px; height: 48px; }
+  #pack.pack { margin-bottom: 128px; }
+  body.off-pack:not(.off-earn) #how { margin-top: 0; }
+  @media (min-width: 961px) {
+    .hero { padding-top: 53px; }
+    body:not(.off-nav) .hero { padding-top: 85px; }
+  }
+  body:not(.off-lenta) .hero .lenta { margin-top: 85px; } /* низ хиро равен верху */
+  body:not(.off-earn) .sec-black + .sec-dark .spend-sec { padding-top: 128px !important; }
+  body:not(.off-earn) .earn-top { padding-top: 128px !important; }
+  body:not(.off-earn) .earn-wrap { padding-bottom: 52px; }
+  body:not(.off-earn) .sec-light.last { margin-top: -72px; }
+  body:not(.off-earn) .sec-light.last .after-spend { padding-top: 128px !important; }
+  .news .sec-head { margin-bottom: 40px !important; }
+  .hchips-cap { text-wrap: balance; }
+  @media (max-width: 768px) {
+    body:not(.off-biz) .hero, body:not(.off-nav) .hero { padding-top: 48px; }
+    body:not(.off-lenta) .hero .lenta { margin-top: 48px; }
+    body:not(.off-biz) .bpanel { margin-top: 56px; }
+    .bpanel .hchips:not(.all) { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -24px; margin-right: -24px; padding: 0 24px; max-width: none; }
+    .hero-top { grid-template-columns: minmax(0, 1fr); } .bpanel { min-width: 0; box-sizing: border-box; } /* ряд чипсов листается внутри панели */
+    .bpanel .hchips::-webkit-scrollbar { display: none; } .bpanel .hchips button { flex: none; white-space: nowrap; }
+    body:not(.off-earn) .sec-black + .sec-dark .spend-sec { padding-top: 64px !important; padding-bottom: 96px !important; }
+    body:not(.off-earn) .spend-sec h2 { margin-bottom: 24px !important; }
+    body:not(.off-earn) .earn-top { padding-top: 64px !important; }
+    body:not(.off-earn) .earn-wrap { padding-bottom: 12px; }
+    #pack.pack { margin-bottom: 64px; } #pack.pack h2 + .pgrid { margin-top: 24px; }
+    body:not(.off-earn) .sec-light.last { margin-top: -48px; }
+    body:not(.off-earn) .sec-light.last .after-spend { padding-top: 64px !important; }
+    .news .sec-head { margin-bottom: 24px !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sec-black">
+  <div id="hdr"></div>
+  <section class="hero"><div class="wrap">
+    <div class="hero-top">
+      <div>
+        <img class="hero-logo" data-f="biz" src="assets/img/glav-logo.png" alt="Альфа‑Выгодно для бизнеса">
+        <h1 class="h1 inv">Лучшая программа лояльности <br class="d">для бизнеса<sup class="fn" data-f="biz">*</sup></h1>
+        <p class="lead inv" data-asis-f="biz">Повышайте уровень, получайте больше баллов, <br class="d">обменивайте их на рубли и скидки</p>
+        <div class="hero-act"><a class="btn btn-red" href="#form">Получать выгоду</a><button class="btn btn-glass" id="bizExp" data-f="biz" aria-expanded="false">Рассчитать уровень</button>
+          <div class="cnts"><div class="dr hero-counter pcount" data-f="counter" data-dr="Счётчик участников · BRD v33; макет 26.10"><img src="assets/img/avatars.png" alt=""><div><span>Участвуют в программе</span><b id="progCount">214 380 пользователей</b></div></div></div>
+        </div>
+        <p class="hero-fn" data-f="biz">* По версии премии <a href="https://loyaltyawards.ru/winners2024-2028" target="_blank" rel="noopener">Loyalty &amp; CX Awards Russia 2026</a>, номинация «Лучшая программа лояльности в сегменте B2B». Суммы в расчёте оценочные, не оферта</p>
+      </div>
+      <img class="hero-img" src="assets/img/glav-hero.png" alt="Альфа-Выгодно для бизнеса">
+      <div class="bpanel" id="bizPanel" data-f="biz" data-dr="Выгода под мой бизнес в хиро · мастер-план 2027, Q3" data-mk="biz">
+        <div class="bvar no-pos" aria-label="Вариант прототипа"><span>Вариант</span><button data-bv="a">в баннере</button><button data-bv="b">по кнопке</button></div>
+        <p class="hchips-cap">Выберите вашу категорию бизнеса и узнайте потенциальную выгоду</p>
+        <div class="hchips" id="bizChips" aria-label="Категория бизнеса"></div>
+        <div class="bl">Компании категории <b id="bpSph">Розничная торговля</b> получают в программе до</div>
+        <div class="bbig" id="bpSum"></div>
+      </div>
+    </div>
+    <div class="hcalc" id="heroCalc" data-f="biz" hidden><button class="x hcx" id="hcX" aria-label="Свернуть">×</button><div id="bizCalc"></div></div>
+    <div class="adv" data-asis-f="earn">
+      <div><div class="h5 inv">1 балл = 1 ₽</div><p class="s inv" data-asis-f="words">Обменивайте баллы на рубли и тратьте их на своё усмотрение</p><p class="s inv" data-f="words" data-dr="Формулировки · стандарт, строка 1" data-mk="words">Меняйте баллы на рубли на расчётный счёт, от 3 000 баллов</p><img src="assets/img/adv-1.png" alt=""></div>
+      <div><div class="h5 inv">Кэшбэк баллами <br class="d">до 100%</div><p class="s inv">Участвуйте в акциях для бизнеса каждую неделю</p><img src="assets/img/adv-2.png" alt=""></div>
+      <div><div class="h5 inv">Категории кэшбэка</div><p class="s inv">Выбирайте категории <br class="d">каждый месяц</p><img src="assets/img/adv-3.png" alt=""></div>
+      <div><div class="h5 inv" data-asis-f="words">Предложения <br class="d">от банка и партнёров</div><p class="s inv" data-asis-f="words">Лучшие условия и скидки <br class="d">до 100%</p><div class="h5 inv" data-f="words" data-dr="Формулировки · стандарт, строка 9" data-mk="words">Предложения партнёров</div><p class="s inv" data-f="words">Скидки и бесплатные периоды на сервисы для бизнеса</p><img src="assets/img/adv-4.png" alt=""></div>
+    </div>
+  </div>
+  <div class="lenta" data-f="lenta" data-dr="Лента событий · мастер-план, стр. 16 (гипотеза)" data-mk="lenta"><div class="evs" id="lentaT"></div></div>
+  </section>
+</div>
+
+<div class="sec-light">
+  <div class="wrap pad">
+    <!-- 14. Welcome-бонус за регистрацию (гипотеза, ключ welcome): узкая панель снизу при скролле, решения Максима 20.11 и 22.11 -->
+    <div class="welc no-pos" data-f="welcome" id="welc" data-dr="Welcome-бонус · мастер-план, стр. 14 (гипотеза); BRD v1 05.07" data-mk="welcome"><div class="wrap">
+      <img class="wc" src="assets/img/coin-a.svg" alt=""><div class="wx"><b>5 000 приветственных баллов<span class="wl"> новым клиентам</span></b><span>Откройте счёт для бизнеса, и баллы придут на баланс в Альфа‑Выгодно. <a href="#" data-welc>Условия</a></span></div>
+      <a class="btn btn-s btn-red" href="#form">Получать выгоду</a><button class="x" aria-label="Закрыть">×</button>
+    </div></div>
+
+
+    <!-- 21. Стартовый пакет для нового бизнеса (гипотеза, ключ pack): на Главную по просьбе Максима 20.11 -->
+    <div class="pack" data-f="pack" id="pack" style="margin-top:0" data-dr="Пакетные предложения для N2B · мастер-план, стр. 21 (гипотеза)" data-mk="pack">
+      <span class="hyp-cap">Только для новых клиентов</span>
+      <h2 class="h2 inv">Стартовый пакет для нового бизнеса</h2>
+      <div class="pgrid" id="packG"></div>
+      <div class="pack-act"><a class="btn btn-m btn-red" href="#form">Открыть счёт и забрать пакет</a><span class="pack-note">Два предложения партнёров на условиях лучше обычных, приветственные баллы и продукты банка. Действует, только если подключить всё</span></div>
+    </div>
+
+    <!-- 3 уровня привилегий (с доработкой biz уезжает к панели выгоды в хиро) -->
+    <div id="lvBlock">
+    <div class="sec-head">
+      <h2 class="h2">3 уровня привилегий</h2>
+      <div class="tabs eq" data-tabs="lv"><button data-tab="all" class="on">Все уровни</button><button data-tab="calc">Рассчитать уровень</button></div>
+    </div>
+    <div data-pane="lv:all">
+      <div class="lvls" id="lvls"></div>
+    </div>
+    <div data-pane="lv:calc" hidden>
+      <div class="calc">
+        <div class="cond">
+          <div class="h4">Условия</div>
+          <div class="amount">
+            <label for="sum">Сумма платежей</label>
+            <input type="text" id="sum" inputmode="numeric" value="0 ₽" aria-label="Сумма платежей">
+            <span class="tip"><img src="assets/img/info.png" alt="Подсказка"><span class="tt">Учитываются переводы в рублях с расчётного счёта за месяц, кроме переводов на любые свои счета в этом и других банках</span></span>
+            <input type="range" id="sumR" min="0" max="2000000" step="10000" value="0" aria-label="Сумма платежей, ползунок">
+          </div>
+          <div class="cap" id="sumCap">До серебряного уровня ещё 500 000 ₽</div>
+          <label class="chk"><input type="checkbox" id="cTasks" checked><span>Выполнение заданий уровня<small>Можно сохранить или повысить уровень</small></span><span class="tip right"><img src="assets/img/info.png" alt=""><span class="tt">Простые действия с банковскими <br class="d">продуктами. Например, переводы <br class="d">или подключение сервисов для бизнеса</span></span></label>
+          <label class="chk"><input type="checkbox" id="cCard"><span>Есть бизнес-карта с подпиской Премиум+<small>В 2 раза больше лимиты</small></span><span></span></label>
+          <div class="calc-loss" data-f="loss" data-dr="Вы недополучаете N ₽ · мастер-план, стр. 20 (гипотеза)" data-mk="loss">
+            <label for="cSph">Категория бизнеса</label><select id="cSph" aria-label="Категория бизнеса"></select>
+            <b id="cLoss">Вы недополучаете до 4 800 ₽ в месяц</b><div class="brows" id="cLossRows"></div><span id="cLossT">Столько получают в программе компании этой категории. Оценка демонстрационная, не оферта</span>
+          </div>
+        </div>
+        <div class="out">
+          <div class="h3">Вы получите</div>
+          <div class="lvlbox">
+            <div><div class="h4" id="oLvl">Уровень 1: Бронзовый</div><div class="bar"><i id="oBar" style="width:0%"></i></div><a href="#" id="oLink">Условия серебряного уровня</a></div>
+            <img id="oImg" src="assets/img/calc-bronze.png" alt="">
+          </div>
+          <div class="h4" style="margin-top:24px">Привилегии в месяц</div>
+          <div class="privs">
+            <button class="priv" data-open="m-exchange" style="background-image:url(assets/img/calc-p1.png)"><span class="n">Обмен баллов на рубли</span><span class="v" id="oEx">20 000 ₽</span></button>
+            <button class="priv" data-open="m-limit" style="background-image:url(assets/img/calc-p2.png)"><span class="n"><span data-asis-f="words">Лимит кэшбэка</span><span data-f="words">Потолок начислений в месяц</span></span><span class="v">до <span id="oLim">10 000</span> <img src="assets/img/coin-a.svg" alt="баллов"></span></button>
+            <button class="priv tall" data-open="m-calls" style="background-image:url(assets/img/calc-p5.png)"><span class="n">Персональные <br class="d">вызовы</span><span class="v" style="display:block">Каждый<br>до 1000 <img src="assets/img/coin-a.svg" alt="баллов" style="display:inline;vertical-align:-2px"></span></button>
+            <button class="priv" data-open="m-bank" style="background-image:url(assets/img/calc-p3.png)"><span class="n">Предложения <br class="d">банка</span><span class="v" id="oBank">Доступно 1</span></button>
+            <button class="priv" data-open="m-partners" style="background-image:url(assets/img/calc-p4.png)"><span class="n">Предложения партнёров</span><span class="v" id="oPart">Доступно 1</span></button>
+          </div>
+          <a class="btn btn-m btn-red" href="#form" style="margin-top:24px">Начать получать выгоду</a>
+        </div>
+      </div>
+      <p class="calc-disc">Расчёт уровня предварительный. Дополнительные параметры учитываются при расчёте <a href="https://alfabank.servicecdn.ru/site-upload/35/e6/2245/Pravila_PL-2.pdf" target="_blank" rel="noopener">по правилам программы лояльности</a></p>
+    </div>
+
+    </div>
+    <!-- как получать выгоду -->
+    <div class="block how" id="how">
+      <h2 class="h2">Как получать выгоду</h2>
+      <div class="tabs" data-tabs="how"><button data-tab="no" class="on">Не клиент Альфа‑Бизнес</button><button data-tab="yes">Клиент Альфа-Бизнес</button></div>
+      <div data-pane="how:no">
+        <div class="steps"><div class="line"></div>
+          <div class="step"><div class="num"><img src="assets/img/step-1.svg" alt="1"></div><div class="card"><div class="h4">Заявка</div><p>Заполните заявку и откройте бесплатный счёт для бизнеса</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-2.svg" alt="2"></div><div class="card"><div class="h4">Войдите в интернет-банк Альфа‑Бизнес</div><p>Авторизуйтесь под своими <br class="d">учётными данными</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-3.svg" alt="3"></div><div class="card"><div class="h4">Готово</div><p>Перейдите в раздел <b>Альфа‑Выгодно для бизнеса</b> и начинайте получать выгоду</p></div></div>
+        </div>
+        <div class="form-outer" id="form" data-form="Заполнить онлайн"></div>
+      </div>
+      <div data-pane="how:yes" hidden>
+        <div class="steps"><div class="line"></div>
+          <div class="step"><div class="num"><img src="assets/img/step-1.svg" alt="1"></div><div class="card"><div class="h4">Войдите в интернет-банк Альфа‑Бизнес</div><p>Авторизуйтесь под своими <br class="d">учётными данными</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-2.svg" alt="2"></div><div class="card"><div class="h4">Пользуйтесь продуктами банка</div><p>Подключайте сервисы, приглашайте друзей, выполняйте задания, а мы будем начислять баллы</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-3.svg" alt="3"></div><div class="card"><div class="h4">Готово</div><p>Тратьте баллы на предложения от партнёров и банка, скидки и акции</p></div></div>
+        </div>
+        <a class="btn btn-m btn-red after" href="https://link.alfabank.ru/partner-offers?utm_medium=site_main" target="_blank" rel="noopener">Получить</a>
+      </div>
+    </div>
+
+    <!-- как заработать баллы -->
+    <div class="block" id="earn">
+      <div class="sec-head"><h2 class="h2">Как заработать баллы</h2><div class="arrows"><button id="eL" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 6-6 6 6 6"/></svg></button><button id="eR" aria-label="Вперёд">${chevR}</button></div></div>
+    </div>
+  </div>
+  <div class="wrap earn-wrap" style="overflow:visible">
+    <div class="earn" id="earnRow">
+      <a class="ecard dark" href="альфа-пятница.html#calendar" style="background-image:url(assets/img/earn-ap.png)"><div class="h4">Альфа-Пятница</div><p>Кэшбэк до 3000 баллов <br class="d">в Авито Путешествиях</p><div class="tm">До конца акции<br><span class="timer-red" data-timer="2026-11-20T23:59:59+03:00"></span></div></a>
+      <div class="col">
+        <button class="ecard" data-open="m-cat" style="background-image:url(assets/img/earn-cat.png)"><div class="h4">Категории кэшбэка</div><p>Выбирайте категории <br class="d">каждый месяц</p></button>
+        <button class="ecard" data-open="m-ref" style="background-image:url(assets/img/earn-ref.png)"><div class="h4">Реферальная программа</div><p>Приглашайте друзей и получайте <br class="d">до 8000 баллов за каждую рекомендацию</p></button>
+      </div>
+      <a class="ecard dark" href="витрина.html" style="background-image:url(assets/img/earn-partners.png)"><div class="h4">Кэшбэк от партнёров</div><p>Изучайте предложения от 100+ партнёров и получайте <br class="d">кэшбэк баллами</p></a>
+      <div class="col">
+        <button class="ecard" data-open="m-tasks" style="background-image:url(assets/img/earn-tasks.png)"><div class="h4">Задания</div><p data-asis-f="words">Получайте баллы <br class="d">за знакомство с банком</p><p data-f="words" data-dr="Формулировки · стандарт, строка 12" data-mk="words">До 1 000 баллов за первую покупку бизнес-картой</p></button>
+        <button class="ecard" data-open="m-games" style="background-image:url(assets/img/earn-games.png)"><div class="h4">Игры</div><p>Баллы и призы за вашу <br class="d">удачу и эрудицию</p></button>
+      </div>
+    </div>
+  </div>
+  <div class="lsp" style="height:80px"></div>
+</div>
+
+<div class="sec-dark">
+  <div class="wrap pad spend-sec" style="padding-top:128px;padding-bottom:136px">
+    <h2 class="h2 inv" style="margin-bottom:40px" data-dr="Под хиро: «На что потратить» и «Как заработать баллы» · просьба Максима 21.11" data-mk="earn">На что потратить баллы</h2>
+    <div class="spend">
+      <div class="video"><video id="vid" src="assets/img/loyalty-video.mp4" autoplay muted loop playsinline></video><button class="mute" id="mute" aria-label="Звук">🔇</button><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div>
+      <div class="scards">
+        <div class="scard" style="background-image:url(assets/img/spend-1.png)"><div class="h4 inv">Реальные деньги</div><p data-asis-f="words">Обменивайте баллы на рубли. 1 балл = 1 ₽</p><p data-f="words" data-dr="Формулировки · стандарт, строка 2" data-mk="words">Меняйте баллы на рубли: от 3 000 баллов, до 20 000 / 30 000 / 50 000 в месяц по уровню</p></div>
+        <div class="scard" style="background-image:url(assets/img/spend-2.png)"><div class="h4 inv">Предложения банка</div><p>Тарифы, подписки и другие продукты за баллы</p></div>
+        <div class="scard" style="background-image:url(assets/img/spend-3.png)"><div class="h4 inv">Предложения партнёров</div><p>Промокоды, скидки и сертификаты для бизнеса</p></div>
+        <div class="scard" style="background-image:url(assets/img/spend-4.png)"><div class="h4 inv">Помощь детям</div><p>Переводите баллы в фонд Линия жизни</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-light last">
+  <div class="wrap pad after-spend" style="padding-bottom:128px">
+    <div class="sec-head"><h2 class="h2">Забирайте уже сейчас</h2><a class="btn btn-xs btn-grey" href="витрина.html#catalog">Все предложения</a></div>
+    <div class="take">
+      <a class="tcard tall lift" href="оффер.html?slug=alfastrah" style="background-image:url(assets/img/take-alfastrah.png)"><div class="h4">Кэшбэк до 30% <br class="d">на КАСКО и ОСАГО</div><p>АльфаСтрахование</p></a>
+      <div class="col">
+        <a class="tcard half lift" href="оффер.html?slug=opti24" style="background-image:url(assets/img/take-opti.png);background-color:#A1FAC6"><div class="h4">Скидка до 7% на дизель <br class="d">в ОПТИ 24</div></a>
+        <a class="tcard half lift" href="оффер.html?slug=avito" style="background-image:url(assets/img/take-avito.png)"><div class="h4">До 7000 бонусов <br class="d">от Авито</div></a>
+      </div>
+      <a class="tcard tall lift" href="оффер.html?slug=yandex-direct" style="background-image:url(assets/img/take-direct.png);background-color:#D6E6FF"><div class="h4">Кэшбэк 50% за запуск первой рекламы</div><p>Яндекс Директ</p></a>
+    </div>
+
+    <!-- 15. Новостной виджет (гипотеза, ключ news) -->
+    <div class="block news" data-f="news" id="news" data-dr="Новостной виджет · мастер-план, стр. 15 (гипотеза); BRD v1 05.07" data-mk="news">
+      <div class="sec-head"><h2 class="h2">Новости и полезное</h2><div class="ab"><button class="cb" id="aL" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 6-6 6 6 6"/></svg></button><button class="cb" id="aR" aria-label="Вперёд"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 6 6 6-6 6"/></svg></button></div></div>
+      <div class="tabs ntabs" id="nTabs"><button data-nt="all" class="on">Всё</button><button data-nt="ev">События</button><button data-nt="new">Новые предложения</button><button data-nt="art">Статьи</button></div>
+      <div class="reels" id="newsArts"></div>
+      <p class="s mut" style="margin-top:12px">Анонсы будущих акций не являются предложением</p>
+    </div>
+
+    <div class="block" id="faq">
+      <div class="sec-head"><h2 class="h2">Полезно знать</h2><div class="tabs" data-tabs="faq"><button data-tab="q" class="on">Частые вопросы</button><button data-tab="o">Другие предложения</button></div></div>
+      <div data-pane="faq:q" class="acc">
+        <div class="acc-item"><button class="acc-q"><span class="q">Как стать участником программы лояльности <br class="d">Альфа‑Выгодно для бизнеса?</span></button><div class="acc-a"><p>Откройте расчётный счёт для бизнеса в рублях в Альфа‑Банке. Если у вас уже открыт счёт, просто перейдите <a href="https://link.alfabank.ru/partner-offers?utm_medium=site_main" target="_blank" rel="noopener">на страницу программы лояльности</a> в интернет-банке.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Где можно ознакомиться с правилами программы Альфа‑Выгодно для бизнеса?</span></button><div class="acc-a"><p>Ознакомьтесь с подробными правилами <a href="https://alfabank.servicecdn.ru/site-upload/35/e6/2245/Pravila_PL-2.pdf" target="_blank" rel="noopener">по ссылке</a>.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Как получить баллы?</span></button><div class="acc-a"><ul><li>Подключайте сервисы и продукты банка</li><li>Выбирайте категории и совершайте покупки со счёта или по бизнес-карте</li><li>Участвуйте в еженедельных акциях</li><li>Пользуйтесь партнёрскими предложениями и получайте кэшбэк баллами</li><li>Приглашайте друзей по реферальной программе</li><li>Выполняйте персональные задания</li><li>Играйте в игры</li></ul></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Когда начисляются баллы?</span></button><div class="acc-a"><ul><li data-asis-f="words">Кэшбэк всегда начисляется 10 числа следующего месяца. Например, за ноябрь кэшбэк придёт 10 декабря</li><li data-f="words" data-dr="Формулировки · стандарт, строка 18" data-mk="words">Баллы начисляем до 20 числа следующего месяца. Чтобы они пришли, выберите категории и нажмите «Подтвердить» в Альфа‑Выгодно. Баллы, которые не тратили 6 месяцев, могут сгореть</li><li>Баллы по реферальной программе — в течение 5-7 дней после выполнения условий, но не позднее 26 числа следующего месяца включительно</li><li>Баллы по акциям — в дату, согласованную правилами акции</li></ul></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">На что можно потратить баллы?</span></button><div class="acc-a"><p><b>Обменять на рубли</b><br>По курсу 1 балл = 1 ₽</p><p><b>Обменять на предложения банка</b><br>Подписки на переводы, нефинансовые сервисы, обслуживание счёта и другое</p><p><b>Обменять на предложения партнёров</b><br>Скидки, сертификаты и промокоды от Яндекс, S7 профи, маркетплейсов и других</p><p><b>Пожертвовать на благотворительность</b><br>В фонд Линия Жизни</p><p>Подробнее — <a href="https://link.alfabank.ru/partner-offers?utm_medium=site_main" target="_blank" rel="noopener">на странице Альфа‑Выгодно для бизнеса</a> в интернет-банке.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Где посмотреть, сколько баллов на балансе?</span></button><div class="acc-a"><p>Всё есть <a href="https://link.alfabank.ru/partner-offers?utm_medium=site_main" target="_blank" rel="noopener">на странице Альфа-Выгодно для бизнеса</a>. Тут можно увидеть, сколько баллов вы накопили и на что их можно потратить.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Какую выгоду для бизнеса получают <br class="d">участники программы лояльности?</span></button><div class="acc-a"><p>Наши партнёры предлагают предпринимателям выгодные условия: скидки на востребованные сервисы и кэшбэк на покупки. А также выгодные предложения для эффективности бизнес‑процессов — от бухгалтерских и юридических услуг до маркетинговых инструментов и IT‑решений.</p></div></div>
+      </div>
+      <div data-pane="faq:o" hidden class="acc"><div class="acc-item"><button class="acc-q"><span class="q">Все предложения партнёров Альфа‑Банка</span></button><div class="acc-a" id="seo"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="ftr" data-crumbs='[["Главная","https://alfabank.ru/"],["Малый бизнес и ИП","https://alfabank.ru/sme/"],["Лучшая программа лояльности для бизнеса",""]]'></div>
+
+<!-- липкий виджет Альфа-Пятницы (прод) -->
+<a class="ap-sticky" id="apSticky" href="альфа-пятница.html"><span class="top"><b>Кэшбэк до 3000 <br class="d">баллов в Авито <br class="d">Путешествиях</b></span><img src="assets/img/ap-sticky.png" alt=""><span class="tm" data-timer="2026-11-20T23:59:59+03:00"></span><button class="cl" aria-label="Закрыть"></button></a>
+
+<!-- модалки -->
+<div class="modal-bg" id="m-cat"><div class="modal w-s"><h3 class="h4">Категории кэшбэка</h3><div class="body"><p>Каждый месяц выбирайте категории на покупки и сервисы банка — получайте до 100% кэшбэка баллами</p></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-ref"><div class="modal w-s"><h3 class="h4">Реферальная программа</h3><div class="body"><p>Рекомендуйте друзьям продукты банка и получайте баллы и другие скидки от банка</p></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-tasks"><div class="modal w-s"><h3 class="h4">Задания</h3><div class="body"><p>Знакомьтесь с продуктами и сервисами банка, <br class="d">а за это получайте баллы</p></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-games"><div class="modal w-s"><h3 class="h4">Игры</h3><div class="body"><p>Проверьте свою удачу и эрудицию, <br class="d">и выигрывайте баллы и другие ценные призы</p></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-limit"><div class="modal"><h3 class="h3"><span data-asis-f="words">Лимит кэшбэка</span><span data-f="words">Потолок начислений в месяц</span></h3><div class="body"><p>У каждой категории есть лимит на месяц. Максимальный кэшбэк можно получить в рамках лимитов на каждую категорию, но не больше общего лимита</p><h4 data-asis-f="words">Сколько лимит кэшбэка</h4><p data-asis-f="words">Лимит кэшбэка каждый месяц зависит от вашего уровня лояльности</p><h4 data-f="words">Сколько баллов можно получить за месяц</h4><p data-f="words">Потолок начислений зависит от вашего уровня</p><ol><li>Бронзовый — <b>до 10 000 баллов</b></li><li>Серебряный — <b>до 12 500 баллов</b></li><li>Золотой — <b>до 15 000 баллов</b></li></ol></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-exchange"><div class="modal"><h3 class="h3">Обмен баллов на рубли</h3><div class="body"><p>Здесь всё просто: 1 балл = 1 ₽.<br>Деньги зачислятся сразу на расчётный счёт</p><h4>Сколько можно получить</h4><p>Количество баллов, которые можно обменять на рубли каждый месяц, зависит от уровня лояльности</p><ol><li>Бронзовый — <b>20 000 ₽</b></li><li>Серебряный — <b>30 000 ₽</b></li><li>Золотой — <b>50 000 ₽</b></li></ol></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-bank"><div class="modal"><h3 class="h3">Предложения банка</h3><div class="body"><p>Выбирайте самое необходимое для вашего бизнеса в мобильном приложении или интернет‑банке — выгодные тарифы, подписки и другие предложения от банка</p><h4>Сколько предложений доступно</h4><p>Количество предложений, которые можно получить за баллы каждый месяц, зависит от вашего уровня лояльности</p><ol><li>Бронзовый — <b>1 предложение</b></li><li>Серебряный — <b>3 предложения</b></li><li>Золотой — <b>5 предложений</b></li></ol></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-partners"><div class="modal"><h3 class="h3">Предложения партнёров</h3><div class="body"><p>Получите максимум пользы со скидками, акциями и сертификатами от партнёров — выбирайте лучшее для вашего бизнеса</p><h4>Сколько предложений доступно</h4><p>Количество предложений, которые можно получить за баллы каждый месяц, зависит от вашего уровня лояльности</p><ol><li>Бронзовый — <b>1 предложение</b></li><li>Серебряный — <b>3 предложения</b></li><li>Золотой — <b>Безлимитно</b></li></ol></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+<div class="modal-bg" id="m-calls"><div class="modal"><h3 class="h3">Персональные вызовы</h3><div class="body"><p>Это задания на определённый период.<br>За выполнение каждого вызова можно получить от 300 до 1000 баллов. Эти баллы не входят в ежемесячный лимит кэшбэка</p><h4>Какие могут быть вызовы</h4><p>Привычные действия в интернет-банке. Например, пополнение карты, открытие накопительного счёта или депозита, подключение нефинансовых сервисов и подписок, приём платежей по торговому и интернет-эквайрингу</p></div><a class="btn btn-m btn-red" href="#form">Получать выгоду</a></div></div>
+
+<script>
+window.PAGE = {
+  id: 'главная', title: 'Главная', url: 'alfabank.ru/sme/loyalty/', snap: '18.11.2026',
+  dr: [
+    { key: 'counter', name: 'Счётчик участников программы', link: 'В хиро виден, пока выключена «Лента событий»: при включённой ленте число участников внутри неё.', sel: '.hero-counter',
+      what: 'Число участников программы за всё время, без порога показа. Справа от кнопки «Получать выгоду»: аватарки и две строки «Участвуют в программе» и «N пользователей». BRD v33 (сценарий 5) ставит счётчик в блок «Программа в цифрах», которого на проде нет; место взято из макета. Если включена лента событий (стр. 16), счётчик показан в ней, а не в хиро.',
+      src: 'BRD «Счётчик участников», Confluence v33 (выгрузка 18.09): шаг 5 to be. Макет Figma «[S] Новая Альфа-Выгодно для бизнеса», страница «Счётчик участников [26.10.2026]», кадр Desktop Главной. Мастер-план 2027: «Счётчик участников», Q1. Правки к v33 от 18.11: BRD/правки-2026-11-18/счётчик-участников.md (правки 1, 4, 14 предложены, не утверждены; вопрос 4: одно ли число на Главной и витрине).',
+      cond: '«214 380» придумано для показа. В бою из МАПЛ; «уникальные клиенты» предложены в правках к v33 от 18.11 и не утверждены, в v33 считаются активации.' },
+    { key: 'save', needs: 'lenta', name: 'Счётчик «Сколько сэкономили клиенты» в ленте событий', link: 'Только в «Ленте событий»: отдельно в хиро не показываем (Максим 22.11).', sel: '#lentaT [data-f~="save"]',
+      what: 'Событие бегущей строки «Клиенты сэкономили 1,2 млрд ₽» ведёт к панели «Выгода под мой бизнес». Отдельного счётчика в хиро нет: два счётчика рядом в хиро выглядят плохо (Максим 22.11). Ленту выключили, суммы экономии на странице нет.',
+      src: 'BRD «Счётчик экономии клиентов» v3 от 17.08 (локальный, BRD/BRD-счётчик-экономии.md): на Главной экономия за всё время рядом со счётчиком участников (в BRD это общий блок «Программа в цифрах»). Мастер-план 2027: «Счётчик сколько сэкономили клиенты», Q1 макеты и аналитика, Q2 разработка. 20.11 стоял в хиро рядом со счётчиком участников, 22.11 Максим оставил его только в ленте событий: два счётчика в хиро выглядят плохо. Макета нет.',
+      cond: 'сумма придумана. По BRD (ФТ 2) на Главной цифра всегда оценочная: «клиенты экономят в среднем около N ₽» с датой актуальности; «сэкономили» в прототипе условно. Вторая цифра BRD для Главной, типичная выгода на клиента в год, не показана.' },
+    { key: 'biz', name: 'Выгода под мой бизнес', link: 'Не делается без «Категорий бизнеса» (доработка витрины): чипсы, суммы и предложения строятся по её списку категорий. Забирает к себе блок «3 уровня привилегий» с калькулятором; с «Вы недополучаете N ₽» показывает ту же сумму и категорию.', sel: '#bizPanel',
+      what: 'В хиро слева логотип «Альфа‑Выгодно для бизнеса» с прода (там это картинка хиро справа, здесь над заголовком), под ним «Лучшая программа лояльности <br class="d">для бизнеса» со звёздочкой и сноской «по версии премии Loyalty & CX Awards Russia 2026, номинация «Лучшая программа лояльности в сегменте B2B»» со ссылкой на список победителей у организатора (сверено 21.11: loyaltyawards.ru/winners2024-2028; та же номинация в 2025, 2024 и 2023); «лучшая» перед продом согласовать с легалом; выбор категории с подписью «Выберите вашу категорию бизнеса и узнайте потенциальную выгоду» стоит в панели рядом с суммой, подзаголовок прода скрыт, чтобы в хиро было меньше текста (Максим 21.11). Справа вместо картинки панель «Компании категории X получают в программе до N ₽ в месяц»: крупная зелёная сумма и сразу под ней две кнопки. Разбивки суммы и ссылки «Все предложения для категории» в хиро нет, разбивка осталась в калькуляторе (Максим 22.11: большая когнитивная нагрузка, внимание на выгоду и кнопки). В панели чипсы категорий: по умолчанию «Все категории», ещё четыре сразу, остальные по «Ещё». Блок «3 уровня привилегий» целиком (табы «Все уровни» и «Рассчитать уровень») уезжает из-под хиро к панели: уровни и калькулятор вместе (Максим 21.11). Категория меняет только средние суммы в панели, они общие для всех уровней; уровень считает калькулятор по платежам, которые вводит пользователь (Максим 21.11). Под суммой рядом с «Получать выгоду» вторая кнопка «Рассчитать уровень»: первая ведёт в анкету или интернет-банк, вторая раскрывает уровни и калькулятор (Максим 21.11): сначала открыта вкладка «Все уровни», расчёт на соседней (Максим 22.11). Два варианта, переключатель над панелью (только в прототипе): «в баннере» раскрывает уровни и расчёт в хиро под панелью, «по кнопке» открывает их окном.',
+      src: 'Мастер-план 2027, строка «Выгода под мой бизнес: первый шаг Главной»: пользователь выбирает сферу на Главной и сразу видит свою выгоду (расчёт под сферу), развитие «Категорий бизнеса» и калькулятора, плюс блок «Вы недополучаете N ₽», не участвуя в ПЛ; Q1 discovery, Q2 BRD и макеты, Q3 разработка. Калькулятор наверх: Максим 20.11. Идея выбора типа бизнеса и расчёта: прототип/главная-инсайт.html. Гипотеза «Вы недополучаете N ₽»: стратегия/гипотезы-референсы-ПРОД-бэклог-2026-проработка.md, ПБ-2. Вид и два варианта: прототипы лаборатории единый/главная.html (калькулятор раскрывается в баннере) и главная-финал.html (калькулятор по кнопке), опубликованы на GitHub Pages; перенести сюда попросил Максим 20.11.',
+      cond: 'макета и BRD нет. Суммы в панели демо: «до N ₽ в месяц»: та же сумма, что в строке «Вы недополучаете», разбивка 55 / 30 / 15 в калькуляторе придумана (Максим 21.11: «до» и в месяц, а не «в среднем» и в год). Категории те же, что в «Категориях бизнеса» витрины; какие предложения берёт категория, задано правилами (_build/собрать-данные.py), в бою из активаций по ОКВЭД.' },
+    // ===== гипотезы и доработки мастер-плана, строки 14–28, и формулировки (20.11) =====
+    { key: 'welcome', name: 'Welcome-бонус за регистрацию', sel: '#welc',
+      what: 'Узкая чёрная панель снизу экрана (Максим 22.11: сверху нельзя, цвет чёрный): выезжает, когда пользователь пролистал хиро вниз, прячется, пока на экране анкета, закрывается крестиком. «5 000 приветственных баллов новым клиентам», кнопка «Получать выгоду», как в хиро, и ссылка на условия начисления.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 14 (гипотеза): поднять старый виджет «5000 баллов» и вписать сумму, когда методология её даст; приветственный бонус бывает решающим при выборе банка (в мастер-плане ссылки Д22, Д19); блок можно поставить в раздел для начинающих у платформы (КА64, строка реестра «Сайт ММБ», Q3 2027). Локальный BRD v1 от 05.07 (BRD/BRD-welcome-бонус.md): триггер, сумма и условия начисления не заданы, комплаенс-риск высокий.',
+      cond: 'гипотеза без макета. Формат по решению Максима 20.11: не отдельный виджет, а узкая панель или всплывашка при скролле; 22.11 панель перенесена вниз: опросник, липкий виджет Пятницы и панель прототипа встают над ней, на телефоне виджет Пятницы скрыт, пока видна welcome. Вид придуман. 5 000 баллов взяты из названия старого виджета, сумму даёт методология; в BRD v1 ориентир 1 000. Триггер «открыть счёт» придуман: в BRD v1 варианты «клик „Подключить“, подтверждённое подключение, первый вход», выбор не сделан. Сам старый виджет не видел.' },
+    { key: 'news', name: 'Новостной виджет', sel: '#news',
+      what: 'Перед «Полезно знать» один виджет «Новости и полезное»: лента высоких карточек, как рилсы Альфа Будущего и календарь Пятниц. В ней акции Альфа‑Пятницы, новые предложения партнёров, карточка будущей SEO-статьи про Альфа‑Пятницу (строка 23) и 17 статей из раздела помощи alfabank.ru; табы «Всё / События / Новые предложения / Статьи», на десктопе листается стрелками, на телефоне свайпом. «Программа в цифрах» убрана: участники и экономия уже в бегущей строке (Максим 21.11: не два виджета, а один).',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 15 (гипотеза): «Новости и события» программы (новые партнёры, акции) + «Программа в цифрах» (X бизнесов участвует, Y ₽ сэкономлено); программа живёт, поэтому выше доверие и возвраты. Локальный BRD v1 от 05.07 (BRD/BRD-новостной-виджет.md): главный риск «мёртвый виджет» без владельца контента. Статьи: список Максима 20.11 (_build/статьи-лояльности.txt), раздел alfabank.ru/help/articles/sme/loyalty/.',
+      cond: 'гипотеза без макета, вид придуман. Новые предложения: три из четырёх с меткой «Новое» на витрине, а «новыми» они назначены условно. Акции Пятницы с прода 20.11; «до 100%» без потолка у Ленты PRO как на проде, это расходится со стандартом формулировок (строка 7: у каждой акции потолок в баллах). Цифр в виджете нет. В BRD v1 счётчики решено влить в этот виджет, в прототипе они в бегущей строке (Максим 21.11). Заголовки статей из списка Максима; с сайтом 20.11 сверены три (бонусные карты, билеты на концерты, расходы в бизнесе), дальше сайт закрылся защитой от ботов. У трёх сокращённых в списке («Как выгодно купить билеты», «Что такое ПЛ», «Что такое промокоды») хвост заголовка дописан по адресу статьи. Обложек нет. Статьи про Пятницу ещё нет, её заголовок в карточке условный.' },
+    { key: 'lenta', name: 'Лента событий', link: 'Забирает из хиро «Счётчик участников»; «Сколько сэкономили клиенты» есть только в ней.', sel: '.lenta',
+      what: 'Внизу хиро матовая красная бегущая строка, как у Альфа Будущего. События идут по одному на круг: у каждого графика, подпись «что это» и крупное значение (Максим 22.11: голая строка читалась как цифры и буквы, повтор одной фразы тоже не подошёл). Событий шесть, каждое ведёт по своей ссылке: участники, сколько сэкономили клиенты, подключения за час, сколько вернули кэшбэком, предложения партнёров, первое место в Топ-10. Число участников растёт на глазах, наведение мышью останавливает строку. Пока лента включена, счётчика участников в хиро нет, он в ней; сумма экономии только в ленте (Максим 22.11).',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 16 (гипотеза): объединённый виджет, отдельные счётчики в одном живом динамичном блоке: сколько клиентов, сколько вернули кэшбэком, 120+ партнёров, рейтинг; холодный бизнес-клиент верит, когда видит, что программой уже пользуются.',
+      cond: 'гипотеза без макета. Вид по скрину бегущей строки Альфа Будущего от Максима 20.11: матовая красная лента, белый жирный текст, стрелка после события (21.11 и 22.11 Максим просил ближе к образцу); пятна нарисованы градиентом по цветам скрина, светлое темнее ради читаемости. В образце одна фраза без графики; графика, подписи и состав событий придуманы. Счётчики убраны в ленту по решению Максима 20.11: «по сути дублируют друг друга». Все числа, кроме числа предложений в каталоге (105 по снимку 18.11), придуманы; лидер Топ-10 условный, как на витрине; вместо «120+ партнёров» число предложений из каталога.' },
+    { key: 'client', name: 'Уже клиент, сразу в ЛК', sel: '.hero-act .btn-red',
+      what: 'Кнопки заявки («Получать выгоду» в хиро и в панели welcome, «Начать получать выгоду», «Открыть счёт и забрать пакет», пункт бегущей строки про подключения) сначала спрашивают (кроме кнопок внутри окон): «У вас уже есть счёт в Альфа‑Банке?». «Да» ведёт в Альфа‑Выгодно в интернет-банке, «Нет» к анкете. В хиро одна кнопка заявки: отдельные «Забрать эту выгоду» и «Перейти в Альфа‑Выгодно» убраны, выбор «счёт есть / новый клиент» в окне (Максим 21.11: три кнопки про одно).',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 17 (гипотеза): на Главной, витрине и Пятнице у кнопки развилка: «счёт в Альфе уже есть» ведёт в интернет-банк к программе или выбранному офферу, «новый» в анкету РКО; сейчас действующий клиент попадает в анкету, банк заводит ему заявку, ТМ звонит. Разнос оппонента 09.11: стратегия/Мастер-план-2027-разнос-кандидата-уже-клиент.md.',
+      cond: 'гипотеза без макета. Развилка самовыбором, без ИНН: по разносу оппонента ответ по введённому ИНН раскрыл бы, обслуживается ли чужая компания в Альфе. Там же: ссылка с сайта в интернет-банк падает на главный экран, а не в программу.' },
+    { key: 'loss', name: 'Вы недополучаете N ₽', link: 'Не делается без «Категорий бизнеса» (доработка витрины): сумма считается по категории. Живёт в калькуляторе уровня: с «Выгодой под мой бизнес» калькулятор открывается кнопкой «Рассчитать уровень» в хиро (в варианте «по кнопке» окном), категория общая с панелью.', sel: '.calc-loss',
+      what: 'Строка внутри калькулятора уровня: пользователь выбирает категорию бизнеса и видит «Вы недополучаете до N ₽ в месяц» и её разбивку, которой в хиро с 22.11 нет (категории кэшбэка, предложения партнёров для категории, Альфа‑Пятница); столько получают в программе компании этой категории (Максим 21.11: механика как в хиро, категория и сумма те же). Категория синхронна с выбором в «Выгоде под мой бизнес», платежи и уровень не меняет. Та же сумма стоит в панели «Выгоды под мой бизнес».',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 20 (гипотеза): неприятие потери, «теряю N ₽» действует сильнее «могу заработать N ₽», персональный блок переводит пассивных участников в активных лучше нейтрального промо-баннера. Проработка ПБ-2, гипотеза ПРОД-бэклога (стратегия/гипотезы-референсы-ПРОД-бэклог-2026-проработка.md): чек-лист из 2–4 пунктов с кнопкой, N честно под фактические траты, не по потолку.',
+      cond: 'гипотеза без BRD и макета. По решению Максима 20.11 не отдельный виджет, а место в калькуляторе и зависимость от категории. Суммы по категориям придуманы для показа (ниже потолка начислений серебряного уровня), откуда брать среднее по категории в бою, не решено. Персональный список «что не включено» (категории, партнёр, Пятница) снят вместе с виджетом.' },
+    { key: 'pack', name: 'Пакетные предложения для N2B', sel: '#pack',
+      what: 'Первым блоком после хиро тёмный блок «Стартовый пакет для нового бизнеса» (N2B, новые для банка), тот же, что на витрине: два предложения партнёров на условиях лучше обычных, приветственные баллы, расчётный счёт и бизнес-карта. Действует, только если подключить всё. На Главную по просьбе Максима 20.11.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 21 (гипотеза): давать новым пользователям пакеты предложений для регистрации РКО: 2 оффера с повышенной выгодой + велком-бонусы + другие продукты, только при подключении всех продуктов и предложений.',
+      cond: 'гипотеза без BRD и макета, вид придуман. В пакет взяты два первых предложения из «Популярного», насколько улучшены условия, не показано: в мастер-плане этого нет. Сумма приветственных баллов не указана, её ждёт и гипотеза «Welcome-бонус».' },
+    { key: 'earn', name: 'Под хиро: «На что потратить» и «Как заработать баллы» вместо плиток', link: 'Убирает плитки хиро (вместе с их формулировками) и ставит «На что потратить баллы» и «Как заработать баллы» сразу под хиро.', sel: '.spend-sec h2',
+      what: 'Четырёх плиток в хиро нет. Сразу под хиро два боевых виджета: «На что потратить баллы» (видео и карточки) и отдельно «Как заработать баллы» (карусель), дальше остальная страница. Плитки хиро не теряются: «1 балл = 1 ₽» есть в карточке «Реальные деньги», «Предложения <br class="d">от банка и партнёров» в карточках «Предложения банка» и «Предложения партнёров», «Категории кэшбэка» в «Как заработать баллы»; «Кэшбэк баллами <br class="d">до 100%» за еженедельные акции ближе всего к карточке «Альфа‑Пятница» там же, дословно этой формулировки в виджетах нет. Вводной под заголовком нет: по правилам сайта текст под заголовком не ставим (Максим 21.11).',
+      src: 'Просьбы Максима 21.11: четыре блока хиро убрать; видео и «Как заработать баллы» не соединять, а поставить отдельными виджетами под хиро; текст под заголовком не ставить. Тексты виджетов и карточек с прода (снимок 18.11).',
+      cond: 'макета нет, меняется только порядок блоков и плитки хиро; сами виджеты как на проде.' },
+    { key: 'voc', name: 'Опросник: кнопка VOC', sel: '.fb.voc .vpill',
+      what: 'Внизу справа небольшая чёрная кнопка «Оцените программу лояльности», на телефоне круглая без подписи (Максим 22.11: не должна забирать на себя внимание). После первого действия ниже по странице или в расчёте (выбор категории в хиро и вкладки уровней не в счёт, чтобы не перекрыть кнопки) карточка раскрывается сама: вопрос, 5 звёзд и поле «Что конкретно вызвало у вас трудности?». Вид и вопрос поля по просьбе Максима 20.11: значок сбоку был плохо виден.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 26 (доработка): «Опросник. Кнопка VOC на всех страницах и в мобильной версии», кнопка обратной связи после действия. Вид как у виджета оценки на проде Пятницы (FeedbackForm, снимок 18.11).',
+      cond: 'вопрос и момент показа придуманы. На Пятнице кнопка уже на проде, там это не доработка.' },
+    { key: 'nav', name: 'Шапка раздела: название и бургер', sel: '.loynav .wrap',
+      what: 'Шапка раздела вместо шапки прода, по образцу Альфа Будущего, но на чёрном фоне, как шапка прода (красный слишком контрастный, Максим 21.11): красная «А» и название «Программа лояльности для бизнеса» с подписью «Альфа‑Выгодно», две ссылки, на витрину и Пятницу («Как стать участником» и «Частые вопросы» Максим снял из меню 22.11), справа лупа и красная кнопка «Войти». Уже 1180 px ссылки уходят в бургер, лупа скрыта; на телефоне в бургер уходит и «Войти».',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 28 (доработка): бургер-меню по образцу «Альфа-Будущего» и понятное название пункта программы; название «Альфа-Выгодно» не у всех ассоциируется с программой, поэтому сначала проверка.',
+      cond: 'вид по скрину шапки Альфа Будущего от Максима 20.11 (сам сайт автоматический браузер не открыл), макета нет. Название «Программа лояльности для бизнеса» условное, его даёт проверка.' },
+    { key: 'words', name: 'Формулировки по исследованию «Единый язык привилегий»', link: 'Плитки хиро с новыми формулировками видны, пока выключено «Копить и тратить».', sel: '.adv [data-mk="words"]',
+      what: 'Тексты прода заменены предложениями стандарта, где роли сошлись: плитки хиро «1 балл = 1 ₽» и «Предложения партнёров», «Потолок начислений в месяц» вместо «Лимит кэшбэка» в уровнях и калькуляторе, «Задания» с суммой, обмен баллов с минимумом и лимитом, в FAQ срок начисления, «Подтвердить» и сгорание.',
+      src: 'Исследование «Единый язык привилегий» (исследования/единый-язык-привилегий/): лист «Стандарт», колонка «Предложение стандарта», строки 1, 2, 5, 9, 12, 18 и С3; лист «Словарь». Стандарт сверен с Правилами v20 12.11.',
+      cond: 'решений PO по стандарту нет, роли Маркетинг, Бизнес и Комплаенс отыграли агенты, не живые люди. На Главной взяты строки со статусом «Роли согласны»; С3 (слово «лимит») в статусе «Новое», он обоснование для замены подписи. Отход от строки 2: в калькуляторе прода «Лимит кэшбэка» стоит у 10 000 / 12 500 / 15 000, это потолок начислений, а не обмен, поэтому «Потолок начислений», а не «Лимит обмена»; модалка и подпись «Выгоды под мой бизнес» заменены так же. Не взяты: слово «кэшбэк» (С1, сквозная строка стандарта) и цифра категорий (строка 3), это развилки PO; баллы за налоги (строка 4, крупная ставка, сначала /против); «Лучшая программа» (С2, нужны премия и год от легала); рефералка и игры (нужен документ правил).' },
+  ],
+  notes: [
+    'Мастер-план, строка 22 «Благотворительность в программе» снята Максимом 21.11 («пока что убери»). Карточка прода «Помощь детям» в «Тратьте» осталась.',
+    'Айдентика по итогам исследования (направление А) снята Максимом 21.11 («давай пока Айдентику уберём»). Моё предложение: вернуться с единой карточкой предложения или с работой дизайнера.',
+    'Мастер-план, строка 24 «Сравнение с программами других банков» снята Максимом 20.11: такую таблицу, скорее всего, нельзя показывать на сайте. Таблица по листу «Сводка» (ПЛ конкурентов, 18.11) осталась в Excel.',
+    'AI-помощник MVP1 (раздел «Лояльность» в поиске сайта) визуально страницу не меняет (Максим 20.11), поиск открывается как на проде. MVP2 «Умный поиск» показан на витрине.',
+    'Калькулятор уровня, табы «Как получать выгоду», липкий виджет Пятницы и карусель «Как заработать баллы» уже на проде, это не доработки. Калькулятор повторяет боевую логику по прогону 18.11 (_снимок-прода/калькулятор-прогон.json): уровни, пороги 500 000 и 1 000 000, удвоение лимита картой. Одно отличие: без «заданий уровня» прод остаётся на Бронзовом, а подпись считает от суммы («До серебряного ещё…», «До золотого ещё…», «Соответствует золотому уровню»); в прототипе подпись честная.',
+    'Колесо удачи закончилось 22.10 и не продлено, на странице его нет.',
+    'Мастер-план, строка 29 «Страница подстраивается под источник перехода» (доработка): в описании только «Спросить у Кравцова», что меняется на странице, не описано. Экран не придумывал.',
+    'Мастер-план: строки 25, 27 и 30 живут на других страницах или не видны, 23 здесь: SEO-статья про Альфа‑Пятницу карточкой в ленте «Новости и полезное»; стартовый пакет (21) и на Главной, и на витрине; сезонные подборки на витрине; порядок по модели склонности (27) на фронт не влияет и не показан; ретаргетинг (30) на странице не виден (в «Что внутри» витрины и Пятницы). Строки 18 (значок) и 19 (игра) сняты Максимом 20.11.',
+  ],
+  fork: {}, vocQ: 'Насколько просто было разобраться, как получать выгоду?', vocAfter: '[data-tabs="faq"] [data-tab], [data-tabs="how"] [data-tab], #sumR, #cTasks, #cCard, #cSph, .acc-q',
+};
+</script>
+<script src="assets/данные.js"></script>
+<script src="assets/футер.js"></script>
+<script src="assets/общее.js"></script>
+<script>
+(function () {
+  const ICON_PPL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>';
+  const CHEV = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 6 6 6-6 6"/></svg>';
+  document.querySelectorAll('.ppl').forEach(e => e.innerHTML = ICON_PPL);
+  document.getElementById('eR').innerHTML = CHEV;
+
+  // уровни (прод: тексты и подсказки из app_state)
+  const TIP_OFF = 'Относится только к предложениям <br class="d">за баллы. Остальные доступны <br class="d">безлимитно независимо от уровня';
+  const TIP_CALL = 'Это задания на определённый <br class="d">период. За выполнение каждого <br class="d">вызова можно получить <br class="d">от 300 до 1000 баллов';
+  const L = [
+    ['bronze', 'Бронзовый', 'Уровень 1', '20 000 ₽', 'До 10 000 баллов', 'Доступно 1', 'Доступно 1', true],
+    ['silver', 'Серебряный', 'Уровень 2', '30 000 ₽', 'До 12 500 баллов', 'Доступно 3', 'Доступно 3', true],
+    ['gold', 'Золотой', 'Уровень 3', '50 000 ₽', 'До 15 000 баллов', 'Доступно 5', 'Безлимитно', false],
+  ];
+  const tip = t => `<span class="tt">${t}</span>`;
+  document.getElementById('lvls').innerHTML = L.map(l => `<div class="lvl ${l[0] === 'gold' ? 'gold' : ''}"><img src="assets/img/lvl-${l[0]}.png" alt=""><div class="h4">${l[1]}</div>
+    <div class="sub">${l[2]}${l[7] ? ` <span class="tip"><img src="assets/img/info.png" alt="">${tip('Чтобы перейти на другой уровень, <br class="d">нужно выполнить задания')}</span>` : ''}</div>
+    <div class="rows"><div class="row"><div class="k">Обмен баллов на рубли</div><div class="v">${l[3]}</div></div><div class="row"><div class="k"><span data-asis-f="words">Лимит кэшбэка</span><span data-f="words">Потолок начислений в месяц</span></div><div class="v">${l[4]}</div></div>
+    <div class="row"><div class="k"><span class="tip"><span class="dotted">Предложения от банка</span>${tip(TIP_OFF)}</span></div><div class="v">${l[5]}</div></div>
+    <div class="row"><div class="k"><span class="tip"><span class="dotted">Предложения от партнёров</span>${tip(TIP_OFF)}</span></div><div class="v">${l[6]}</div></div>
+    <div class="row"><div class="k"><span class="tip"><span class="dotted">Персональные вызовы</span>${tip(TIP_CALL)}</span></div><div class="v">До 1000 баллов каждый</div></div></div></div>`).join('');
+
+  // калькулятор: логика как на проде (прогон 18.11): без «заданий» всегда Бронзовый; карта удваивает лимит; пороги 500 000 и 1 000 000
+  const R = [
+    { n: 1, name: 'Бронзовый', min: 0, ex: '20 000 ₽', lim: 10000, bank: 'Доступно 1', part: 'Доступно 1', img: 'calc-bronze', next: 'Условия серебряного уровня' },
+    { n: 2, name: 'Серебряный', min: 500000, ex: '30 000 ₽', lim: 12500, bank: 'Доступно 3', part: 'Доступно 3', img: 'calc-silver', next: 'Условия золотого уровня' },
+    { n: 3, name: 'Золотой', min: 1000000, ex: '50 000 ₽', lim: 15000, bank: 'Доступно 5', part: 'Безлимитно', img: 'calc-gold', next: 'Максимальный уровень' },
+  ];
+  const sum = document.getElementById('sum'), rng = document.getElementById('sumR'), cT = document.getElementById('cTasks'), cC = document.getElementById('cCard');
+  const nf = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+  // «Выгода под мой бизнес»: калькулятор переезжает наверх, сфера подставляет типичные платежи (демо-цифры)
+  const BIZ_PAY = { 'Розничная торговля': 800000, 'Строительство и ремонт': 1200000, 'Грузоперевозки': 900000, 'Оптовая торговля': 1500000, 'Аренда недвижимости': 300000, 'Финансы и консалтинг': 400000, 'Производство': 1800000, 'ИТ и разработка': 500000, 'Автобизнес': 700000, 'Реклама и дизайн': 350000, 'Красота и фитнес': 250000, 'Кафе и рестораны': 600000, 'Другое': 400000 };
+  const calcEl = document.querySelector('[data-pane="lv:calc"] .calc'), calcHome = calcEl.parentElement, calcTab = document.querySelector('[data-tabs="lv"] [data-tab="calc"]'), allTab = document.querySelector('[data-tabs="lv"] [data-tab="all"]');
+  let bizSph = 'Все'; // по умолчанию «Все категории», пока пользователь не выбрал свою (Максим 21.11)
+  // вариант прототипа: «a» калькулятор раскрывается в баннере, «b» открывается окном по кнопке
+  const bizV = () => { try { return localStorage.getItem('proto-bizv') || 'a'; } catch (e) { return 'a'; } };
+  const lvBlock = document.getElementById('lvBlock'), lvHome = document.createElement('div'); lvBlock.before(lvHome);
+  const heroAct = document.querySelector('.hero-act'), actHome = document.createComment('место кнопок хиро на проде'); heroAct.before(actHome);
+  function bizPlace() {
+    const on = window.proto.on('biz'), v = bizV(), slot = document.getElementById(v === 'b' ? 'bizModalBody' : 'bizCalc');
+    if (on && lvBlock.parentElement !== slot) { slot.appendChild(lvBlock); allTab.click(); } // к панели выгоды переезжают и уровни, и калькулятор; открыты «Все уровни» (Максим 22.11)
+    if (!on && lvBlock.parentElement !== lvHome.parentElement) { lvHome.after(lvBlock); const all = document.querySelector('[data-tabs="lv"] [data-tab="all"]'); all && all.click(); }
+    document.querySelectorAll('.bvar [data-bv]').forEach(b => b.classList.toggle('on', b.dataset.bv === v));
+    const bp = document.getElementById('bizPanel'); // кнопки под суммой, без доработки на месте прода
+    if (on && heroAct.parentElement !== bp) bp.appendChild(heroAct); else if (!on && heroAct.parentElement === bp) actHome.after(heroAct);
+    document.getElementById('bizExp').textContent = 'Рассчитать уровень';
+    if (v === 'b') { document.getElementById('heroCalc').hidden = true; document.getElementById('bizExp').setAttribute('aria-expanded', 'false'); }
+  }
+  document.querySelector('.bvar').addEventListener('click', e => { const b = e.target.closest('[data-bv]'); if (!b) return; try { localStorage.setItem('proto-bizv', b.dataset.bv); } catch (er) {} bizPlace(); });
+  document.getElementById('bizExp').addEventListener('click', () => {
+    if (bizV() === 'b') { document.getElementById('m-bizcalc').classList.add('open'); allTab.click(); return; }
+    const hc = document.getElementById('heroCalc'), open = hc.hidden; hc.hidden = !open; document.getElementById('bizExp').setAttribute('aria-expanded', String(open));
+    if (open) allTab.click(); // сначала «Все уровни», расчёт соседним табом (Максим 22.11)
+    if (open) setTimeout(() => hc.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  });
+  lvBlock.addEventListener('protogo', e => { // «Показать на странице» у того, что внутри калькулятора
+    if (!e.target.closest('.calc') || !window.proto.on('biz')) return;
+    if (bizV() === 'b') document.getElementById('m-bizcalc').classList.add('open'); else { document.getElementById('heroCalc').hidden = false; document.getElementById('bizExp').setAttribute('aria-expanded', 'true'); }
+    calcTab.click();
+  });
+  document.getElementById('hcX').addEventListener('click', () => { document.getElementById('heroCalc').hidden = true; document.getElementById('bizExp').setAttribute('aria-expanded', 'false'); });
+  // 20. сколько в среднем получают в программе компании сферы, ₽ в месяц: демо-цифры, ниже потолка начислений своего уровня
+  const BIZ_GET = { 'Все': 4700, 'Розничная торговля': 4800, 'Строительство и ремонт': 7900, 'Грузоперевозки': 6300, 'Оптовая торговля': 9600, 'Аренда недвижимости': 1700, 'Финансы и консалтинг': 2400, 'Производство': 11200, 'ИТ и разработка': 3100, 'Автобизнес': 4900, 'Реклама и дизайн': 2200, 'Красота и фитнес': 1500, 'Кафе и рестораны': 3800, 'Другое': 2300 };
+  const cSph = document.getElementById('cSph');
+  // сумма общая для хиро и калькулятора: до N ₽ в месяц по категории; разбивка 55 / 30 / 15 (демо) только в калькуляторе
+  const catSplit = s => { const y = BIZ_GET[s] || 2300, c1 = Math.round(y * .55 / 10) * 10, c2 = Math.round(y * .3 / 10) * 10; return { y, c1, c2, c3: y - c1 - c2 }; };
+  const catOffs = s => (window.DATA.offers || []).filter(o => s === 'Все' || o.spheres.includes(s)).sort((a, b) => a.popRank - b.popRank || b.m30 - a.m30).slice(0, 3);
+  const catRows = (s, lgsId) => { const nf = window.fmt.nf, k = catSplit(s); return `<div class="br">Категории кэшбэка<b>${nf(k.c1)} ₽</b></div><div class="br">Предложения партнёров для категории <span class="lgs"${lgsId ? ` id="${lgsId}"` : ''}>${catOffs(s).map(o => `<a class="off" href="оффер.html?id=${o.id}" title="${o.name}"><img src="${o.logo}" alt="${o.name}"></a>`).join('')}</span><b>${nf(k.c2)} ₽</b></div><div class="br">Альфа‑Пятница<b>${nf(k.c3)} ₽</b></div>`; };
+  function lossRender(s) { cSph.value = s; document.getElementById('cLoss').textContent = 'Вы недополучаете до ' + window.fmt.nf(catSplit(s).y) + ' ₽ в месяц'; document.getElementById('cLossRows').innerHTML = catRows(s); document.getElementById('cLossT').textContent = (s === 'Все' ? 'Столько получают в программе компании всех категорий' : 'Столько получают в программе компании категории «' + s + '»') + '. Оценка демонстрационная, не оферта'; }
+  setTimeout(() => { cSph.innerHTML = '<option value="Все">Все категории</option>' + (window.DATA.spheres || []).map(s => `<option>${s}</option>`).join(''); lossRender(bizSph); }, 0);
+  cSph.addEventListener('change', () => { bizSph = cSph.value; if (window.proto.on('biz')) bizRender(); else lossRender(bizSph); }); // сфера меняет только средние суммы, не платежи и не уровень
+  function bizRender() {
+    const D = window.DATA, nf = window.fmt.nf;
+    // в панели «Все категории» и четыре категории сразу, остальные по «Ещё»; выбранная видна всегда
+    const TOPS = ['Розничная торговля', 'Кафе и рестораны', 'Строительство и ремонт', 'Грузоперевозки', 'ИТ и разработка', 'Красота и фитнес'], sp = s => s.replace(/\s/g, ' ');
+    const SPH = ['Все'].concat((D.spheres || []).slice().sort((a, b) => { const ia = TOPS.findIndex(t => sp(t) === sp(a)), ib = TOPS.findIndex(t => sp(t) === sp(b)); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); }));
+    const chips = document.getElementById('bizChips');
+    chips.innerHTML = SPH.map((s, i) => `<button data-sph="${s}" class="${s === bizSph ? 'on' : ''}${i >= 5 ? ' x6' : ''}">${s === 'Все' ? 'Все категории' : s}</button>`).join('') + `<button data-more>${chips.classList.contains('all') ? 'Свернуть' : 'Ещё ' + (SPH.length - 5)}</button>`;
+    const lim = parseInt((document.getElementById('oLim').textContent || '0').replace(/\D/g, ''), 10) || 0;
+    document.querySelector('#bizPanel .bl').innerHTML = `Компании ${bizSph === 'Все' ? '<b id="bpSph">всех категорий</b>' : `категории <b id="bpSph">${bizSph}</b>`}<br>получают в программе до`;
+    document.getElementById('bpSum').innerHTML = `<span>${nf(catSplit(bizSph).y).replace(/ /g, '\u00a0')}\u00a0₽</span> <small>в\u00a0месяц</small>`;
+    lossRender(bizSph);
+  }
+  document.getElementById('bizChips').addEventListener('click', e => { const c = document.getElementById('bizChips'); if (e.target.closest('[data-more]')) { c.classList.toggle('all'); bizRender(); return; } const b = e.target.closest('[data-sph]'); if (!b) return; bizSph = b.dataset.sph; bizRender(); });
+  document.addEventListener('drchange', () => { bizPlace(); if (window.proto.on('biz')) bizRender(); });
+  setTimeout(() => { bizPlace(); if (window.proto.on('biz')) { bizRender(); setTimeout(() => allTab.click(), 0); } }, 0); // табы оживают позже переезда блока: «Все уровни» открываем отдельно // после того как калькулятор повесит обработчики
+  function calc(v) {
+    v = Math.max(0, Math.min(2000000, v | 0));
+    rng.value = v; rng.style.setProperty('--p', (v / 20000) + '%');
+    let lv = R[0]; if (cT.checked) R.forEach(r => { if (v >= r.min) lv = r; });
+    const nxt = R[lv.n];
+    document.getElementById('oLvl').textContent = `Уровень ${lv.n}: ${lv.name}`;
+    document.getElementById('oImg').src = `assets/img/${lv.img}.png`;
+    document.getElementById('oLink').textContent = lv.next;
+    document.getElementById('oBar').style.width = nxt ? Math.min(100, (v - lv.min) / (nxt.min - lv.min) * 100) + '%' : '100%';
+    document.getElementById('sumCap').textContent = !cT.checked ? 'Без заданий уровня расчёт остаётся на Бронзовом' : nxt ? `До ${nxt.n === 2 ? 'серебряного' : 'золотого'} уровня ещё ${nf(Math.max(0, nxt.min - v))} ₽` : 'Соответствует золотому уровню';
+    document.getElementById('oEx').textContent = lv.ex;
+    document.getElementById('oLim').textContent = nf(lv.lim * (cC.checked ? 2 : 1));
+    document.getElementById('oBank').textContent = lv.bank; document.getElementById('oPart').textContent = lv.part;
+  }
+  sum.addEventListener('focus', () => setTimeout(() => sum.select(), 0));
+  sum.addEventListener('input', () => { let d = +(sum.value.replace(/\D/g, '') || 0); if (d > 2000000) d = 2000000; sum.value = d ? nf(d) : ''; calc(d); });
+  sum.addEventListener('blur', () => { sum.value = nf(+rng.value) + ' ₽'; });
+  rng.addEventListener('input', () => { sum.value = nf(+rng.value) + ' ₽'; calc(+rng.value); });
+  [cT, cC].forEach(c => c.addEventListener('change', () => calc(+rng.value)));
+  document.getElementById('oLink').addEventListener('click', e => { e.preventDefault(); document.querySelector('[data-tab="all"]').click(); });
+  calc(0);
+
+  // карусель «Как заработать баллы»
+  const row = document.getElementById('earnRow'), eL = document.getElementById('eL'), eR = document.getElementById('eR');
+  const upd = () => { eL.disabled = row.scrollLeft < 5; eR.disabled = row.scrollLeft + row.clientWidth > row.scrollWidth - 5; };
+  eL.onclick = () => row.scrollBy({ left: -388, behavior: 'smooth' }); eR.onclick = () => row.scrollBy({ left: 388, behavior: 'smooth' });
+  row.addEventListener('scroll', upd); window.addEventListener('resize', upd); setTimeout(upd, 200);
+
+  // видео
+  const vid = document.getElementById('vid'), mute = document.getElementById('mute');
+  mute.onclick = () => { vid.muted = !vid.muted; mute.textContent = vid.muted ? '🔇' : '🔊'; };
+
+  // «Другие предложения»: SEO-список с прода
+  document.getElementById('seo').innerHTML = (window.DATA.seoGlav || []).map(g => `<div class="seo-g"><h4>${g.title}</h4><div class="seo-links">${g.links.map(l => `<a href="${l.href}" target="_blank" rel="noopener">${l.t}</a>`).join('')}</div></div>`).join('');
+
+  // липкий виджет Пятницы: появляется после первого экрана
+  const st = document.getElementById('apSticky'); let closed = false;
+  st.querySelector('.cl').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  st.querySelector('.cl').addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); closed = true; st.classList.remove('on'); });
+  window.addEventListener('scroll', () => { if (!closed) st.classList.toggle('on', scrollY > 700); });
+})();
+</script>
+<script>
+// ===== гипотезы мастер-плана, строки 14–28 (20.11): лента, welcome, пакет, новости, кнопки-заглушки =====
+(function () {
+  const D = window.DATA, O = D.offers, { nf } = window.fmt, $ = s => document.querySelector(s);
+  // 16. лента событий бегущей строкой; числа демо, кроме числа предложений в каталоге. Счётчики участников и экономии здесь же
+  let cnt = 214380; const top1 = O.filter(o => o.top).sort((a, b) => b.m30 - a.m30)[0];
+  const saveT = '1,2\u00a0млрд\u00a0₽'; // демо-сумма, в хиро её нет
+  const L = [ // у события графика, подпись «что это» и значение (Максим 22.11: читались цифры и буквы)
+    { icon: '<img class="av" src="assets/img/avatars.png" alt="">', label: 'Участвуют в программе', value: () => `${nf(cnt)} ${window.fmt.plural(cnt, 'участник', 'участника', 'участников')}`, href: '#how' },
+    { icon: '<em>₽</em>', label: 'Клиенты сэкономили', value: () => saveT, href: '#bizPanel', key: 'save' }, // сумма экономии только в ленте, ключ save (Максим 22.11)
+    { icon: '<em>+</em>', label: 'Подключились за последний час', value: () => '12 компаний', href: '#form' },
+    { icon: '<img src="assets/img/coin-a.svg" alt="">', label: 'Вернули кэшбэком за октябрь', value: () => '86 млн баллов', href: '#earn' },
+    { icon: O.slice(0, 3).map(o => `<img src="${o.logo}" alt="">`).join(''), label: 'Выбирайте у партнёров', value: () => `${O.length} предложений`, href: 'витрина.html' },
+    { icon: top1 ? `<img src="${top1.logo}" alt="">` : '', label: 'Первое место в Топ-10 за месяц', value: () => top1 ? top1.name : '', href: top1 ? 'оффер.html?id=' + top1.id : 'витрина.html' }];
+  const lUpd = window.ticker($('#lentaT'), L);
+  setInterval(() => { cnt += 1 + Math.floor(Math.random() * 3); lUpd(0); }, 4000);
+  // 14. welcome-бонус: панель видна, когда хиро ушло из вида, и прячется, пока на экране анкета или после крестика
+  const W = $('#welc'); let wClosed = false, dObs = null;
+  document.body.appendChild(W);
+  const wUpd = () => {
+    const hb = $('.hero').getBoundingClientRect().bottom, fr = $('#form').getBoundingClientRect();
+    const on = hb < 0 && !(fr.top < innerHeight && fr.bottom > 0) && !wClosed;
+    if (W.offsetHeight) document.body.style.setProperty('--wh', W.offsetHeight + 'px');
+    const demo = document.querySelector('.demo'); if (demo && !dObs) { dObs = new ResizeObserver(() => document.body.style.setProperty('--dh', demo.offsetHeight + 'px')); dObs.observe(demo); }
+    W.classList.toggle('show', on); document.body.classList.toggle('welc-on', on); document.body.classList.toggle('welc-closed', wClosed);
+  };
+  addEventListener('scroll', wUpd, { passive: true }); addEventListener('resize', wUpd); document.addEventListener('drchange', wUpd); wUpd();
+  W.querySelector('.x').onclick = () => { wClosed = true; wUpd(); };
+  W.addEventListener('protogo', () => { wClosed = false; scrollTo({ top: $('.hero').getBoundingClientRect().bottom + scrollY + 40, behavior: 'instant' }); wUpd(); }); // «Показать на странице»
+  // 21. стартовый пакет: как на витрине, два первых из «Популярного» + приветственные баллы + продукты банка
+  const ptile = (o, extra) => `<a class="stile" href="оффер.html?id=${o.id}">${extra}<img src="${o.logo}" alt=""><span><span class="tg">${o.cats_new[0] || 'Партнёр'}</span><br><b>${o.name}</b></span><span class="v">${o.label} ${o.value}</span></a>`;
+  $('#packG').innerHTML = O.filter(o => o.popRank < 999).sort((a, b) => a.popRank - b.popRank).slice(0, 2).map(o => ptile(o, '<span class="chip-up">В пакете выгоднее</span>')).join('')
+    + '<div class="stile"><span class="bank">А</span><span><span class="tg">Альфа‑Выгодно</span><br><b>Приветственные баллы</b></span><span class="v">Сумма по правилам пакета</span></div>'
+    + '<div class="stile"><span class="bank">₽</span><span><span class="tg">Альфа‑Банк</span><br><b>Расчётный счёт и бизнес-карта</b></span><span class="v">Подключить вместе</span></div>';
+  // 15. новости и события: акции Пятницы с прода 20.11 и новые партнёры (те же, что с меткой «Новое» на витрине)
+  const AP = [['20 ноября', 'Альфа‑Пятница: кэшбэк до 3000 баллов в Авито Путешествиях'], ['23 – 27 ноября', 'Неделя выгоды: Яндекс Директ, HeadHunter, Ситилинк, ВсеИнструменты.ру, билайн, Якитория'], ['4 декабря', 'Лента PRO: кэшбэк баллами до 100% за оплату любых покупок с картой Лента PRO']];
+  const NEW = O.filter(o => o.new).slice(0, 3);
+  // статьи: список Максима 20.11 (_build/статьи-лояльности.txt), ведут на alfabank.ru
+  const ARTS = [["Бонусные карты: виды, зачем нужны, как работают", "https://alfabank.ru/help/articles/sme/loyalty/bonusnye-karty-vidy-zachem-nuzhny-kak-rabotayut/"], ["Как выгодно купить билеты на самолёт со скидкой", "https://alfabank.ru/help/articles/sme/loyalty/kak-vygodno-kupit-bilety-na-samolet-so-skidkoj/"], ["Как выгодно купить бытовую технику и электронику?", "https://alfabank.ru/help/articles/sme/loyalty/gde-luchshe-vsego-pokupat-bytovuyu-tekhniku-i-ehlektroniku/"], ["Как выгодно покупать билеты на концерты?", "https://alfabank.ru/help/articles/sme/loyalty/gde-luchshe-pokupat-bilety-na-koncerty/"], ["Как научиться копить деньги?", "https://alfabank.ru/help/articles/sme/loyalty/kak-nauchitsya-kopit-dengi/"], ["Как оптимизировать расходы в бизнесе?", "https://alfabank.ru/help/articles/sme/loyalty/kak-optimizirovat-rashody-v-biznese/"], ["Как снизить себестоимость продукции?", "https://alfabank.ru/help/articles/sme/loyalty/kak-snizit-sebestoimost-produkcii/"], ["Как экономить деньги на продуктах?", "https://alfabank.ru/help/articles/sme/loyalty/kak-ehkonomit-dengi-na-produktah/"], ["Командировочные расходы: что входит, как оплачиваются и как на них сэкономить", "https://alfabank.ru/help/articles/sme/loyalty/kak-sekonomit-na-komandirovkah-sotrudnikov/"], ["Корпоративные подарки сотрудникам: идеи и способы экономии", "https://alfabank.ru/help/articles/sme/loyalty/korporativnye-podarki-dlya-sotrudnikov-idei-i-sposoby-ekonomii/"], ["Мотивация персонала: как стимулировать сотрудников к эффективному труду", "https://alfabank.ru/help/articles/sme/loyalty/motivaciya-personala-kak-stimulirovat-sotrudnikov-k-effektivnomu-trudu/"], ["Почему промокоды не работают?", "https://alfabank.ru/help/articles/sme/loyalty/pochemu-promokody-ne-rabotayut/"], ["Топливные карты для бизнеса: как оформить и начать экономить", "https://alfabank.ru/help/articles/sme/loyalty/toplivnye-karty-dlya-biznesa-kak-oformit-i-nachat-ekonomit/"], ["Что такое купоны и как они работают?", "https://alfabank.ru/help/articles/sme/loyalty/chto-takoe-kupony-i-kak-oni-rabotayut/"], ["Что такое программа лояльности и как она работает", "https://alfabank.ru/help/articles/sme/loyalty/chto-takoe-programma-loyalnosti-i-kak-ona-rabotaet/"], ["Что такое промокоды и как ими пользоваться", "https://alfabank.ru/help/articles/sme/loyalty/chto-takoe-promokody-i-kak-imi-polzovatsya/"], ["Топ простых способов чтобы начать экономить на электричестве", "https://alfabank.ru/help/articles/sme/loyalty/kak-ekonomit-na-elektrichestve/"]];
+  // 23. будущая SEO-статья про Альфа‑Пятницу (Максим 20.11: отдельная статья, не блок на странице Пятницы); заголовок условный
+  const EVBG = ['', 'assets/img/vit-ap-week.png', 'assets/img/vit-ap-lenta.png'];
+  const R = [
+    ...AP.map((a, i) => { const s = a[1].replace(/^Альфа‑Пятница: /, ''), k = s.indexOf(': '), up = x => x.charAt(0).toUpperCase() + x.slice(1), tt = k > 0 ? s.slice(0, k) : up(s), vv = k > 0 ? up(s.slice(k + 2)) : ''; return `<a class="rl ev" data-nt="ev" href="альфа-пятница.html#calendar"${EVBG[i] ? ` style="background-image:url(${EVBG[i]})"` : ''}><span class="st">Альфа‑Пятница · ${a[0]}</span><span class="tt">${tt}</span>${vv ? `<span class="vv">${vv}</span>` : ''}${i === 0 ? '<span class="art" style="background-image:url(assets/img/ap-hero.png)"></span>' : ''}</a>`; }),
+    ...NEW.map(o => `<a class="rl nw" data-nt="new" href="оффер.html?id=${o.id}"><span class="st">Новое предложение</span><span class="tt">${o.name}</span><span class="vv">${o.label} ${o.value}</span><img class="lg" src="${o.logo}" alt=""></a>`),
+    '<a class="rl ar soon" data-nt="art" href="альфа-пятница.html" data-art-soon><span class="st">Статья готовится</span><span class="tt">Альфа‑Пятница: как получать кэшбэк по пятницам</span><span class="rd">Скоро</span></a>',
+    ...ARTS.map(a => `<a class="rl ar" data-nt="art" href="${a[1]}" target="_blank" rel="noopener"><span class="st">Статья</span><span class="tt">${a[0]}</span><span class="rd">Читать на сайте ↗</span></a>`),
+  ];
+  const reels = $('#newsArts'); reels.innerHTML = R.join('');
+  const rstep = () => { const c = reels.querySelector('.rl:not([hidden])'); return (c ? c.offsetWidth : 264) + 24; };
+  $('#aL').onclick = () => reels.scrollBy({ left: -rstep(), behavior: 'smooth' }); $('#aR').onclick = () => reels.scrollBy({ left: rstep(), behavior: 'smooth' });
+  $('#nTabs').addEventListener('click', e => { const b = e.target.closest('[data-nt]'); if (!b) return; $('#nTabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); reels.querySelectorAll('.rl').forEach(c => { c.hidden = b.dataset.nt !== 'all' && c.dataset.nt !== b.dataset.nt; }); reels.scrollLeft = 0; });
+  // под хиро два отдельных виджета (Максим 21.11): «На что потратить баллы» (видео) и следом «Как заработать баллы»; без earn порядок как на проде
+  { const hero = document.querySelector('.sec-black'), spend = document.querySelector('.sec-dark'), light = hero.nextElementSibling, blk = document.getElementById('earn'), row = document.querySelector('.earn-wrap');
+    const pS = document.createElement('div'), p1 = document.createElement('div'), p2 = document.createElement('div'); spend.before(pS); blk.before(p1); row.before(p2);
+    const top = document.createElement('div'); top.className = 'wrap pad earn-top'; light.prepend(top);
+    const place = () => { const on = window.proto.on('earn');
+      if (on && spend.previousElementSibling !== hero) { hero.after(spend); top.append(blk); top.after(row); }
+      if (!on && spend.previousElementSibling === hero) { pS.after(spend); p1.after(blk); p2.after(row); } };
+    setTimeout(place, 0); document.addEventListener('drchange', place); }
+  // кнопки, за которыми в бою другой экран
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-art-soon]')) { e.preventDefault(); toast('Статья про Альфа‑Пятницу готовится (мастер-план, строка 23)'); }
+    if (e.target.closest('[data-welc]')) { e.preventDefault(); toast('Условия начисления в BRD v1 не заданы: сумма, триггер и правила от экономики ПЛ и легала'); }
+  });
+})();
+</script>
+<div class="modal-bg" id="m-bizcalc"><div class="modal wide"><div class="body" id="bizModalBody"></div></div></div>
+</body>
+</html>

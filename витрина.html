@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Витрина Лояльности: прод и доработки</title>
+<link rel="stylesheet" href="assets/общее.css">
+<style>
+  /* хиро-бенто (прод) */
+  .vhero { padding: 64px 0 160px; } /* прод 20.11 */
+  .bento { display: grid; grid-template-columns: 1fr 267px; gap: 24px; }
+  .bento .l { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 418px 128px; gap: 24px; }
+  .bento .r { display: grid; grid-template-rows: 1fr 1fr; gap: 24px; }
+  .bcard { border-radius: 32px; background: #D6E6FF no-repeat center / cover; color: var(--text); display: block; position: relative; overflow: hidden; }
+  .bcard.big { grid-column: 1 / -1; padding: 32px; background-position: right center; }
+  .bcard.big .lead { margin-top: 24px; }
+  .bcard.big .btn { position: absolute; left: 32px; bottom: 32px; }
+  .bcard.small { padding: 0 32px; display: flex; align-items: center; background-size: auto 100%; background-position: right center; }
+  .bcard.small .h4 { max-width: none; }
+  .bcard.tall { text-align: center; padding: 32px 16px; background-size: cover; background-position: bottom center; }
+  @media (max-width: 960px) { .bento { grid-template-columns: 1fr; } .bento .l { grid-template-rows: 340px auto; } .bento .r { grid-template-columns: 1fr 1fr; grid-template-rows: 240px; } .bcard.small { min-height: 110px; } }
+  @media (max-width: 560px) { .bento .l { grid-template-columns: 1fr; grid-template-rows: 300px 110px 110px; } .bcard.big { padding: 24px; } .bcard.big .btn { left: 24px; bottom: 24px; } }
+
+  /* хиро со счётчиком (макет Figma «Счётчик участников [26.10.2026]», кадр Desktop витрины) */
+  .vhero2 { padding: 24px 0 136px; }
+  body:not(.off-lenta) .vhero2 { padding-bottom: 64px; } @media (max-width: 768px) { body:not(.off-lenta) .vhero2 { padding-bottom: 32px; } } /* строка встык к белой секции */
+  body:not(.off-lenta) .vhero2 .cnts { display: none !important; } /* счётчики участников и выгоды уехали в бегущую строку (Максим 20.11) */
+  .vh2 { display: grid; grid-template-columns: 1fr 558px; gap: 24px; align-items: center; }
+  .vh2 .lead { margin-top: 24px; }
+  .vh2 .act { display: flex; align-items: center; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+  .pcount { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; }
+  .pcount img { width: 96px; height: 40px; }
+  .pcount span { display: block; color: rgba(255, 255, 255, .6); } .pcount b { display: block; color: #fff; font-weight: 500; }
+  .vh2 .tiles { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 180px 180px; gap: 24px; }
+  .vh2 .t { border-radius: 32px; overflow: hidden; display: block; transition: transform .2s; } .vh2 .t:hover { transform: scale(1.02); }
+  .vh2 .t img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .vh2 .t.tall { grid-row: 1 / 3; }
+  @media (max-width: 960px) { .vh2 { grid-template-columns: 1fr; } .vh2 .tiles { grid-template-rows: 150px 150px; } }
+
+  /* виджет «Топ-10 за месяц» (BRD «Рейтинг партнёрских офферов», макет рейтинга) */
+  .top10 { margin-bottom: 120px; }
+  .top10 .arrows { display: flex; gap: 8px; }
+  .top10 .arrows button { width: 32px; height: 32px; border-radius: 50%; background: var(--grey); display: flex; align-items: center; justify-content: center; }
+  /* карусель: 4 карточки целиком и край пятой, листается только стрелками (Максим 20.11) */
+  .t10row { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 72px - 88px) / 4); gap: 24px; overflow: hidden; scroll-snap-type: x mandatory; padding: 6px 0 4px; }
+  @media (max-width: 960px) { .t10row { grid-auto-columns: calc((100% - 24px - 72px) / 2); } }
+  @media (max-width: 600px) { .t10row { grid-auto-columns: calc(100% - 72px); gap: 16px; } }
+  .top10 .arrows button:disabled { opacity: .35; cursor: default; }
+  .t10 { background: var(--dark); color: var(--inv); border-radius: 32px; height: 344px; padding: 24px; position: relative; overflow: hidden; display: block; scroll-snap-align: start; transition: transform .2s; }
+  .t10:hover { transform: scale(1.02); }
+  .t10 .nm { font-size: 20px; line-height: 24px; font-weight: 700; }
+  .t10 .ds { font-size: 14px; line-height: 20px; color: rgba(255, 255, 255, .6); margin-top: 8px; max-width: 170px; }
+  .t10 .lg { position: absolute; left: 24px; bottom: 24px; width: 64px; height: 64px; border-radius: 16px; }
+  .t10 .num { position: absolute; right: 10px; bottom: -18px; font-size: 176px; line-height: 1; font-weight: 900; font-style: italic; color: #EF3124; letter-spacing: -8px; text-shadow: 2px 2px 0 #C9180F, 4px 4px 0 #A9120A, 6px 6px 0 #8C0D06, 10px 10px 18px rgba(0, 0, 0, .55); }
+  .top10 .dots { display: flex; gap: 6px; justify-content: center; margin-top: 16px; }
+  .top10 .dots i { width: 6px; height: 6px; border-radius: 3px; background: #D5D6DA; transition: width .2s; } .top10 .dots i.on { width: 32px; background: var(--dark); }
+
+  /* горящий на старой карточке (прод 20.11) */
+  .oc .oh { margin-bottom: 8px; }
+
+  /* поиск каталога */
+  .sbar { background: var(--grey); border-radius: 24px; padding: 12px; display: flex; gap: 12px; align-items: center; position: relative; }
+  .sinp { flex: 1; display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 12px; height: 48px; padding: 0 14px; }
+  .sinp input { flex: 1; border: 0; outline: none; font: inherit; color: var(--text); background: transparent; min-width: 0; }
+  .sinp .clr { width: 22px; height: 22px; border-radius: 50%; background: #B9BAC1; color: #fff; display: none; align-items: center; justify-content: center; }
+  .sinp .clr svg { width: 14px; height: 14px; }
+  .sinp.has .clr { display: flex; }
+  .types { position: relative; }
+  .types > button { height: 48px; padding: 0 16px; border-radius: 12px; background: rgba(15, 25, 55, .1); display: flex; align-items: center; gap: 8px; }
+  .dd { position: absolute; right: 0; top: calc(100% + 8px); background: #fff; border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, .16); padding: 8px 0; min-width: 240px; z-index: 30; display: none; }
+  .dd.open { display: block; }
+  .dd label, .dd button { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 10px 16px; text-align: left; cursor: pointer; }
+  .dd label:hover, .dd button:hover { background: var(--grey); }
+  .dd input { accent-color: var(--red); width: 18px; height: 18px; }
+  .smart-sw { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px; border-radius: 12px; background: #fff; font-size: 14px; font-weight: 500; white-space: nowrap; }
+  .smart-sw i { width: 30px; height: 18px; border-radius: 9px; background: #C9CAD0; position: relative; transition: background .2s; }
+  .smart-sw i::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: left .2s; }
+  .smart-sw.on i { background: var(--red); } .smart-sw.on i::after { left: 14px; }
+  @media (max-width: 768px) { .sbar { flex-wrap: wrap; } .smart-sw { width: 100%; justify-content: center; } }
+
+  .cat-grid { display: grid; grid-template-columns: 220px 1fr; gap: 56px; margin-top: 40px; }
+  .cat-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .cat-head .cnt { font-size: 14px; color: var(--text-2); }
+  .cat-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 40px; }
+  .vit-counter { margin: -12px 0 20px; font-size: 14px; color: var(--text-2); }
+  .vit-counter .ppl { background: var(--grey); color: var(--text-2); }
+  .vit-counter b { color: var(--text); }
+
+  /* меню прода */
+  .menu a, .menu button { display: flex; align-items: center; gap: 10px; padding: 9px 8px; border-radius: 10px; font-size: 15px; font-weight: 500; width: 100%; text-align: left; }
+  .menu img { width: 24px; height: 24px; }
+  .menu .on { background: var(--grey); }
+  .menu .sub { padding-left: 34px; font-weight: 400; }
+  .menu .chev { margin-left: auto; transition: transform .2s; }
+  .menu .closed .chev { transform: rotate(-90deg); }
+
+  /* группы фильтров (макет 12.11) */
+  .fgrp + .fgrp { margin-top: 32px; }
+  .fgrp .t { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .radio { display: flex; align-items: center; gap: 12px; padding: 7px 0; cursor: pointer; font-size: 15px; }
+  .radio input { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; border: 1.5px solid #9C9DA4; border-radius: 50%; margin: 0; flex: none; display: grid; place-content: center; }
+  .radio input:checked { border-color: var(--red); }
+  .radio input:checked::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--red); }
+  .more-l { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 15px; border-bottom: 1px dashed currentColor; }
+  .more-l svg { width: 18px; height: 18px; }
+  .reset { margin-top: 28px; }
+
+  /* карточки прода */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .oc { background: var(--grey); border-radius: 32px; padding: 24px; min-height: 262px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: transform .2s; }
+  .oc:hover { transform: scale(1.02); }
+  .oc .tp { display: grid; grid-template-columns: 1fr 56px; gap: 16px; }
+  .oc .nm { font-size: 20px; line-height: 24px; font-weight: 700; }
+  .oc .ds { font-size: 14px; line-height: 20px; color: var(--text-2); margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .oc .lg { width: 56px; height: 56px; border-radius: 14px; }
+  .oc .lb { font-size: 14px; } .oc .vl { font-size: 28px; line-height: 34px; font-weight: 700; margin-top: 4px; }
+  .oc .get { position: absolute; right: 24px; bottom: 24px; opacity: 0; transition: opacity .2s; }
+  .oc:hover .get { opacity: 1; }
+
+  /* карточки доработки (макет «Категории бизнеса» 12.11 + тег «Новое» + Топ-10 + счётчик) */
+  .nc { background: var(--tint, var(--grey)); border-radius: 32px; padding: 8px; display: flex; flex-direction: column; transition: transform .2s; }
+  .nc:hover { transform: scale(1.02); }
+  .nc .tp { display: grid; grid-template-columns: 1fr 56px; gap: 16px; padding: 24px 22px 22px; flex: 1; }
+  .nc .ds { font-size: 15px; line-height: 22px; color: var(--text-2); }
+  .nc .ds b { color: var(--text-2); font-weight: 500; }
+  .nc .tp .ds { color: rgba(3, 3, 6, .68); } .nc .tp .ds b { color: rgba(3, 3, 6, .88); } /* на цветной подложке (Максим 22.11) */
+  .nc .lg { width: 56px; height: 56px; border-radius: 14px; }
+  .nc .in { background: #fff; border-radius: 24px; padding: 22px 22px 16px; }
+  .nc .vl { font-size: 21px; line-height: 26px; font-weight: 700; }
+  .nc .ft { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ECEDF0; margin-top: 16px; padding-top: 14px; min-height: 22px; font-size: 14px; color: var(--text-2); gap: 8px; }
+  .chip { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: .3px; color: #fff; white-space: nowrap; }
+  .chip.new { background: var(--new); } .chip.top { background: var(--top); } .chip.hot { background: var(--hot); font-variant-numeric: tabular-nums; }
+
+  .empty { background: var(--grey); border-radius: 32px; padding: 32px; text-align: center; }
+  .empty .ic { width: 68px; height: 68px; background: #fff; border-radius: 18px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
+  .empty p { margin: 8px 0 20px; }
+  .smart-ans { background: linear-gradient(135deg, #FFF1F0, #F2EEFF); border-radius: 24px; padding: 20px 24px; margin-bottom: 24px; }
+  .smart-ans .who { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--text-2); margin-bottom: 6px; }
+  .smart-ans .who span { width: 22px; height: 22px; border-radius: 50%; background: var(--red); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+  .center { text-align: center; margin-top: 40px; }
+
+  /* мобайл: чипсы, шторки, строка-карточка, полноэкранное «Все предложения» (макет 12.11, мобильный флоу) */
+  .mchips { display: none; gap: 8px; overflow-x: auto; margin-top: 20px; scrollbar-width: none; }
+  .mchips button { flex: none; height: 32px; padding: 0 12px; border-radius: 99px; background: var(--grey); font-size: 13px; display: inline-flex; gap: 4px; align-items: center; }
+  .mchips button.set { background: var(--dark); color: #fff; }
+  .mchips svg { width: 16px; height: 16px; }
+  .sheet-bg { position: fixed; inset: 0; background: rgba(0, 0, 0, .45); z-index: 175; display: none; align-items: flex-end; }
+  .sheet-bg.open { display: flex; }
+  .sheet { background: #fff; width: 100%; border-radius: 24px 24px 0 0; max-height: 85vh; display: flex; flex-direction: column; }
+  .sheet .sh { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 8px; }
+  .sheet .sb { overflow: auto; padding: 0 20px; }
+  .sheet .sb label { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #F0F0F2; font-size: 15px; }
+  .sheet .sb label input { display: none; }
+  .sheet .sb label.on::after { content: '✓'; font-weight: 700; }
+  .sheet .sf { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px 20px 24px; }
+  .fs-head { display: none; }
+  @media (max-width: 768px) {
+    .cat-grid { grid-template-columns: 1fr; gap: 0; margin-top: 0; }
+    .cards { grid-template-columns: 1fr; }
+    #drCat:not(.mflow) .side { margin: 24px 0 16px; }
+    .mflow .side { display: none; }
+    .mflow .mchips { display: flex; }
+    .mflow .types, .mflow .cat-top .sortw { display: none; }
+    .mflow .cards { gap: 0; }
+    .mflow .nc { flex-direction: row; background: none; padding: 14px 0; border-bottom: 1px solid #F0F0F2; border-radius: 0; display: grid; grid-template-columns: 44px 1fr 16px; gap: 12px; align-items: center; }
+    .mflow .nc:hover { transform: none; }
+    .mflow .nc .tp { display: contents; }
+    .mflow .nc .lg { width: 44px; height: 44px; border-radius: 12px; grid-column: 1; grid-row: 1; }
+    .mflow .nc .mrow { grid-column: 2; }
+    .mflow .nc .fav { top: 12px; right: 12px; bottom: auto; width: 28px; height: 28px; } .mflow .nc .fav svg { width: 14px; height: 14px; } .mflow .nc:has(.fav) .mrow { padding-right: 34px; }
+    .mflow .nc .in, .mflow .nc .tp > div:first-child { display: none; }
+    .mflow .nc .mrow .vl { font-size: 15px; line-height: 20px; margin-top: 4px; }
+    .mflow .nc .mrow .ds { font-size: 13px; line-height: 18px; }
+    .mflow .nc .mrow .meta { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--text-2); margin-bottom: 4px; }
+    .mflow .nc .arr { grid-column: 3; color: #B9BAC1; }
+    .catwrap.fs { position: fixed; inset: 0; background: #fff; z-index: 155; overflow: auto; padding: 0 16px 120px; }
+    .catwrap.fs .fs-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; position: sticky; top: 0; background: #fff; z-index: 2; }
+    .catwrap.fs .vtitle-m { display: none; }
+    .cat-head .h3 { font-size: 20px; }
+  }
+  @media (min-width: 769px) { .nc .mrow, .nc .arr { display: none; } }
+  #drCat:not(.mflow) .nc .mrow, #drCat:not(.mflow) .nc .arr { display: none; }
+
+  /* блоки ниже каталога (прод) */
+  .loyal { border-radius: 32px; background: var(--dark) url(assets/img/vit-loyalty.png) no-repeat right center / auto 100%; color: var(--inv); padding: 32px; min-height: 264px; display: block; margin-top: 64px; }
+  .loyal p { margin-top: 12px; max-width: 360px; }
+  .loyal .btn { margin-top: 24px; }
+  .ap { display: grid; grid-template-columns: 461px 1fr; gap: 24px; }
+  .ap .big { border-radius: 32px; background: var(--dark) url(assets/img/vit-ap-big.png) no-repeat center top / contain; height: 480px; position: relative; padding: 32px 24px; text-align: center; display: block; }
+  .ap .big .tm { position: absolute; left: 8px; right: 8px; bottom: 8px; background: #fff; color: var(--text); border-radius: 24px; padding: 14px; font-size: 15px; }
+  .ap .rr { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 260px 196px; gap: 24px; }
+  .ap .c { border-radius: 32px; background: var(--dark-2) no-repeat right bottom / cover; padding: 32px; position: relative; color: var(--inv); display: block; }
+  .ap .c p { margin-top: 8px; color: var(--inv-2); font-size: 15px; max-width: 240px; }
+  .ap .c .d { position: absolute; left: 24px; bottom: 24px; font-size: 20px; font-weight: 700; }
+  .ap .c.wide { grid-column: 1 / -1; }
+  @media (max-width: 960px) { .ap { grid-template-columns: 1fr; } .ap .rr { grid-template-columns: 1fr; grid-template-rows: auto; } .ap .c { min-height: 200px; } }
+  .ind { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .ind a { background: #EAFFB3; border-radius: 32px; min-height: 126px; padding: 20px 24px; display: grid; grid-template-columns: 56px 1fr 20px; gap: 16px; align-items: center; transition: transform .2s; }
+  .ind a:hover { transform: scale(1.02); }
+  .ind img { width: 56px; height: 56px; }
+  .ind b { display: block; font-size: 17px; } .ind span { font-size: 15px; line-height: 20px; }
+  @media (max-width: 768px) { .ind { grid-template-columns: 1fr; gap: 12px; } }
+
+  /* подгонка под прод 20.11: карточка, меню, «Типы», баннер, отраслевые */
+  .cat-grid.pm { grid-template-columns: 251px 1fr; gap: 24px; }
+  .oc { padding: 32px; }
+  .oc .nm { font-size: 22px; line-height: 26px; margin-top: 12px; } .oc .oh + .nm { margin-top: 0; }
+  .oc .ds { font-size: 16px; line-height: 20px; color: rgba(3, 3, 6, .88); margin-top: 8px; }
+  .oc .lb { font-size: 16px; line-height: 24px; } .oc .vl { font-size: 30px; line-height: 36px; margin-top: 8px; }
+  .oc .get { left: 32px; right: auto; bottom: 32px; height: 48px; padding: 0 23px; border-radius: 10px; font-size: 16px; }
+  .menu { display: flex; flex-direction: column; gap: 2px; }
+  .menu a, .menu button { height: 48px; padding: 12px 8px 12px 12px; border-radius: 12px; font-size: 16px; line-height: 24px; font-weight: 500; gap: 8px; }
+  .menu .sub { padding-left: 44px; font-weight: 500; height: auto; min-height: 48px; }
+  .menu [data-tg] .chev { transform: rotate(180deg); } .menu [data-tg].closed .chev { transform: none; }
+  .types > button { padding: 0 12px 0 16px; border-radius: 10px; font-size: 16px; gap: 4px; }
+  .types.open > button .cv svg { transform: rotate(180deg); }
+  .dd label input[type=checkbox] { position: absolute; opacity: 0; pointer-events: none; }
+  .dd label:has(input:checked)::after { content: '✓'; font-weight: 700; }
+  /* прод: строка поиска и меню липнут при прокрутке каталога */
+  .asis > .sbar, #drCat > .sbar { position: sticky; top: 16px; z-index: 30; }
+  @media (min-width: 769px) { #drCat > .sbar:not(.smart) { box-shadow: 0 -16px 0 0 #fff; } #drCat > .sbar::before { content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 16px; background: #fff; pointer-events: none; } } @media (max-width: 768px) { #drCat > .sbar { position: relative; } } /* над прилипшим поиском не видны обрезки карточек (22.11) */
+  .cat-grid > .side, .cat-grid > nav.side { position: sticky; top: 124px; align-self: start; max-height: calc(100vh - 120px); overflow: auto; scrollbar-width: thin; }
+  .loyal { margin-top: 128px; min-height: 264px; }
+  .loyal p { max-width: none; margin-top: 12px; }
+  .loyal p.s { font-size: 16px; line-height: 24px; margin-top: 8px; }
+  .ind a { background: var(--dark); color: var(--inv); padding: 24px; }
+  .ind b { font-size: 18px; line-height: 24px; } .ind span { font-size: 16px; line-height: 24px; color: var(--inv); }
+  .ind .ch { color: rgba(255, 255, 255, .4); }
+  @media (max-width: 768px) { .asis > .sbar, #drCat > .sbar, .cat-grid > .side { position: static; max-height: none; } }
+
+  /* «Умный поиск»: обычный поиск — белая строка и фиолетовый значок; включён — строка тёмно-фиолетовая, как на макете AI-помощника */
+  .smart-sw { color: #5B2EE0; }
+  .smart-sw i { background: #D9CCFF; } .smart-sw.on i { background: #7B4DFF; }
+  .smart-sw.on { background: #7B4DFF; color: #fff; } .smart-sw.on i { background: rgba(255, 255, 255, .35); }
+  #drCat > .sbar.smart { background: linear-gradient(180deg, #3A2A7A 0%, #16122E 45%, #0E0E16 100%); box-shadow: 0 -4px 24px rgba(123, 77, 255, .35); }
+  .sbar.smart .sinp { background: rgba(255, 255, 255, .06); border: 1px solid rgba(170, 150, 255, .45); }
+  .sbar.smart .sinp input { color: #fff; } .sbar.smart .sinp input::placeholder { color: rgba(255, 255, 255, .55); }
+  .sbar.smart .sinp svg { stroke: #CBB8FF; }
+
+  /* «Горящие 2.0»: было → стало, таймер и дата окончания */
+  .boost { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; line-height: 20px; color: var(--text-2); margin-bottom: 6px; }
+  .boost s { color: var(--text-2); } .boost .x2 { background: #FFE7E5; color: var(--red); font-weight: 700; border-radius: 6px; padding: 0 6px; }
+  .oc .lb s { color: var(--text-2); margin-right: 6px; }
+  /* «Корзина выгоды»: сердечко на карточке, плашка «Моя выгода», выбранное в форме */
+  .nc, .oc { position: relative; }
+  .fav { position: absolute; top: auto; bottom: 22px; right: 32px; width: 36px; height: 36px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 3; box-shadow: 0 2px 8px rgba(0, 0, 0, .08); }
+  .oc .fav { right: 24px; bottom: 24px; }
+  .nc:has(.fav) .ft { padding-right: 44px; } /* сердечко в углу не наезжает на метку «ТОП-10» */
+  .cart-hint { display: flex; align-items: flex-start; gap: 10px; background: #FFF1F0; border-radius: 16px; padding: 12px 16px; margin: 24px 0 16px; font-size: 14px; line-height: 20px; }
+  .cart-hint svg { flex: none; width: 18px; height: 18px; fill: var(--red); }
+  .fav svg { width: 18px; height: 18px; fill: none; stroke: #9C9DA4; stroke-width: 2; } .fav.on svg { fill: var(--red); stroke: var(--red); }
+  .cartbar { position: fixed; right: 24px; bottom: 24px; z-index: 95; }
+  .cartbar > button { height: 56px; padding: 0 20px; border-radius: 16px; background: var(--dark); color: #fff; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, .25); }
+  .cartbar > button i { background: var(--red); border-radius: 99px; padding: 0 8px; font-style: normal; font-size: 13px; line-height: 20px; }
+  .cartbar .pan { position: absolute; right: 0; bottom: 68px; width: 360px; background: #fff; border-radius: 24px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, .18); display: none; }
+  .cartbar.open .pan { display: block; }
+  .cartbar .row { display: grid; grid-template-columns: 40px 1fr 20px; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid #F0F0F2; font-size: 14px; }
+  .cartbar .row img { width: 40px; height: 40px; border-radius: 10px; } .cartbar .row button { color: var(--text-2); }
+  .cart-in-form { background: #fff; border-radius: 16px; padding: 12px 16px; margin-bottom: 16px; font-size: 14px; text-align: left; }
+
+  /* ===== гипотезы мастер-плана, строки 21, 25, 27 (20.11) ===== */
+  .season { margin-bottom: 120px; }
+  /* хиро витрины: подборка к сезону и сферы вместо трёх баннеров (Максим 21.11) */
+  .spanel { background: var(--dark); border-radius: 32px; padding: 32px; color: #fff; align-self: center; }
+  .spanel .sst { display: inline-block; border-radius: 6px; padding: 2px 8px; font-size: 12px; line-height: 16px; font-weight: 700; background: var(--red); color: #fff; }
+  .spanel .sp { font-size: 14px; color: rgba(255, 255, 255, .7); margin-left: 8px; } .spanel .st2 { font-size: 24px; line-height: 30px; font-weight: 700; margin-top: 12px; }
+  .spanel .sub { font-size: 14px; line-height: 20px; color: rgba(255, 255, 255, .6); margin-top: 4px; }
+  .spanel .rows { display: grid; gap: 8px; margin-top: 20px; }
+  .spanel .sr { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; background: rgba(255, 255, 255, .06); border-radius: 14px; padding: 10px 14px; color: #fff; }
+  .spanel .sr img { width: 40px; height: 40px; border-radius: 10px; } .spanel .sr b { font-weight: 500; font-size: 15px; } .spanel .sr small { display: block; font-size: 12px; color: rgba(255, 255, 255, .55); }
+  .spanel .sr span { font-size: 14px; line-height: 18px; font-weight: 700; color: #2FC26B; text-align: right; max-width: 220px; padding-left: 12px; } .spanel .sr:hover { background: rgba(255, 255, 255, .1); }
+  .spanel .more { display: inline-block; margin-top: 16px; font-size: 14px; color: rgba(255, 255, 255, .8); border-bottom: 1px solid currentColor; }
+  .spanel .sst.soon { background: #E7F7EE; color: #0B7A3B; } .spanel .sst.past { background: rgba(255, 255, 255, .15); color: rgba(255, 255, 255, .85); }
+  .spanel .scal { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; } /* год по месяцам на месте чипсов Главной (Максим 22.11) */
+  .spanel .pc { height: 28px; padding: 0; border-radius: 99px; background: rgba(222, 222, 238, .13); color: #fff; font-size: 13px; line-height: 16px; font-weight: 500; }
+  .spanel .pc:hover { background: rgba(222, 222, 238, .24); }
+  .spanel .pc.past { color: rgba(255, 255, 255, .5); } .spanel .pc.now { color: #fff; box-shadow: inset 0 0 0 2px var(--red); }
+  .spanel .pc.sel { background: #fff; color: var(--text); } .spanel .pc.now.sel { background: var(--red); color: #fff; box-shadow: none; }
+  .spanel .sfoot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; } .spanel .sfoot .more { margin-top: 0; }
+  .spanel { position: relative; }
+  .spanel .sdate { position: absolute; top: -40px; right: 0; display: flex; align-items: center; gap: 6px; height: 32px; padding: 3px 3px 3px 10px; border: 1px solid rgba(255, 255, 255, .14); border-radius: 10px; font-size: 12px; color: rgba(255, 255, 255, .6); white-space: nowrap; } /* переключатель показа над панелью, как «Вариант» на Главной */
+  .spanel .sdate input { font: inherit; font-size: 12px; background: rgba(255, 255, 255, .08); color: #fff; border: 0; border-radius: 6px; padding: 3px 6px; color-scheme: dark; }
+  .spanel .shead { margin-top: 14px; } .spanel .st2 { margin-top: 6px; font-size: 22px; line-height: 28px; height: 56px; overflow: hidden; }
+  .spanel .rows { margin-top: 8px; gap: 6px; } .spanel .sr { height: 52px; box-sizing: border-box; padding: 2px 14px; }
+  .spanel .sr b { display: block; line-height: 18px; } .spanel .sr small { line-height: 15px; }
+  .spanel .sfoot { margin-top: 10px; } .spanel .sr span { max-width: 196px; }
+  /* хиро витрины как на Главной: логотип, заголовок, две кнопки слева, панель справа */
+  .vlogo { display: block; width: 470px; max-width: 100%; margin: 0 0 20px -6px; }
+  body:not(.off-season) .vhero2 { padding-top: 85px; }
+  body:not(.off-season) .vh2 h1 { font-size: 30px; line-height: 36px; font-weight: 500; }
+  body:not(.off-season) .vh2 .lead { display: none; }
+  @media (min-width: 961px) { body:not(.off-season) .vh2 { grid-template-columns: minmax(0, 576px) minmax(0, 1fr); } .spanel { justify-self: end; width: 100%; max-width: 504px; box-sizing: border-box; } }
+  @media (max-width: 960px) { body:not(.off-season) .spanel { margin-top: 56px; } }
+  @media (max-width: 768px) { .vlogo { width: 300px; margin: 0 0 12px; } body:not(.off-season) .vhero2 { padding-top: 48px; } body:not(.off-season) .vh2 h1 { font-size: 22px; line-height: 28px; } body:not(.off-season) .vh2 .act .btn { width: 100%; justify-content: center; } .spanel .st2 { height: 78px; } }
+  @media (max-width: 480px) { .spanel .sr { height: 92px; align-content: center; } }
+  @media (max-width: 960px) { .spanel { margin-top: 32px; } }
+  @media (max-width: 768px) { .spanel { padding: 24px; } .spanel .st2 { font-size: 20px; line-height: 26px; } }
+  @media (max-width: 480px) { .spanel .sr { grid-template-columns: 40px 1fr; row-gap: 4px; } .spanel .sr span { grid-column: 2; text-align: left; padding-left: 0; max-width: none; } .spanel .sr small { line-height: 16px; } }
+  .season .scal { display: grid; grid-template-columns: repeat(12, minmax(84px, 1fr)); gap: 6px; margin-top: 24px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+  .season .scal::-webkit-scrollbar { display: none; }
+  .season .mo { display: grid; gap: 4px; align-content: start; } .season .mn { font-size: 12px; line-height: 16px; color: var(--text-2); padding-left: 4px; }
+  .season .pc { height: 48px; border-radius: 10px; background: var(--grey); font-size: 12px; line-height: 14px; padding: 0 8px; color: var(--text); text-align: left; display: flex; align-items: center; }
+  .season .pc:hover { background: #E7E8EB; } .season .pc.past { color: #8E8F96; }
+  .season .pc.now { background: var(--red); color: #fff; font-weight: 700; } .season .pc.sel { box-shadow: inset 0 0 0 2px var(--dark); } .season .pc.now.sel { box-shadow: inset 0 0 0 2px #8C0D06; }
+  .season .sst { display: inline-block; border-radius: 6px; padding: 2px 8px; font-size: 12px; line-height: 16px; font-weight: 700; vertical-align: middle; margin-right: 8px; }
+  .season .sst.now { background: var(--red); color: #fff; } .season .sst.soon { background: #E7F7EE; color: #0B7A3B; } .season .sst.past { background: var(--grey); color: var(--text-2); }
+  .season .sdate { margin-top: 16px; } .season .sdate input { font: inherit; border: 0; background: var(--grey); border-radius: 8px; padding: 4px 8px; color: var(--text); }
+  .sgrid, .pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+  .stile { display: flex; flex-direction: column; gap: 12px; background: var(--grey); border-radius: 24px; padding: 20px; color: var(--text); min-height: 200px; }
+  .stile img { width: 48px; height: 48px; border-radius: 12px; }
+  .stile b { font-weight: 500; } .stile .v { margin-top: auto; font-size: 18px; line-height: 24px; font-weight: 700; }
+  .stile .tg { font-size: 12px; line-height: 16px; color: var(--text-2); }
+  .pack { background: var(--dark); border-radius: var(--r); padding: 48px; margin-top: 120px; }
+  .pack .stile { background: rgba(255, 255, 255, .08); color: #fff; } .pack .stile .tg { color: rgba(255, 255, 255, .6); }
+  .pack .stile .chip-up { align-self: flex-start; background: #2FC26B; color: #fff; font-size: 12px; line-height: 16px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
+  .pack .stile .bank { width: 48px; height: 48px; border-radius: 12px; background: var(--red); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; }
+  .pack .hyp-cap { color: rgba(255, 255, 255, .7); background: rgba(255, 255, 255, .1); }
+  @media (max-width: 960px) { .sgrid, .pgrid { grid-template-columns: 1fr 1fr; } .pack { padding: 24px; } }
+  @media (max-width: 560px) { .sgrid, .pgrid { grid-template-columns: 1fr; } .season { margin-bottom: 64px; } .pack { margin-top: 64px; } }
+  @media (max-width: 768px) { .cat-grid.pm { grid-template-columns: minmax(0, 1fr); } .ind { grid-template-columns: minmax(0, 1fr); } .ind a { min-width: 0; } .ind a > * { min-width: 0; } .ind b, .ind span { overflow-wrap: anywhere; } } /* без вылетов на 320–390 px */
+  /* карточки предложений одного размера (Максим 22.11): у описания, выгоды и низа свои постоянные места */
+  .cards { grid-auto-rows: max-content; }
+  @media (min-width: 769px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .nc .tp { flex: none; box-sizing: border-box; height: 112px; align-items: start; }
+  .nc .tp > .ds { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+  .nc .in { box-sizing: border-box; height: 145px; display: flex; flex-direction: column; }
+  .nc .in .vl { flex: none; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .nc .in .boost { flex: none; flex-wrap: nowrap; height: 20px; overflow: hidden; white-space: nowrap; }
+  .nc .in .boost + .vl { -webkit-line-clamp: 1; }
+  .nc .in .ft { margin-top: auto; flex: none; box-sizing: border-box; height: 39px; white-space: nowrap; }
+  .nc .in .ft > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  #dList .oc { box-sizing: border-box; height: 262px; }
+  @media (max-width: 1179px) { .nc .tp { height: 134px; } .nc .tp > .ds { -webkit-line-clamp: 4; } }
+  @media (max-width: 1040px) { .nc .tp { height: 156px; } .nc .tp > .ds { -webkit-line-clamp: 5; } #dList .oc { height: 280px; } }
+  @media (max-width: 960px) { .nc .in { height: 171px; } .nc .in .vl { -webkit-line-clamp: 3; } .nc .in .boost + .vl { -webkit-line-clamp: 2; } }
+  @media (max-width: 768px) {
+    .mflow .nc { box-sizing: border-box; height: 137px; }
+    .mflow .nc .mrow .ds, .mflow .nc .mrow .vl { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+    .mflow .nc .tp { height: auto; }
+  }
+  /* ===== отступы, сверка со снимком прода 22.11 (блок последний, он главнее старых правок) ===== */
+  .pack { margin-top: 128px; } .pack h2 + .pgrid { margin-top: 40px; }
+  .top10 { margin-bottom: 128px; } .top10 .sec-head { margin-bottom: 34px; } /* плюс 6 px запаса карусели = 40 */
+  body:not(.off-season) .vhero2 { padding-top: 85px; }
+  body:not(.off-lenta) .vhero2 .lenta { margin-top: 85px; }
+  @media (min-width: 769px) {
+    .vhero { padding: 40px 0 136px; }
+    .sbar { min-height: 80px; box-sizing: border-box; } .sbar .sinp, .sbar .types > button, .sbar .smart-sw { height: 56px; }
+    .loyal { min-height: 264px; }
+    #catalog { padding-bottom: 128px; }
+    .vlast { padding-top: 128px; } .vlast .sec-head .lead { margin-top: 16px; }
+    .vlast > .sec-head:first-child { align-items: flex-end; }
+  }
+  body:not(.off-top) #catalog { padding-top: 128px; }
+  body:not(.off-lenta):not(.off-counter) .vhero2 { padding-bottom: 0; }
+  body:not(.off-lenta):not(.off-counter) .sec-black + .sec-light { margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; } /* строка встык, без чёрных клиньев */
+  @media (max-width: 768px) {
+    body:not(.off-season) .vhero2 { padding-top: 48px; }
+    body:not(.off-lenta) .vhero2 .lenta { margin-top: 48px; }
+    body:not(.off-top) #catalog { padding-top: 64px; }
+    .top10 { margin-bottom: 64px; } .top10 .sec-head { margin-bottom: 18px; }
+    .pack { margin-top: 64px; } .pack h2 + .pgrid { margin-top: 24px; }
+    .loyal { margin-top: 64px !important; }
+    #catalog { padding-bottom: 64px; }
+    .vap { padding-top: 64px !important; padding-bottom: 96px !important; } .vap > h2 { margin-bottom: 24px !important; }
+    .vlast { padding-top: 64px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sec-black">
+  <div id="hdr"></div>
+  <section class="vhero2" data-f="counter"><div class="wrap"><div class="vh2">
+    <div>
+      <img class="vlogo" data-f="season" src="assets/img/glav-logo.png" alt="Альфа‑Выгодно для бизнеса">
+      <h1 class="h1 inv" data-asis-f="words">Кэшбэк и скидки от партнеров до 100%</h1><h1 class="h1 inv" data-f="words" data-dr="Формулировки · стандарт, строка 8" data-mk="words">Скидки и баллы <span style="white-space:nowrap">от 100+</span> партнёров</h1>
+      <p class="lead inv">Экономьте и получайте кэшбэк баллами от предложений партнёров</p>
+      <div class="act"><a class="btn btn-red" href="#form">Получать выгоду</a><a class="btn btn-glass" data-f="season" href="#catalog">Смотреть предложения</a>
+        <div class="cnts"><div class="pcount" data-dr="Счётчик витрины · BRD v33, сц. 3; макет 26.10"><img src="assets/img/avatars.png" alt=""><div><span>Получили выгоду</span><b id="vitCount">48 912 пользователей</b></div></div></div></div>
+    </div>
+    <div class="spanel" id="seasonHero" data-f="season" data-dr="Подборка к сезону в хиро · мастер-план, стр. 25 (гипотеза)" data-mk="season">
+      <label class="sdate">Дата визита <input type="date" id="seasonD" aria-label="Дата визита"></label>
+      <div class="scal" id="seasonCal" aria-label="Подборки на год: новая каждый месяц"></div>
+      <div class="shead"><span class="sst now" id="seasonSt">Сейчас</span><span class="sp" id="seasonP"></span></div>
+      <div class="st2" id="seasonL"></div>
+      <div class="rows" id="seasonG"></div>
+      <div class="sfoot"><a class="more" href="#" data-season-all>Вся подборка →</a></div>
+    </div>
+    <div class="tiles" data-asis-f="season">
+      <a class="t tall" href="оффер.html?slug=yandex-direct"><img src="assets/img/vh2-direct.png" alt="Кэшбэк 50% и промокод на 10 000 ₽"></a>
+      <a class="t" href="оффер.html?slug=avito_perfom"><img src="assets/img/vh2-avito.png" alt="Кэшбэк до 50% от Авито Рекламы"></a>
+      <a class="t" href="витрина.html#catalog" id="ya360"><img src="assets/img/vh2-ya360.png" alt="1 ₽ за сотрудника в Яндекс 360"></a>
+    </div>
+  </div></div>
+  <div class="lenta" data-f="lenta" data-dr="Лента событий · мастер-план, стр. 16 (гипотеза)" data-mk="lenta"><div class="evs" id="lentaT"></div></div>
+  </section>
+  <section class="vhero" data-asis-f="counter"><div class="wrap">
+    <div class="bento">
+      <div class="l">
+        <div class="bcard big" style="background-image:url(assets/img/vit-hero.png)"><h1 class="h1" data-asis-f="words">Предложения <br class="d">от партнёров</h1><h1 class="h1" data-f="words" data-dr="Формулировки · стандарт, строка 8" data-mk="words">Скидки и баллы от 100+ партнёров</h1><p class="lead">Экономьте и получайте <br class="d">кэшбэк баллами до 100%</p><a class="btn btn-m btn-red" href="#catalog">К предложениям</a></div>
+        <a class="bcard small lift" href="оффер.html?slug=alfastrah" style="background-color:#FFDBD8;background-image:url(assets/img/vit-alfastrah.png)"><span class="h4">Кэшбэк до 30% <br class="d">в АльфаСтрахование</span></a>
+        <a class="bcard small lift" href="оффер.html?slug=opti24" style="background-color:#FFE5C7;background-image:url(assets/img/vit-opti.png)"><span class="h4">Скидка до 7% <br class="d">на дизель в ОПТИ 24</span></a>
+      </div>
+      <div class="r">
+        <a class="bcard tall lift" href="оффер.html?slug=avito_perfom" style="background-image:url(assets/img/vit-avito-reklama.png)"><span class="h4">Кэшбэк до 50% <br class="d">от Авито Рекламы</span></a>
+        <a class="bcard tall lift" href="оффер.html?slug=yandex-direct" style="background-color:#B7EFFC;background-image:url(assets/img/vit-direct50.png)"><span class="h4">Кэшбэк 50% и промокод <br class="d">на 10 000 ₽</span></a>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<div class="sec-light">
+  <div class="wrap pad" id="catalog">
+
+    <!-- виджет «Топ-10 за месяц» (доработка «Топ-10») -->
+    <div class="top10" data-f="top" data-dr="Виджет «Топ-10 за месяц» · BRD рейтинга">
+      <div class="sec-head"><h2 class="h2">Топ-10 за месяц</h2><div class="arrows"><button id="t10L" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 6-6 6 6 6"/></svg></button><button id="t10R" aria-label="Вперёд"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 6 6 6-6 6"/></svg></button></div></div>
+      <div class="t10row" id="t10row"></div>
+      <div class="dots" id="t10dots"></div>
+    </div>
+
+    <!-- ======== КАК НА ПРОДЕ ======== -->
+    <div class="asis">
+      <div class="sbar">
+        <div class="sinp" id="aSinp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86868A" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="aQ" placeholder="Найти предложения" aria-label="Найти предложения"><button class="clr" data-clr="aQ" aria-label="Очистить"></button></div>
+        <div class="types"><button id="aTypesBtn">Типы предложений <span class="cv"></span></button><div class="dd" id="aTypes"></div></div>
+      </div>
+      <div class="cat-grid pm">
+        <nav class="side menu" id="aMenu"></nav>
+        <div><div class="cat-top"><div class="cat-head"><h2 class="h3" id="aTitle">Все предложения</h2><span class="cnt" id="aCnt"></span></div></div><div id="aList"></div></div>
+      </div>
+    </div>
+
+    <!-- ======== С ДОРАБОТКАМИ ======== -->
+    <div class="dr catwrap" id="drCat">
+      <div class="fs-head"><div class="h4">Все предложения</div><button id="fsClose" aria-label="Закрыть"></button></div>
+      <h2 class="h3 vtitle-m" style="margin-bottom:16px;display:none" id="mTitle">Предложения <br class="d">от партнёров</h2>
+      <div class="sbar" data-dr="Умный поиск на витрине · AI-помощник, этап (г)" data-mk="smart">
+        <div class="sinp" id="dSinp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86868A" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="dQ" placeholder="Название партнёра" aria-label="Название партнёра"><button class="clr" data-clr="dQ" aria-label="Очистить"></button></div>
+        <button class="smart-sw" id="smartSw" data-f="smart" title="Умный поиск: опишите задачу словами"><i></i>✦ Умный поиск</button>
+        <div class="types" data-asis-f="cats"><button id="dTypesBtn">Типы предложений <span class="cv"></span></button><div class="dd" id="dTypes"></div></div>
+      </div>
+      <div class="mchips" id="mChips" data-dr="Категории бизнеса · мобильный, шторки" data-mk="cats"></div>
+      <div class="cat-grid">
+        <aside class="side" data-dr="Категории бизнеса · BRD 18.11, макет 12.11" data-mk="cats">
+          <div data-f="cats">
+            <div class="fgrp"><div class="t">Категория бизнеса</div><div id="gSph"></div></div>
+            <div class="fgrp"><div class="t">Категории партнёров</div><div id="gCat"></div></div>
+            <button class="btn btn-xs btn-grey reset" id="resetBtn" hidden>Сбросить фильтры</button>
+          </div>
+          <nav class="menu" id="dMenu" data-asis-f="cats"></nav>
+        </aside>
+        <div>
+          <div id="smartAns"></div>
+          <div class="cat-top"><div class="cat-head"><h2 class="h3" id="dTitle">Все предложения</h2><span class="cnt" id="dCnt"></span></div>
+            <div class="types sortw" data-f="cats" data-dr="Фильтр вместо разделов и «Типов» · BRD категорий, сц. 5"><button id="sortBtn">Все <span class="cv"></span></button><div class="dd" id="sortDd"></div></div></div>
+          <div id="dList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 21. Пакетные предложения для N2B (гипотеза, ключ pack) -->
+    <div class="pack" data-f="pack" id="pack" data-dr="Пакетные предложения для N2B · мастер-план, стр. 21 (гипотеза)" data-mk="pack">
+      <span class="hyp-cap">Только для новых клиентов</span>
+      <h2 class="h2 inv">Стартовый пакет для нового бизнеса</h2>
+      <div class="pgrid" id="packG"></div>
+      <div class="pack-act"><a class="btn btn-m btn-red" href="#form">Открыть счёт и забрать пакет</a><span class="pack-note">Два предложения партнёров на условиях лучше обычных, приветственные баллы и продукты банка. Действует, только если подключить всё</span></div>
+    </div>
+
+    <!-- как получать выгоду (прод) -->
+    <div class="block how">
+      <h2 class="h2">Как получать выгоду</h2>
+      <div class="tabs" data-tabs="how"><button data-tab="no" class="on">Не клиент Альфа‑Бизнес</button><button data-tab="yes">Клиент Альфа-Бизнес</button></div>
+      <div data-pane="how:no">
+        <div class="steps"><div class="line"></div>
+          <div class="step"><div class="num"><img src="assets/img/step-1.svg" alt="1"></div><div class="card"><div class="h4">Заявка</div><p>Заполните заявку и откройте бесплатный счёт для бизнеса</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-2.svg" alt="2"></div><div class="card"><div class="h4">Войдите в интернет-банк Альфа‑Бизнес</div><p>Авторизуйтесь под своими <br class="d">учётными данными</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-3.svg" alt="3"></div><div class="card"><div class="h4">Готово</div><p>Перейдите в раздел <b>Альфа‑Выгодно для бизнеса</b> и начинайте получать выгоду</p></div></div>
+        </div>
+        <div class="form-outer" id="form" data-form="Отправить заявку"></div>
+      </div>
+      <div data-pane="how:yes" hidden>
+        <div class="steps"><div class="line"></div>
+          <div class="step"><div class="num"><img src="assets/img/step-1.svg" alt="1"></div><div class="card"><div class="h4">Войдите в интернет-банк Альфа‑Бизнес</div><p>Авторизуйтесь под своими <br class="d">учётными данными</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-2.svg" alt="2"></div><div class="card"><div class="h4">Пользуйтесь продуктами банка</div><p>Подключайте сервисы, приглашайте друзей, выполняйте задания, а мы будем начислять баллы</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-3.svg" alt="3"></div><div class="card"><div class="h4">Готово</div><p>Тратьте баллы на предложения от партнёров и банка, скидки и акции</p></div></div>
+        </div>
+        <a class="btn btn-m btn-red after" href="https://link.alfabank.ru/partner-offers?utm_medium=site_main" target="_blank" rel="noopener">Получить</a>
+      </div>
+    </div>
+
+    <a class="loyal lift" href="главная.html"><div class="h3 inv">Лучшая программа лояльности</div><p class="inv">Повышайте уровень, получайте больше баллов, <br class="d">обменивайте их на рубли и скидки</p><p class="s inv" style="margin-top:12px">1 балл = 1 ₽</p><span class="btn btn-m btn-red">Узнать больше</span></a>
+  </div>
+</div>
+
+<div class="sec-dark">
+  <div class="wrap pad vap" style="padding-top:128px;padding-bottom:192px">
+    <h2 class="h2 inv" style="margin-bottom:40px">Альфа-Пятница</h2>
+    <div class="ap">
+      <a class="big lift" href="альфа-пятница.html#calendar"><div class="h3 inv">Кэшбэк до 3000 баллов <br class="d">в Авито Путешествиях</div><div class="tm">До конца акции<br><span class="timer-red" data-timer="2026-11-20T23:59:59+03:00"></span></div></a>
+      <div class="rr">
+        <a class="c lift" href="альфа-пятница.html#calendar" style="background-image:url(assets/img/vit-ap-week.png)"><div class="h4 inv">Неделя выгоды</div><p>Яндекс Директ, HeadHunter, Ситилинк, ВсеИнструменты.ру, билайн, Якитория</p><div class="d">23 – 27 ноября</div></a>
+        <a class="c lift" href="альфа-пятница.html#calendar" style="background-image:url(assets/img/vit-ap-lenta.png)"><div class="h4 inv">Лента PRO</div><p>Получите кэшбэк баллами до 100% за оплату любых покупок с картой Лента PRO</p><div class="d">4 декабря</div></a>
+        <a class="c wide lift" href="альфа-пятница.html#calendar" style="background-image:url(assets/img/vit-ap-next.png)"><div class="h4 inv">Следующая акция</div><p style="max-width:400px">Чтобы принять участие, откройте счёт <br class="d">и бизнес-карту, если ещё не сделали этого</p><div class="d">11 декабря</div></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-light last">
+  <div class="wrap pad vlast" style="padding-bottom:128px">
+    <div class="sec-head"><div><h2 class="h2">Отраслевые решения</h2><p class="lead" style="margin-top:12px">Понятный комплекс продуктов и сервисов для развития вашего бизнеса</p></div><a class="btn btn-xs btn-grey" href="https://alfabank.ru/sme/specialoffer/" target="_blank" rel="noopener">Все предложения</a></div>
+    <div class="ind">
+      <a href="https://alfabank.ru/sme/specialoffer/ecommerce/" target="_blank" rel="noopener"><img src="assets/img/ind-ecom.png" alt=""><div><b>Для онлайн-торговли</b><span>Повышайте продажи товаров и услуг на сайте, маркетплейсах и в соцсетях</span></div><span class="ch"></span></a>
+      <a href="https://alfabank.ru/sme/specialoffer/retail/" target="_blank" rel="noopener"><img src="assets/img/ind-retail.png" alt=""><div><b>Для розничной торговли</b><span>Поможем снизить расходы на бизнес и банковское обслуживание</span></div><span class="ch"></span></a>
+      <a href="https://alfabank.ru/sme/specialoffer/marketplace/" target="_blank" rel="noopener"><img src="assets/img/ind-mp.png" alt=""><div><b>Для бизнеса на маркетплейсах</b><span>Поможем выйти на площадки и стать топ‑продавцом</span></div><span class="ch"></span></a>
+      <a href="https://alfabank.ru/sme/specialoffer/beauty_i_fitness/" target="_blank" rel="noopener"><img src="assets/img/ind-beauty.png" alt=""><div><b>Для бьюти‑бизнеса и фитнес‑клубов</b><span>Автоматизируйте бизнес и снизьте расходы на обслуживание</span></div><span class="ch"></span></a>
+      <a href="https://alfabank.ru/sme/specialoffer/franchising/" target="_blank" rel="noopener"><img src="assets/img/ind-franch.png" alt=""><div><b>Для франшизного бизнеса</b><span>Поддержим на старте и поможем масштабировать сеть</span></div><span class="ch"></span></a>
+      <a href="https://alfabank.ru/sme/specialoffer/restaurants/" target="_blank" rel="noopener"><img src="assets/img/ind-rest.png" alt=""><div><b>Для ресторанов, кафе и фастфуда</b><span>Поможем оптимизировать работу заведения и ускорить развитие</span></div><span class="ch"></span></a>
+    </div>
+
+    <div class="block" id="faq">
+      <div class="sec-head"><h2 class="h2">Полезно знать</h2><div class="tabs" data-tabs="faq"><button data-tab="q" class="on">Частые вопросы</button><button data-tab="o">Другие предложения</button></div></div>
+      <div data-pane="faq:q" class="acc">
+        <div class="acc-item"><button class="acc-q"><span class="q">Что такое предложения от партнёров?</span></button><div class="acc-a"><p>Предложения партнёров — это каталог скидок, кэшбэка и акций от компаний‑партнёров банка: сервисы для рекламы, маркетинга, бухгалтерии, логистики и других задач бизнеса.</p><p>Это выгода от сторонних компаний, которую вы получаете как участник программы лояльности Альфа‑Выгодно для бизнеса.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Как стать участником программы лояльности <br class="d">Альфа-Выгодно для бизнеса?</span></button><div class="acc-a"><p>Откройте расчётный счёт для бизнеса в рублях в Альфа‑Банке. Если у вас уже открыт счёт, просто перейдите <a href="https://link.alfabank.ru/partner-offers?utm_medium=site_main" target="_blank" rel="noopener">на страницу программы лояльности</a> в интернет-банке.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Это бесплатно для меня?</span></button><div class="acc-a"><p>Да. Доступ к каталогу и участие в программе бесплатны, банку вы за это не платите. Оплачиваете только сами товары или услуги партнёра, уже со скидкой или кэшбэком.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Как воспользоваться предложением партнёра?</span></button><div class="acc-a"><ol><li>Откройте каталог и выберите предложение. Можно воспользоваться фильтром или найти через поиск</li><li>Откройте карточку предложения и следуйте инструкции в карточке: перейти на сайт партнёра, активировать промокод или оставить заявку</li><li>Условия каждого предложения указаны в его карточке</li></ol></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Когда я получу кэшбэк или скидку?</span></button><div class="acc-a"><p>Скидка применяется сразу при оплате у партнёра. Кэшбэк начисляется после выполнения условий предложения. Точные сроки указаны в карточке конкретного предложения и правилах.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Сколько предложений партнёров мне доступно?</span></button><div class="acc-a"><p>Вам доступно неограниченное количество предложений из каталога.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Что делать, если скидка или кэшбэк не пришли?</span></button><div class="acc-a"><p>Проверьте, что выполнили все условия из карточки: минимальная сумма, сроки, активация промокода.</p><p>Учтите срок начисления — кэшбэк приходит не всегда мгновенно.</p><p>Если срок прошёл, а выгоды нет, напишите в поддержку Альфа-Бизнес в чате приложения или позвоните по телефону <a href="tel:+74957555858">+7 495 755 58 58</a>. Укажите предложение и дату покупки, поможем разобраться.</p></div></div>
+      </div>
+      <div data-pane="faq:o" hidden class="acc"><div class="acc-item"><button class="acc-q"><span class="q">Все предложения партнёров Альфа‑Банка</span></button><div class="acc-a" id="seo"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="ftr" data-crumbs='[["Малый бизнес и ИП","https://alfabank.ru/sme/"],["Лучшая программа лояльности для бизнеса","главная.html"],["Предложения от партнёров",""]]'></div>
+
+<div class="sheet-bg" id="sheet"><div class="sheet"><div class="sh"><div class="h4" id="shT"></div><button id="shX" aria-label="Закрыть"></button></div><div class="sb" id="shB"></div><div class="sf"><button class="btn btn-m btn-red" id="shOk">Применить</button><button class="btn btn-m btn-grey" id="shReset">Сбросить</button></div></div></div>
+
+<script>
+window.PAGE = {
+  id: 'витрина', title: 'Витрина', url: 'alfabank.ru/sme/loyalty/offers/', snap: '18.11.2026',
+  dr: [
+    { key: 'new', needs: 'counter', name: 'Тег «Новое»', sel: '.chip.new',
+      what: 'Синяя метка у предложений, опубликованных меньше 30 дней назад, и пункт «Новые» в фильтре над каталогом (фильтр появляется с «Категориями бизнеса»). Пока у нового оффера нет 20 участников, счётчик скрыт и карточка не пустая.',
+      src: 'BRD «Тег „Новое“»: Confluence v48 (выгрузка 20.11) и локальная редакция 18.11 (BRD-тег-новое.md), рендеры в макеты/тег-новое-2026-11/. Пункт «Новые» в фильтре: BRD тега, сценарий 5 (P2), место согласуется с дизайном. Мастер-план 2027, первая строка: тег на карточке, на странице оффера и фильтр «Новые», Q1.',
+      cond: '«новыми» назначены 4 оффера с наибольшим id. 30 дней в BRD предложены, не утверждены. В прототипе метка видна только с новой карточкой (решение Максима 20.11), по BRD тег выходит без счётчика. По BRD до новой витрины пункт «Новые» стоит в «Типах предложений», здесь не показан.' },
+    { key: 'top', needs: 'counter', name: 'Топ-10: метка, фильтр и виджет «Топ-10 за месяц»', sel: '.top10',
+      what: 'Карусель «Топ-10 за месяц» над каталогом (видно 4 карточки и край пятой, листается стрелками), розовая метка «ТОП-10» на карточках и пункт «ТОП-10» в фильтре (фильтр появляется с «Категориями бизнеса»). Десять предложений с наибольшим числом активаций за последний месяц.',
+      src: 'BRD «Рейтинг партнёрских офферов», Confluence v38 (выгрузка 20.11): скользящий месяц, пересчёт каждые 15 минут, ручные правки КМ приоритетнее (сц. 1–2), тег «Топ 10» на странице предложения (сц. 4); событие показа виджета «Топ-10 за месяц» в правках 18.11 (BRD/правки-2026-11-18/рейтинг-офферов.md). Вид виджета по скрину макета рейтинга от Максима 20.11 (в переписке, файла в LifeOS нет). Пункт «ТОП-10» в фильтре: в BRD категорий v77, сц. 5; в BRD рейтинга его нет. Мастер-план 2027: «Рейтинг партнерских офферов по популярности», Q1.',
+      cond: 'десятка выбрана по придуманным активациям из всего каталога, популярным на проде добавлен вес (9 из 10 из «Популярного»). Большие цифры в виджете нарисованы шрифтом, в макете это объёмные картинки. В прототипе метка видна только с новой карточкой, по BRD рейтинг от счётчика не зависит.' },
+    { key: 'counter', name: 'Счётчик участников и новая карточка', link: 'Хиро из макета со счётчиком: в нём живут «Подборка к сезону» и «Лента событий» (в ней и счётчик экономии). Сам счётчик в хиро виден, пока выключена «Лента событий».', sel: '.pcount',
+      what: 'Хиро витрины по макету: «Кэшбэк и скидки от партнеров до 100%», кнопка «Получать выгоду», рядом аватарки и «Получили выгоду: N пользователей», справа три плитки. На карточке «N участников», если их 20 и больше (в v33 считаются активации; «уникальные клиенты» предложены в правках 18.11, не утверждены). Вместе со счётчиком появляется новая карточка: сверху «Партнёр — что делает» и логотип, в белой плашке выгода одной строкой, внизу счётчик и один слот метки. Верх карточки и обводка не серые, а цветом хиро лендинга партнёра (Максим 22.11), на лендинге в прототипе тот же цвет.',
+      src: 'BRD «Счётчик участников», Confluence v33, сценарии 3 и 4; макет Figma «[S] Новая Альфа-Выгодно для бизнеса», страница «Счётчик участников [26.10.2026]», кадр Desktop витрины. Решение PO 18.11: единый порог 20. Новая карточка: макет «Категории бизнеса» 12.11 и план доработок карточки 18.11 (один слот метки: Горящий, потом Новое, потом Топ-10). Что новая карточка выходит вместе со счётчиком, решил Максим 20.11, в BRD ещё не внесено. Мастер-план 2027: «Счётчик участников», Q1.',
+      cond: 'все числа придуманы для показа. Цвет карточки снят с прода только у Яндекс Директа (#D6E6FF); у остальных это пастель по основному цвету логотипа, не цвет боевого лендинга (assets/цвета-партнёров.js). Плитки хиро вставлены картинками из макета. Остальное в макете старше прода (горящих там нет), не переносил.' },
+    { key: 'smart', name: 'Умный поиск на витрине', sel: '#smartSw',
+      what: 'Переключатель в строке поиска: вместо названия партнёра можно описать задачу («бухгалтерия для ИП», «реклама для кафе») и получить подборку с пояснением.',
+      src: 'BRD AI-помощника v4 (BRD-AI-помощник-v4.md, основа Confluence v12 от 20.11), MVP2, сценарии Б1–Б3: ответ своими словами, ссылка на нужный блок или предложение, под ответом подходящие предложения. Мастер-план 2027: «AI-помощник», MVP2: Q1 макеты и аналитика, Q2 разработка.',
+      cond: 'подборка под ответом есть в BRD v4 (Б3) и в мастер-плане. Допущения прототипа: подбор правилами по словам, не моделью; вид переключателя и фиолетовая строка по макету AI-помощника, финального макета витрины нет.' },
+    { key: 'save', needs: 'lenta', name: 'Счётчик «Сколько сэкономили клиенты» в ленте событий', link: 'Только в «Ленте событий»: отдельно в хиро не показываем (Максим 22.11).', sel: '#lentaT [data-f~="save"]',
+      what: 'Событие бегущей строки «Сэкономили на предложениях 318 млн ₽» ведёт в каталог. Отдельного счётчика в хиро нет: два счётчика рядом в хиро выглядят плохо (Максим 22.11). Ленту выключили, суммы экономии на странице нет.',
+      src: 'BRD «Счётчик экономии клиентов» v3 от 17.08 (локальный, BRD/BRD-счётчик-экономии.md): суммарная выгода по витрине в шапке (сценарий 3, P2). Мастер-план 2027: Q1 макеты и аналитика, Q2 разработка. 20.11 стоял в хиро рядом со счётчиком участников, 22.11 Максим оставил его только в ленте событий: два счётчика в хиро выглядят плохо. Макета нет.',
+      cond: 'сумма придумана. По BRD (ФТ 2) в шапке витрины цифра всегда оценочная: «клиенты экономят в среднем около N ₽» с датой актуальности; «сэкономили» в прототипе условно. Типичная выгода на карточке оффера (сценарий 4 BRD) не показана: Максим 20.11 ограничил Главной и витриной.' },
+    { key: 'lenta', needs: 'counter', name: 'Лента событий', link: 'Забирает из хиро счётчик участников; сумма экономии есть только в ней.', sel: '.lenta',
+      what: 'Внизу хиро красная бегущая строка, как на Главной: события идут по одному на круг, у каждого графика, подпись и крупное значение (Максим 22.11). Событий пять: сколько пользователей получили выгоду, сколько сэкономили у партнёров, сколько предложений в каталоге, сколько новых, кто первый в Топ-10. Пока лента включена, счётчика участников в хиро нет, он в ней; сумма экономии только в ленте (Максим 22.11).',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 16 (гипотеза): объединённый виджет, отдельные счётчики в одном живом динамичном блоке. На витрину по просьбе Максима 20.11: «счётчик участников и счётчик выгоды тоже в бегущей строке».',
+      cond: 'гипотеза без макета. Вид по скрину бегущей строки Альфа Будущего от Максима 20.11: матовая красная лента, белый жирный текст, стрелка после события; пятна нарисованы градиентом по цветам скрина. В образце одна фраза без графики; графика, подписи и состав событий придуманы. Числа счётчиков те же демо, что были в хиро; число предложений из каталога (снимок 18.11), метки «Новое» условные, как у тега; лидер Топ-10 условный, как в виджете.' },
+    { key: 'cats', name: 'Категории бизнеса', link: 'Нужна «Выгоде под мой бизнес» и «Вы недополучаете N ₽» на Главной: без неё там нет категорий.', sel: '.side[data-dr]',
+      what: 'Слева группы «Категория бизнеса» и «Категории партнёров» с выбором одного пункта, по умолчанию «Все», свёрнуто 5 пунктов. Заголовок каталога называет выбор («Управление для розничной торговли»). Разделы «Все / Популярное / Горящие» и «Типы предложений» уходят в фильтр над каталогом: «Популярные», «Горящие», «С кэшбэком», «Со скидками», «Бесплатные». Если ничего не подошло: «Ничего не нашлось», кнопка «Сбросить фильтры» и подборка «Вам также может понравиться».',
+      src: 'BRD «Категории бизнеса», Confluence v77 (черновик 19.11), сценарии 2–7 («Ничего не нашлось» сценарий 6); макет Figma «Категории бизнеса», дизайн-чек 12.11 (рендеры в макеты/категории-бизнеса-2026-11/). Сц. 5 v77: список фильтрации «Популярные», «ТОП-10», «Горящие», «Бесплатные», «С кэшбэком», «Со скидками» (+ «Новые» после доработки тега); «ТОП-10» и «Новые» в прототипе появляются со своими доработками. Мастер-план 2027: Q1 макеты и аналитика, Q2 разработка. Мобильный флоу категорий (чипсы, шторки, «Смотреть все» на весь экран) в коде есть и виден на узком окне; полный мобильный прототип будет отдельно.',
+      cond: 'по умолчанию в фильтре «Все»: раз пункт отбирает, а не упорядочивает, «Популярные» по умолчанию сузили бы каталог до 19 предложений. В v77 значение по умолчанию не задано (в редакции 18.11 было «Популярные»). Какой оффер к какой категории относится, задано правилами по категориям и словам (_build/собрать-данные.py), в бою признак из активаций по ОКВЭД.' },
+    { key: 'hot2', name: 'Горящие 2.0: временно лучшие условия', sel: '.boost',
+      what: 'Партнёр на неделю даёт повышенные условия, предложение попадает в «Горящие» с таймером, датой окончания и «было → стало» внутри карточки. В прототипе два таких предложения с удвоенной выгодой (×2).',
+      src: 'Мастер-план 2027, строка «Горящие 2.0: временно лучшие условия» (гипотеза): новая механика, оффер попадает в «Горящие» с таймером, датой окончания и «было → стало» внутри карточки, ручное включение; Q1 discovery, Q2 BRD и макеты, Q3 разработка.',
+      cond: 'гипотеза без BRD и макета, вид придуман. Какие два предложения и насколько улучшены, задано для показа.' },
+    { key: 'cart', name: 'Корзина выгоды до оформления РКО', sel: '.nc .fav, .oc .fav',
+      what: 'Сердечко на карточке добавляет предложение в «Мою выгоду». Внизу справа плашка со списком и выгодой в рублях, кнопка «Открыть счёт и забрать выгоду» ведёт в форму, где выбранное уже перечислено. Выбор сохраняется, к нему можно вернуться позже. Сердечко в нижнем правом углу карточки, в колонке фильтров подсказка, что оно делает; после первого сердечка подсказка-тост, где корзина (Максим 20.11: было непонятно и поверх текста).',
+      src: 'Мастер-план 2027, строка «Корзина выгоды до оформления РКО» (гипотеза): пользователь до анкеты РКО лайкает или добавляет в избранное категории, акцию Пятницы, предложения партнёров; корзина суммирует потенциальную выгоду, выбор уходит в форму РКО и в карточку оператора ТМ; можно сохранить и вернуться; Q2 discovery, Q3 BRD и макеты, Q4 разработка.',
+      cond: 'гипотеза без BRD и макета, вид придуман. В прототипе корзина только для предложений партнёров на витрине, без категорий и Пятницы. Сумма считает только выгоду в рублях.' },
+    // ===== гипотезы и доработки мастер-плана, строки 17–28, и формулировки (20.11) =====
+    { key: 'client', name: 'Уже клиент, сразу в ЛК', sel: '.vh2 .act .btn',
+      what: 'Кнопки заявки («Получать выгоду» в хиро со счётчиком, в хиро прода её нет, «Открыть счёт и забрать пакет», «Открыть счёт и забрать выгоду» в корзине) сначала спрашивают: «У вас уже есть счёт в Альфа‑Банке?». «Да» ведёт в Альфа‑Выгодно в интернет-банке, «Нет» к анкете. Отдельной кнопки для клиентов нет, выбор «счёт есть / новый клиент» в окне (Максим 21.11: кнопки про одно сливаем в одну).',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 17 (гипотеза): на Главной, витрине и Пятнице у кнопки развилка: «счёт в Альфе уже есть» ведёт в интернет-банк к программе или выбранному офферу, «новый» в анкету РКО. Разнос оппонента 09.11: стратегия/Мастер-план-2027-разнос-кандидата-уже-клиент.md.',
+      cond: 'гипотеза без макета. Развилка самовыбором, без ИНН (по разносу оппонента ответ по ИНН раскрыл бы, обслуживается ли чужая компания в Альфе). Ссылка ведёт в раздел программы, не к конкретному офферу: на карточке оффера кнопка «Получить» ведёт на страницу предложения, как на проде.' },
+    { key: 'pack', name: 'Пакетные предложения для N2B', sel: '#pack',
+      what: 'Перед «Как получать выгоду» тёмный блок «Стартовый пакет для нового бизнеса» (N2B, новые для банка): два предложения партнёров на условиях лучше обычных, приветственные баллы, расчётный счёт и бизнес-карта. Действует, только если подключить всё.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 21 (гипотеза): давать новым пользователям пакеты предложений для регистрации РКО: 2 оффера с повышенной выгодой + велком-бонусы + другие продукты, только при подключении всех продуктов и предложений.',
+      cond: 'гипотеза без BRD и макета, вид придуман. В пакет взяты два первых предложения из «Популярного», насколько улучшены условия, не показано: в мастер-плане этого нет. Сумма приветственных баллов не указана, её ждёт и гипотеза «Welcome-бонус».' },
+    { key: 'season', needs: 'counter', name: 'Сезонные подборки под пики бизнеса', link: 'Живёт в хиро «Счётчика участников». Выбора категорий в хиро нет, он в каталоге с «Категориями бизнеса».', sel: '#seasonHero',
+      what: 'Хиро витрины как на Главной: слева логотип, заголовок, кнопки «Получать выгоду» и «Смотреть предложения», справа вместо калькулятора и уровней панель «Подборка к сезону» на месте трёх баннеров (Яндекс Директ, Авито Реклама, Яндекс 360). В панели 12 месяцев, тема и четыре предложения; открыт месяц визита, клик по другому показывает, что было или будет. Выбора категорий в хиро нет (Максим 22.11). Отдельного блока подборок ниже нет, чтобы не рассказывать одно и то же дважды (Максим 21.11). Дату визита для показа можно сменить над панелью или параметром ?d=ГГГГ-ММ-ДД.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 25 (гипотеза): к Новому году, 8 Марта, 1 сентября собираем страницы-подборки офферов партнёров под задачу сезона: реклама, упаковка, доставка; подборку делает партнёрка, сайт даёт страницу и SEO.',
+      cond: 'гипотеза без макета, вид придуман. Ритм раз в месяц задал Максим 22.11 (две недели, как было с 20.11, слишком подробно), 12 тем года придуманы; в мастер-плане названы только Новый год, 8 Марта и 1 сентября с тройкой задач «реклама, упаковка, доставка». Состав подборок собран правилом по категориям каталога, в бою его делает партнёрка. Отдельные SEO-страницы не собраны, «Вся подборка» показывает подсказку.' },
+    { key: 'voc', name: 'Опросник: кнопка VOC', sel: '.fb.voc .vpill',
+      what: 'Внизу справа небольшая чёрная кнопка «Оцените программу лояльности», на телефоне круглая без подписи (Максим 22.11: не должна забирать на себя внимание). После первого действия на странице карточка раскрывается сама: вопрос, 5 звёзд и поле «Что конкретно вызвало у вас трудности?». Вид и вопрос поля по просьбе Максима 20.11: значок сбоку был плохо виден.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 26 (доработка): «Опросник. Кнопка VOC на всех страницах и в мобильной версии», кнопка обратной связи после действия. Вид как у виджета оценки на проде Пятницы (FeedbackForm, снимок 18.11).',
+      cond: 'вопрос и момент показа придуманы.' },
+    { key: 'nav', name: 'Шапка раздела: название и бургер', sel: '.loynav .wrap',
+      what: 'Шапка раздела вместо шапки прода, по образцу Альфа Будущего, но на чёрном фоне, как шапка прода (красный слишком контрастный, Максим 21.11): красная «А» и название «Программа лояльности для бизнеса» с подписью «Альфа‑Выгодно», две ссылки, на витрину и Пятницу («Как стать участником» и «Частые вопросы» Максим снял из меню 22.11), справа лупа и красная кнопка «Войти». Уже 1180 px ссылки уходят в бургер, лупа скрыта; на телефоне в бургер уходит и «Войти».',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 28 (доработка): бургер-меню по образцу «Альфа-Будущего» и понятное название пункта программы; название «Альфа-Выгодно» не у всех ассоциируется с программой, поэтому сначала проверка.',
+      cond: 'вид по скрину шапки Альфа Будущего от Максима 20.11 (сам сайт автоматический браузер не открыл), макета нет. Название «Программа лояльности для бизнеса» условное, его даёт проверка.' },
+    { key: 'words', name: 'Формулировки по исследованию «Единый язык привилегий»', sel: '[data-mk="words"]',
+      what: 'Заголовок хиро по стандарту: «Скидки и баллы от 100+ партнёров» вместо «Кэшбэк и скидки от партнеров до 100%» (хиро со счётчиком) и «Предложения <br class="d">от партнёров» (хиро прода).',
+      src: 'Исследование «Единый язык привилегий» (исследования/единый-язык-привилегий/), лист «Стандарт», строка 8, колонка «Предложение стандарта»: «Герой Партнёрской без „до 100%“: „Скидки и баллы от 100+ партнёров“». Роли сошлись: «до 100%» без максимума не пишем (лист «Правила языка», «Словарь»).',
+      cond: 'решений PO по стандарту нет, роли отыграли агенты. Исключение из правила «только где роли согласны»: строка 8 в статусе «Блокер» (ждёт ответа партнёров про единицу выгоды); заголовок хиро от него не зависит, роли сошлись на правиле «до 100% без максимума не пишем». В подзаголовке хиро прода «до 100%» осталось, замены стандарт не предлагает. «100+» дословно из стандарта и с карточки прода «Кэшбэк от партнёров»; в каталоге 105 предложений и 94 разных названия, число партнёров не проверял. Карточки офферов не трогал.' },
+  ],
+  notes: [
+    'Айдентика по итогам исследования (направление А) снята Максимом 21.11 («давай пока Айдентику уберём»). Моё предложение: вернуться с единой карточкой предложения или с работой дизайнера.',
+    'Мастер-план, строка 27 «Порядок офферов по модели склонности» (КП и Rouper): на фронт не влияет, порядок карточек меняется на стороне платформы. В прототипе не показан (Максим 20.11).',
+    'Метка «Горящий» с таймером уже на проде (BRD горящих v88): 20.11 на живой витрине один горящий оффер, MarketGuru (проверено вживую 20.11, снимка нет). В прототипе так же, это не доработка.',
+    'Детальная страница оффера: шаблон по боевой странице Яндекс Директа. Условия с прода перенесены только у Яндекс Директа (снимок 18.11), у остальных строка каталога, на шаблоне есть ссылка на боевую страницу.',
+    'Блок «Отраслевые решения» оставлен как на проде. BRD категорий предупреждает: две нарезки бизнеса на одном экране путают, решение открыто.',
+    'Мастер-план, строка 30 «Ретаргетинг посетителей, ушедших без заявки» (доработка): тем, кто ушёл с Пятницы или витрины без анкеты, онлайн-продажи показывают рекламу с той же акцией. На странице это не видно, поэтому без свича.',
+  ],
+  fork: {}, vocQ: 'Удалось найти подходящее предложение?', vocAfter: '#gSph, #gCat, [data-sort], [data-m], #smartSw, [data-fav], #mChips button',
+};
+</script>
+<script src="assets/данные.js"></script>
+<script src="assets/цвета-партнёров.js"></script>
+<script src="assets/футер.js"></script>
+<script src="assets/общее.js"></script>
+<script>
+(function () {
+  const D = window.DATA, O = D.offers, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const CV = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>';
+  const X = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  const XL = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+  const PPL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>';
+  $$('.cv').forEach(e => e.innerHTML = CV); $$('.clr').forEach(e => e.innerHTML = X); $$('.ppl').forEach(e => e.innerHTML = PPL);
+  $('#fsClose').innerHTML = XL; $('#shX').innerHTML = XL;
+  $$('.ind .ch').forEach(e => e.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>');
+  const { nf, plural } = window.fmt;
+  const nOffers = n => `${n} ${plural(n, 'предложение', 'предложения', 'предложений')}`;
+  const link = o => `оффер.html?id=${o.id}`;
+  const norm = s => (s || '').toLowerCase().replace(/ё/g, 'е');
+  const BOOST = {}; // «Горящие 2.0»: временно удвоенная выгода, демо
+  O.filter(o => !o.hot && !o.top && !o.new && /^(до )?\d{1,2}%$/.test(o.value.trim()) && parseInt(o.value.replace(/\D/g, ''), 10) <= 25).slice(0, 2).forEach((o, i) => {
+    const n = parseInt(o.value.replace(/\D/g, ''), 10); BOOST[o.id] = { was: o.value.trim(), now: o.value.trim().replace(String(n), String(n * 2)), end: ['2026-11-27T23:59:59+03:00', '2026-11-30T23:59:59+03:00'][i], till: ['до 27 ноября', 'до 30 ноября'][i] };
+  });
+  const HOT_END = {}; Object.keys(BOOST).forEach(id => { HOT_END[id] = Date.parse(BOOST[id].end); }); O.forEach(o => { if (o.hot) HOT_END[o.id] = Date.parse(o.hotEnd) || Date.now() + 864e5; }); // горящие как на проде 20.11
+
+  // ===================== КАК НА ПРОДЕ =====================
+  const A = { q: '', menu: 'Все предложения', types: [], page: 1, catsOpen: true };
+  const MENU_IC = { 'Все предложения': 'menu-all', 'Популярное': 'menu-popular', 'Горящие': 'menu-hot' };
+  const menuHTML = st => ['Все предложения', 'Популярное', 'Горящие'].map(m => `<button data-m="${m}" class="${st.menu === m ? 'on' : ''}"><img src="assets/img/${MENU_IC[m]}.png" alt="">${m}</button>`).join('')
+      + `<button data-tg class="${st.catsOpen ? '' : 'closed'}"><img src="assets/img/menu-cats.png" alt="">По категориям<span class="chev">${CV}</span></button>`
+      + (st.catsOpen ? D.catsOld.map(c => `<button data-m="${c}" class="sub ${st.menu === c ? 'on' : ''}">${c}</button>`).join('') : '');
+  function aMenu() { $('#aMenu').innerHTML = menuHTML(A); }
+  const TYPES = ['Бесплатно', 'Кэшбэк', 'Скидка'];
+  const bst = o => window.proto.keys.includes('hot2') && window.proto.on('hot2') && BOOST[o.id];
+  const favBtn = o => window.proto.keys.includes('cart') && window.proto.on('cart') ? `<button class="fav ${CART.includes(o.id) ? 'on' : ''}" data-fav="${o.id}" aria-label="Отложить в корзину выгоды" title="Отложить в корзину выгоды"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.4.7-1.2 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg></button>` : '';
+  function aCard(o) { const b = bst(o); return `<a class="oc" href="${link(o)}">${favBtn(o)}<div class="tp"><div>${o.hot || b ? `<span class="chip hot oh" data-hot="${o.id}">${hotTxt(o.id)}</span>` : ''}<div class="nm">${o.name}</div><div class="ds">${o.desc}</div></div><img class="lg" src="${o.logo}" alt=""></div><div><div class="lb">${b ? `<s>${b.was}</s>${b.till}` : o.label}</div><div class="vl">${b ? b.now : o.value}</div></div><span class="btn btn-xs btn-red get">Получить</span></a>`; }
+  function aRender() {
+    let L = O.slice();
+    if (A.menu === 'Популярное') L = L.filter(o => o.popRank < 999).sort((a, b) => a.popRank - b.popRank);
+    else if (A.menu === 'Горящие') L = L.filter(o => o.hot); // на проде 20.11 один горящий
+    else if (A.menu !== 'Все предложения') L = L.filter(o => o.cats.includes(A.menu));
+    if (A.types.length) L = L.filter(o => A.types.includes(o.type));
+    if (A.q) L = L.filter(o => norm(o.name + ' ' + o.desc).includes(norm(A.q)));
+    $('#aTitle').textContent = A.menu; $('#aCnt').textContent = nOffers(L.length);
+    if (!L.length) { $('#aList').innerHTML = `<div class="empty"><div class="ic"><img src="assets/img/nothing-found.svg" alt="" width="40"></div><div class="h4">Ничего не нашлось</div><p class="mut">Попробуйте по-другому сформулировать запрос</p></div><h3 class="h3" style="margin:48px 0 24px">Вам также может понравиться</h3><div class="cards">${O.filter(o => o.popRank < 999).slice(0, 4).map(aCard).join('')}</div>`; return; }
+    const shown = L.slice(0, A.page * 6); // прод: 6 карточек до «Смотреть ещё»
+    $('#aList').innerHTML = `<div class="cards">${shown.map(aCard).join('')}</div>` + (shown.length < L.length ? `<div class="center"><button class="btn btn-m btn-grey" id="aMore">Смотреть ещё</button></div>` : '');
+  }
+  $('#aMenu').addEventListener('click', e => { const t = e.target.closest('[data-tg]'); if (t) { A.catsOpen = !A.catsOpen; aMenu(); return; } const b = e.target.closest('[data-m]'); if (!b) return; A.menu = b.dataset.m; A.page = 1; aMenu(); aRender(); });
+  $('#aList').addEventListener('click', e => { if (e.target.id === 'aMore') { A.page++; aRender(); } });
+  $('#aTypes').innerHTML = TYPES.map(t => `<label>${t}<input type="checkbox" value="${t}"></label>`).join('');
+  $('#aTypesBtn').onclick = e => { e.stopPropagation(); $('#aTypes').classList.toggle('open'); $('#aTypesBtn').parentElement.classList.toggle('open', $('#aTypes').classList.contains('open')); };
+  $('#aTypes').addEventListener('change', () => { A.types = $$('#aTypes input:checked').map(i => i.value); A.page = 1; aRender(); });
+  $('#aQ').addEventListener('input', e => { A.q = e.target.value; $('#aSinp').classList.toggle('has', !!A.q); A.page = 1; aRender(); });
+
+  // ===================== С ДОРАБОТКАМИ =====================
+  const GEN = { 'Розничная торговля': 'розничной торговли', 'Строительство и ремонт': 'строительства и ремонта', 'Грузоперевозки': 'грузоперевозок', 'Оптовая торговля': 'оптовой торговли', 'Аренда недвижимости': 'аренды недвижимости', 'Финансы и консалтинг': 'финансов и консалтинга', 'Производство': 'производства', 'ИТ и разработка': 'ИТ и разработки', 'Автобизнес': 'автобизнеса', 'Реклама и дизайн': 'рекламы и дизайна', 'Красота и фитнес': 'красоты и фитнеса', 'Кафе и рестораны': 'кафе и ресторанов' };
+  // фильтр над каталогом (в BRD «список сортировки»; Максим 20.11: это фильтр, пункт отбирает предложения)
+  const FILTERS = () => ['Все', 'Популярные'].concat(on('top') ? ['ТОП-10'] : [], ['Горящие', 'Бесплатные', 'С кэшбэком', 'Со скидками'], on('new') ? ['Новые'] : []); // порядок как в BRD категорий v77, сц. 5
+  // Каждая доработка читает свой флаг (свичи в панели прототипа). Выключенная часть показывает вид прода:
+  // cats → меню разделов, sort → «Типы предложений», card → старая карточка, empty → пустая выдача прода и т.д.
+  // сортировка, «Ничего не нашлось» и мобильный флоу входят в «Категории бизнеса», новая карточка выходит со счётчиком (Максим 20.11)
+  const on = k => window.proto.on({ sort: 'cats', empty: 'cats', mobile: 'cats', card: 'counter' }[k] || k);
+  const S = { q: '', sph: 'Все', cat: 'Все', sort: 'Все', page: 1, openS: false, openC: false, smart: false, menu: 'Все предложения', catsOpen: true, types: [] };
+  const isMob = () => matchMedia('(max-width: 768px)').matches;
+  const isFs = () => $('#drCat').classList.contains('fs');
+  const mflow = () => on('mobile') && on('cats');
+  const smartOn = () => on('smart') && S.smart;
+  const isHot = o => !!o.hot || !!bst(o); // «Горящий» на проде; «Горящие 2.0» добавляют временно улучшенные
+  const PAGE = () => isMob() && mflow() && !isFs() ? 5 : 6;
+  const closeFs = () => { $('#drCat').classList.remove('fs'); document.body.style.overflow = ''; };
+  function radios(id, list, cur, open, key) {
+    let vis = ['Все'].concat(list);
+    if (!open) { vis = vis.slice(0, 5); if (cur !== 'Все' && !vis.includes(cur)) vis.push(cur); }
+    $(id).innerHTML = vis.map(v => `<label class="radio"><input type="radio" name="${key}" value="${v}" ${v === cur ? 'checked' : ''}>${v}</label>`).join('')
+      + `<button class="more-l" data-more="${key}">${open ? 'Свернуть' : 'Смотреть все'} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:rotate(${open ? 180 : 0}deg)"><path d="m6 9 6 6 6-6"/></svg></button>`;
+  }
+  function filtered() {
+    let L = O.slice();
+    if (on('cats')) {
+      if (S.sph !== 'Все' && S.sph !== 'Другое') L = L.filter(o => o.spheres.includes(S.sph)); // «Другое» не тупик: весь каталог
+      if (S.cat !== 'Все') L = L.filter(o => o.cats_new.includes(S.cat));
+    } else { // разделы прода
+      if (S.menu === 'Популярное') L = L.filter(o => o.popRank < 999).sort((a, b) => a.popRank - b.popRank);
+      else if (S.menu === 'Горящие') L = L.filter(isHot);
+      else if (S.menu !== 'Все предложения') L = L.filter(o => o.cats.includes(S.menu));
+    }
+    if (S.q && !smartOn()) L = L.filter(o => norm(on('cats') ? o.name : o.name + ' ' + o.desc).includes(norm(S.q)));
+    if (!on('sort')) { if (S.types.length) L = L.filter(o => S.types.includes(o.type)); return L; }
+    const FL = { 'Популярные': o => o.popRank < 999, 'Горящие': isHot, 'С кэшбэком': o => o.type === 'Кэшбэк', 'Со скидками': o => o.type === 'Скидка', 'Бесплатные': o => o.type === 'Бесплатно', 'ТОП-10': o => o.top, 'Новые': o => o.new }[S.sort];
+    if (FL) L = L.filter(FL);
+    if (S.sort === 'Популярные') L.sort((a, b) => a.popRank - b.popRank);
+    if (S.sort === 'ТОП-10') L.sort((a, b) => b.m30 - a.m30);
+    return L;
+  }
+  function slot(o) {
+    if (isHot(o)) return `<span class="chip hot" data-hot="${o.id}">${hotTxt(o.id)}</span>`;
+    if (on('new') && o.new) return `<span class="chip new">НОВОЕ</span>`;
+    if (on('top') && o.top) return `<span class="chip top">ТОП-10</span>`;
+    return '';
+  }
+  function hotTxt(id) { const ms = Math.max(0, HOT_END[id] - Date.now()); const p = n => String(n).padStart(2, '0'); return `${p(Math.floor(ms / 864e5))}:${p(Math.floor(ms % 864e5 / 36e5))}:${p(Math.floor(ms % 36e5 / 6e4))}:${p(Math.floor(ms % 6e4 / 1e3))}`; }
+  const showCnt = o => on('counter') && o.users >= 20;
+  const cnt = o => showCnt(o) ? `${nf(o.users)} ${plural(o.users, 'участник', 'участника', 'участников')}` : '';
+  function nCard(o) {
+    const v = `${o.label} ${o.value}`.replace(/\s+/g, ' ').replace(/(\d) (\d{3})/g, '$1\u202f$2').replace(/ ₽/g, '\u00a0₽');
+    return `<a class="nc" href="${link(o)}" style="--tint:${((window.TINT || {})[o.id] || {}).c || 'var(--grey)'}">${favBtn(o)}<div class="tp"><div class="ds"><b>${o.name}</b> — ${o.desc.charAt(0).toLowerCase() + o.desc.slice(1)}</div><img class="lg" src="${o.logo}" alt=""></div>
+      <div class="in">${bst(o) ? `<div class="boost"><s>${o.label} ${bst(o).was}</s><span class="x2">×2</span><span>${bst(o).till}</span></div>` : ''}<div class="vl">${bst(o) ? `${o.label} ${bst(o).now}` : v}</div><div class="ft"><span>${cnt(o)}</span>${slot(o)}</div></div>
+      <div class="mrow"><div class="meta">${showCnt(o) ? `<span>${PPL} ${nf(o.users)}</span>` : ''}${slot(o)}</div><div class="ds"><b>${o.name}</b> — ${o.desc}</div><div class="vl">${v}</div></div><span class="arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></span></a>`;
+  }
+  const card = o => on('card') ? nCard(o) : aCard(o);
+  function title() {
+    if (smartOn() && S.q) return 'Подборка по задаче';
+    if (!on('cats')) return S.menu;
+    const s = S.sph !== 'Все' && S.sph !== 'Другое' ? GEN[S.sph] : '';
+    if (S.cat !== 'Все' && s) return `${S.cat} для ${s}`;
+    if (S.cat !== 'Все') return S.cat;
+    if (s) return `Предложения для ${s}`;
+    return 'Все предложения';
+  }
+  // «Умный поиск» (этап г): задача словами → категории и слова → подборка
+  const SMART = [[/бухгал|отчет|налог|учет|ндс|1с/, 'Бухгалтерия и финансы'], [/реклам|продвиж|клиент|маркет(инг)?\b|продаж|smm|сайт/, 'Маркетинг и продажи'], [/маркетплейс|wildberries|ozon|озон|вб\b/, 'Маркетплейсы'], [/доставк|логист|перевоз|топлив|дизел|бензин|авто/, 'Транспорт и доставка'], [/связ|интернет|телефон|wi-?fi|номер/, 'Телефония и интернет'], [/сотрудник|ваканс|персонал|найм|обучен|курс/, 'Обучение и персонал'], [/юрист|юридич|договор|регистрац/, 'Юридические услуги'], [/вэд|импорт|экспорт|валют|китай/, 'Всё для ВЭД'], [/подпис|эдо|документооборот|crm|управлен|касс|автоматиз/, 'Управление'], [/товар|закуп|оборудован|канцел|мебел/, 'Товары для бизнеса']];
+  function smart(q) {
+    const s = norm(q); const cats = SMART.filter(([rx]) => rx.test(s)).map(x => x[1]);
+    let sph = null; Object.keys(GEN).forEach(k => { if (s.includes(norm(k).split(' ')[0].slice(0, 5))) sph = k; });
+    if (/кафе|ресторан|общепит|кофейн/.test(s)) sph = 'Кафе и рестораны'; if (/салон|красот|фитнес|барбер/.test(s)) sph = 'Красота и фитнес'; if (/магазин|розниц/.test(s)) sph = 'Розничная торговля';
+    let L = O.filter(o => (cats.length ? cats.some(c => o.cats_new.includes(c)) : true) && (sph ? o.spheres.includes(sph) || cats.length : true));
+    const words = s.split(/\s+/).filter(w => w.length > 3);
+    L = L.map(o => ({ o, sc: (cats.filter(c => o.cats_new.includes(c)).length * 3) + (sph && o.spheres.includes(sph) ? 2 : 0) + words.filter(w => norm(o.name + ' ' + o.desc).includes(w.slice(0, 5))).length * 2 + (o.top ? 1 : 0) })).filter(x => x.sc > 0).sort((a, b) => b.sc - a.sc).map(x => x.o);
+    return { L, cats, sph };
+  }
+  function dRender() {
+    $('#drCat').classList.toggle('mflow', mflow()); if (!mflow() && isFs()) closeFs();
+    if (on('cats')) { radios('#gSph', D.spheres, S.sph, S.openS, 'sph'); radios('#gCat', D.catsNew, S.cat, S.openC, 'cat'); $('#resetBtn').hidden = S.sph === 'Все' && S.cat === 'Все'; }
+    else $('#dMenu').innerHTML = menuHTML(S);
+    $('#sortBtn').firstChild.textContent = S.sort + ' ';
+    $('#sortDd').innerHTML = FILTERS().map(s => `<button data-sort="${s}">${s}${s === S.sort ? ' <b>✓</b>' : ''}</button>`).join('');
+    $('#smartSw').classList.toggle('on', smartOn()); $('#drCat > .sbar').classList.toggle('smart', smartOn());
+    $('#drCat > .cat-grid').classList.toggle('pm', !on('cats'));
+    $('#dQ').placeholder = smartOn() ? 'Опишите задачу: например, «бухгалтерия для ИП» или «реклама для кафе»' : on('cats') ? 'Название партнёра' : 'Найти предложения';
+    chips();
+    let L, ans = '';
+    if (smartOn() && S.q.trim().length > 2) {
+      const r = smart(S.q); L = r.L;
+      ans = `<div class="smart-ans"><div class="who"><span>А</span>Умный поиск · этап (г)</div>${L.length ? `<p>Подобрал ${nOffers(L.length)} под задачу «${S.q}»${r.cats.length ? `: ${r.cats.join(', ').toLowerCase()}` : ''}${r.sph ? `, с учётом категории бизнеса «${r.sph}»` : ''}. Сверху те, что лучше подходят.</p>` : `<p>Не нашёл предложений под «${S.q}». Попробуйте описать задачу иначе или выберите категорию слева.</p>`}</div>`;
+    } else L = filtered();
+    $('#smartAns').innerHTML = ans;
+    $('#dTitle').textContent = title(); $('#dCnt').textContent = nOffers(L.length);
+    if (!L.length) {
+      const pop = O.filter(o => o.popRank < 999);
+      $('#dList').innerHTML = on('empty')
+        ? `<div class="empty"><div class="ic"><img src="assets/img/nothing-found.svg" alt="" width="40"></div><div class="h4">Ничего не нашлось</div><p class="mut">Попробуйте сбросить фильтры и поискать ещё раз</p><button class="btn btn-m btn-grey" data-reset>Сбросить фильтры</button></div>
+        <h3 class="h3" style="margin:48px 0 24px">Вам также может понравиться</h3><div class="cards">${pop.slice(0, 6).map(card).join('')}</div>`
+        : `<div class="empty"><div class="ic"><img src="assets/img/nothing-found.svg" alt="" width="40"></div><div class="h4">Ничего не нашлось</div><p class="mut">Попробуйте по-другому сформулировать запрос</p></div><h3 class="h3" style="margin:48px 0 24px">Вам также может понравиться</h3><div class="cards">${pop.slice(0, 4).map(card).join('')}</div>`;
+      return;
+    }
+    const shown = L.slice(0, S.page * PAGE());
+    $('#dList').innerHTML = `<div class="cards">${shown.map(card).join('')}</div>` + (shown.length < L.length ? `<div class="center"><button class="btn btn-m btn-grey" id="dMore">${isMob() && mflow() && !isFs() ? 'Смотреть все' : 'Смотреть ещё'}</button></div>` : '');
+  }
+  function chips() {
+    const sv = S.sph !== 'Все', cv = S.cat !== 'Все';
+    $('#mChips').innerHTML = (on('sort') ? `<button data-sh="sort" class="${S.sort !== 'Все' ? 'set' : ''}">${S.sort === 'Все' ? 'Фильтр' : S.sort} ${CV}</button>` : '') + `<button data-sh="sph" class="${sv ? 'set' : ''}">${sv ? 'Категория бизнеса: ' + S.sph : 'Категория бизнеса'} ${CV}</button><button data-sh="cat" class="${cv ? 'set' : ''}">${cv ? S.cat : 'Категории'} ${CV}</button>`;
+  }
+  // события
+  $('#drCat').addEventListener('change', e => { const r = e.target.closest('input[type=radio]'); if (!r) return; S[r.name] = r.value; S.page = 1; dRender(); });
+  $('#drCat').addEventListener('click', e => {
+    const m = e.target.closest('[data-more]'); if (m) { const k = m.dataset.more === 'sph' ? 'openS' : 'openC'; S[k] = !S[k]; dRender(); return; }
+    if (e.target.closest('[data-reset]') || e.target.id === 'resetBtn') { S.sph = 'Все'; S.cat = 'Все'; S.q = ''; $('#dQ').value = ''; $('#dSinp').classList.remove('has'); S.page = 1; dRender(); return; }
+    if (e.target.id === 'dMore') { if (isMob() && mflow() && !isFs()) { $('#drCat').classList.add('fs'); document.body.style.overflow = 'hidden'; } else S.page++; dRender(); return; }
+    const tg = e.target.closest('#dMenu [data-tg]'); if (tg) { S.catsOpen = !S.catsOpen; dRender(); return; }
+    const mm = e.target.closest('#dMenu [data-m]'); if (mm) { S.menu = mm.dataset.m; S.page = 1; dRender(); return; }
+    const sb = e.target.closest('[data-sort]'); if (sb) { S.sort = sb.dataset.sort; S.page = 1; $('#sortDd').classList.remove('open'); dRender(); return; }
+    const sh = e.target.closest('[data-sh]'); if (sh) { openSheet(sh.dataset.sh); return; }
+  });
+  $('#fsClose').onclick = () => { closeFs(); S.page = 1; dRender(); };
+  // «Типы предложений» прода в новом каталоге, когда сортировка выключена
+  $('#dTypes').innerHTML = TYPES.map(t => `<label>${t}<input type="checkbox" value="${t}"></label>`).join('');
+  $('#dTypesBtn').onclick = e => { e.stopPropagation(); $('#dTypes').classList.toggle('open'); $('#dTypesBtn').parentElement.classList.toggle('open', $('#dTypes').classList.contains('open')); };
+  $('#dTypes').addEventListener('change', e => { e.stopPropagation(); S.types = $$('#dTypes input:checked').map(i => i.value); S.page = 1; dRender(); });
+  $('#sortBtn').onclick = e => { e.stopPropagation(); $('#sortDd').classList.toggle('open'); };
+  document.addEventListener('click', e => { if (!e.target.closest('.types')) $$('.dd').forEach(d => d.classList.remove('open')); });
+  $('#dQ').addEventListener('input', e => { S.q = e.target.value; $('#dSinp').classList.toggle('has', !!S.q); S.page = 1; dRender(); });
+  $$('[data-clr]').forEach(b => b.onclick = () => { const i = $('#' + b.dataset.clr); i.value = ''; i.dispatchEvent(new Event('input')); });
+  $('#smartSw').onclick = () => { S.smart = !S.smart; S.page = 1; dRender(); $('#dQ').focus(); };
+  // свичи доработок: перерисовать каталог; скрытые части сбрасывают своё состояние
+  document.addEventListener('drchange', () => {
+    if (!on('smart')) S.smart = false;
+    if (!on('sort') || !FILTERS().includes(S.sort)) S.sort = 'Все';
+    if (on('sort')) { S.types = []; $$('#dTypes input').forEach(i => { i.checked = false; }); }
+    S.page = 1; dRender();
+  });
+  // шторки (мобильный)
+  let shK = null, shV = null;
+  function openSheet(k) {
+    shK = k; shV = k === 'sort' ? S.sort : k === 'sph' ? S.sph : S.cat;
+    const list = k === 'sort' ? FILTERS() : ['Все'].concat(k === 'sph' ? D.spheres : D.catsNew);
+    $('#shT').textContent = k === 'sort' ? 'Фильтр' : k === 'sph' ? 'Категория бизнеса' : 'Категории партнёров';
+    $('#shB').innerHTML = list.map(v => `<label class="${v === shV ? 'on' : ''}"><input type="radio" name="sh" value="${v}">${v}</label>`).join('');
+    $('#sheet').classList.add('open');
+  }
+  $('#shB').addEventListener('click', e => { const l = e.target.closest('label'); if (!l) return; shV = l.querySelector('input').value; $$('#shB label').forEach(x => x.classList.toggle('on', x === l)); });
+  const closeSheet = () => $('#sheet').classList.remove('open');
+  $('#shX').onclick = closeSheet; $('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet(); });
+  $('#shOk').onclick = () => { if (shK === 'sort') S.sort = shV; else if (shK === 'sph') S.sph = shV; else S.cat = shV; S.page = 1; closeSheet(); if (shK !== 'sort' && !$('#drCat').classList.contains('fs') && matchMedia('(max-width: 768px)').matches) { $('#drCat').classList.add('fs'); document.body.style.overflow = 'hidden'; } dRender(); };
+  $('#shReset').onclick = () => { if (shK === 'sort') S.sort = 'Все'; else if (shK === 'sph') S.sph = 'Все'; else S.cat = 'Все'; S.page = 1; closeSheet(); dRender(); };
+  // заголовок блока на мобайле
+  const mt = () => { $('#mTitle').style.display = isMob() ? 'block' : 'none'; };
+  window.addEventListener('resize', () => { mt(); dRender(); }); mt();
+  setInterval(() => $$('[data-hot]').forEach(c => c.textContent = hotTxt(+c.dataset.hot)), 1000);
+
+  // SEO-список «Другие предложения»
+  $('#seo').innerHTML = (D.seoVit || []).map(g => `<div class="seo-g"><h4>${g.title}</h4><div class="seo-links">${g.links.map(l => `<a href="${l.href}" target="_blank" rel="noopener">${l.t}</a>`).join('')}</div></div>`).join('');
+
+  // «Корзина выгоды»: выбранные предложения копятся и уходят в заявку на счёт
+  function cartDraw() {
+    let bar = document.getElementById('cartbar');
+    const on = window.proto.keys.includes('cart') && window.proto.on('cart');
+    let hint = document.getElementById('cartHint'); const list = document.getElementById('dList');
+    if (on && !hint && list) { hint = document.createElement('div'); hint.id = 'cartHint'; hint.className = 'cart-hint'; hint.dataset.f = 'cart'; hint.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-8.6C1 9.2 2.6 5 6.4 5c2.2 0 3.6 1.3 4.4 2.5h2.4C14 6.3 15.4 5 17.6 5 21.4 5 23 9.2 21.3 12.4 19 16.6 12 21 12 21z"/></svg><span>Сердечко на карточке откладывает предложение в корзину выгоды. Откроете счёт, и мы сразу подключим всё отложенное</span>'; }
+    if (hint) { const side = [...document.querySelectorAll('.cat-grid > .side, .cat-grid > nav.side')].find(e => e.offsetParent); if (side && hint.parentElement !== side) side.append(hint); else if (!side && list && hint.nextElementSibling !== list) list.before(hint); } // под заголовком каталога текст не ставим
+    if (!on || !CART.length) { if (bar) bar.remove(); const f = document.getElementById('cartInForm'); if (f) f.remove(); return; }
+    if (!bar) { bar = document.createElement('div'); bar.className = 'cartbar'; bar.id = 'cartbar'; bar.setAttribute('data-dr', 'Корзина выгоды · гипотеза'); document.body.appendChild(bar); }
+    const L = CART.map(id => O.find(o => o.id === id)).filter(Boolean);
+    const rub = L.reduce((t, o) => { const m = (o.label + ' ' + o.value).match(/(\d[\d\s\u202f]*)\s*₽/); return t + (m ? +m[1].replace(/\D/g, '') : 0); }, 0);
+    bar.innerHTML = `<div class="pan"><div class="h4">Моя выгода</div><p class="s mut" style="margin:4px 0 8px">Откройте счёт, и мы сразу подключим выбранное</p>${L.map(o => `<div class="row"><img src="${o.logo}" alt=""><div><b>${o.name}</b><br><span class="mut">${o.label} ${o.value}</span></div><button data-unfav="${o.id}" aria-label="Убрать">✕</button></div>`).join('')}${rub ? `<p style="margin-top:12px">Выгода в рублях: <b>до ${nf(rub)} ₽</b> и проценты по остальным</p>` : ''}<a class="btn btn-m btn-red" href="#form" style="width:100%;margin-top:16px" id="cartGo">Открыть счёт и забрать выгоду</a></div><button type="button" id="cartBtn">♥ Моя выгода <i>${L.length}</i></button>`;
+    let fi = document.getElementById('cartInForm');
+    const form = document.querySelector('#form .form-card') || document.getElementById('form');
+    if (form) { if (!fi) { fi = document.createElement('div'); fi.id = 'cartInForm'; fi.className = 'cart-in-form'; form.prepend(fi); } fi.innerHTML = `<b>В заявку добавим вашу выгоду:</b> ${L.map(o => o.name).join(', ')}`; }
+  }
+  let CART = []; try { CART = JSON.parse(localStorage.getItem('proto-cart') || '[]'); } catch (e) {}
+  const cartSave = () => { try { localStorage.setItem('proto-cart', JSON.stringify(CART)); } catch (e) {} };
+  document.addEventListener('click', e => {
+    const f = e.target.closest('[data-fav]'); if (f) { e.preventDefault(); e.stopPropagation(); const id = +f.dataset.fav; CART = CART.includes(id) ? CART.filter(x => x !== id) : CART.concat(id); cartSave(); if (CART.includes(id) && CART.length === 1) toast('Отложено в корзину выгоды, она справа внизу. Откроете счёт, и подключим всё разом'); f.classList.toggle('on', CART.includes(id)); cartDraw(); return; }
+    const u = e.target.closest('[data-unfav]'); if (u) { CART = CART.filter(x => x !== +u.dataset.unfav); cartSave(); dRender(); aRender(); cartDraw(); return; }
+    if (e.target.closest('#cartBtn')) { document.getElementById('cartbar').classList.toggle('open'); return; }
+    if (e.target.closest('#cartGo')) document.getElementById('cartbar').classList.remove('open');
+  }, true);
+  document.addEventListener('drchange', () => { aRender(); cartDraw(); });
+
+  // виджет «Топ-10 за месяц»
+  const T10 = O.filter(o => o.top).sort((a, b) => b.m30 - a.m30).slice(0, 10);
+  $('#t10row').innerHTML = T10.map((o, i) => `<a class="t10" href="${link(o)}"><div class="nm">${o.name}</div><div class="ds">${o.label} ${o.value}</div><img class="lg" src="${o.logo}" alt=""><span class="num">${i + 1}</span></a>`).join('');
+  const t10 = $('#t10row'), t10step = () => (t10.firstElementChild ? t10.firstElementChild.offsetWidth : 264) + parseFloat(getComputedStyle(t10).columnGap || 24);
+  const t10pages = () => Math.max(1, Math.ceil((t10.scrollWidth - t10.clientWidth - 2) / t10step()) + 1);
+  const t10dots = () => { const n = t10pages(), cur = Math.min(n - 1, Math.round(t10.scrollLeft / t10step())); $('#t10dots').innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i === cur ? 'on' : ''}"></i>`).join(''); $('#t10L').disabled = t10.scrollLeft < 2; $('#t10R').disabled = t10.scrollLeft > t10.scrollWidth - t10.clientWidth - 2; };
+  $('#t10L').onclick = () => t10.scrollBy({ left: -t10step(), behavior: 'smooth' }); $('#t10R').onclick = () => t10.scrollBy({ left: t10step(), behavior: 'smooth' });
+  t10.addEventListener('scroll', t10dots); window.addEventListener('resize', t10dots); t10dots();
+  const y360 = O.find(o => /360/.test(o.name)); if (y360) $('#ya360').href = link(y360);
+
+  { const q = new URLSearchParams(location.search).get('sph'); if (q && D.spheres.includes(q)) S.sph = q; }
+  document.addEventListener('protofind', e => { if (e.detail !== 'new') return; while (!$('#dList .chip.new') && $('#dMore') && S.page < 30) { S.page++; dRender(); } }); // «Показать на странице»: новые не на первой странице каталога
+  aMenu(); aRender(); dRender(); setTimeout(cartDraw, 0);
+})();
+</script>
+<script>
+// ===== гипотезы мастер-плана: 25 сезонные подборки, 21 пакет для N2B (20.11) =====
+(function () {
+  const O = window.DATA.offers, $ = s => document.querySelector(s);
+  const tile = (o, extra = '', tg = o.cats_new[0] || 'Партнёр') => `<a class="stile" href="оффер.html?id=${o.id}">${extra}<img src="${o.logo}" alt=""><span><span class="tg">${tg}</span><br><b>${o.name}</b></span><span class="v">${o.label} ${o.value}</span></a>`;
+  // 25. подборки: 24 темы года, новая каждые две недели (1 и 16 числа), текущая по дате визита (Максим 20.11).
+  // В мастер-плане названы только Новый год, 8 Марта и 1 сентября; остальные темы и ритм придуманы. Состав правилом по категориям каталога.
+  const MKT = 'Маркетинг и продажи', GDS = 'Товары для бизнеса', DLV = 'Транспорт и доставка', MP = 'Маркетплейсы', ACC = 'Бухгалтерия и финансы', MGT = 'Управление', EDU = 'Обучение и персонал', LAW = 'Юридические услуги', TEL = 'Телефония и интернет';
+  const SZ = [ // 12 месяцев (Максим 22.11: по две недели слишком подробно)
+    ['Старт года: бухгалтерия, управление и связь', [ACC, MGT, TEL, LAW]],
+    ['К 14 и 23 Февраля: реклама, подарки и доставка', [MKT, GDS, DLV, MP]],
+    ['К 8 Марта: реклама и доставка', [MKT, DLV, MP, GDS]],
+    ['Весенний сезон: продвижение и маркетплейсы', [MKT, MP, GDS, DLV]],
+    ['Подготовка к летнему сезону', [MKT, GDS, DLV, MP]],
+    ['Итоги полугодия и летние распродажи', [ACC, MP, MKT, DLV]],
+    ['Офис, связь и найм к осени', [TEL, EDU, MGT, GDS]],
+    ['К 1 сентября: реклама, товары и обучение', [MKT, GDS, EDU, DLV]],
+    ['Деловой сезон: продажи и обучение команды', [MKT, MGT, EDU, TEL]],
+    ['Отчётность и подготовка к распродажам', [ACC, MP, MKT, DLV]],
+    ['Чёрная пятница и подготовка к Новому году', [MKT, MP, GDS, DLV]],
+    ['К Новому году: реклама, упаковка и доставка', [MKT, GDS, DLV, MP]],
+  ];
+  const MS = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'], MF = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+  const sp = s => s.replace(/\s/g, ' '); // движок переносов ставит в тексты неразрывные пробелы, ключи сравниваем без них
+  const pick = cats => { const out = []; cats.forEach(c => { const o = O.filter(x => x.cats_new.some(z => sp(z) === sp(c)) && !out.some(y => y.o === x)).sort((a, b) => b.m30 - a.m30)[0]; if (o) out.push({ o, c }); }); return out; };
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  let D0 = (() => { const q = new URLSearchParams(location.search).get('d'), d = q ? new Date(q + 'T12:00') : new Date(); return isNaN(d) ? new Date() : d; })(), cur = 0, sel = 0;
+  const idxOf = d => d.getMonth();
+  const per = i => MF[i];
+  // хиро: подборка месяца; выбора категорий здесь нет, он в каталоге (Максим 22.11)
+  const offsFor = i => { const used = pick(SZ[i][1]).map(x => x.o); O.slice().sort((a, b) => b.m30 - a.m30).forEach(o => { if (used.length < 4 && !used.includes(o)) used.push(o); }); return used.slice(0, 4); };
+  const drawCal = () => { $('#seasonCal').innerHTML = MS.map((m, i) => `<button class="pc${i === cur ? ' now' : ''}${i === sel ? ' sel' : ''}${i < cur ? ' past' : ''}" data-si="${i}" aria-pressed="${i === sel}" aria-label="${per(i)}: ${SZ[i][0]}" title="${SZ[i][0]}">${m}</button>`).join(''); };
+  const drawS = i => { sel = i; const st = i === cur ? ['now', 'Сейчас'] : i > cur ? ['soon', 'Скоро'] : ['past', 'Прошла']; $('#seasonSt').className = 'sst ' + st[0]; $('#seasonSt').textContent = st[1]; $('#seasonP').textContent = per(i); $('#seasonL').textContent = SZ[i][0];
+    $('#seasonG').innerHTML = offsFor(i).map(o => `<a class="sr" href="оффер.html?id=${o.id}"><img src="${o.logo}" alt=""><div><b>${o.name}</b><small>${o.cats_new[0] || ''}</small></div><span>${o.label} ${o.value}</span></a>`).join(''); drawCal(); };
+  const setDate = d => { D0 = d; cur = idxOf(d); $('#seasonD').value = iso(d); drawS(cur); };
+  setDate(D0);
+  $('#seasonCal').addEventListener('click', e => { const b = e.target.closest('[data-si]'); if (b) drawS(+b.dataset.si); });
+  $('#seasonD').addEventListener('change', e => { const d = new Date(e.target.value + 'T12:00'); if (!isNaN(d)) setDate(d); });
+  document.addEventListener('click', e => { if (e.target.closest('[data-season-all]')) { e.preventDefault(); toast('Отдельная SEO-страница подборки в прототипе не собрана'); } });
+  // 16. бегущая строка: счётчики хиро (участники, выгода) и события каталога
+  const vc = ((document.getElementById('vitCount') || {}).textContent || '').trim(), vs = '318\u00a0млн\u00a0₽'; // демо-сумма, в хиро её нет
+  const top1 = O.filter(o => o.top).sort((a, b) => b.m30 - a.m30)[0], nNew = O.filter(o => o.new).length;
+  window.ticker(document.getElementById('lentaT'), [
+    { icon: '<img class="av" src="assets/img/avatars.png" alt="">', label: 'Получили выгоду', value: () => vc, href: '#catalog' },
+    { icon: '<em>₽</em>', label: 'Клиенты сэкономили у партнёров', value: () => vs, href: '#catalog', key: 'save' }, // сумма экономии только в ленте, ключ save (Максим 22.11)
+    { icon: O.slice(0, 3).map(o => `<img src="${o.logo}" alt="">`).join(''), label: 'Выбирайте в каталоге', value: () => `${O.length} предложений`, href: '#catalog' },
+    { icon: O.filter(o => o.new).slice(0, 3).map(o => `<img src="${o.logo}" alt="">`).join(''), label: 'Новое за месяц', value: () => `${nNew} ${window.fmt.plural(nNew, 'предложение', 'предложения', 'предложений')}`, href: '#catalog' },
+    { icon: top1 ? `<img src="${top1.logo}" alt="">` : '', label: 'Первое место в Топ-10 за месяц', value: () => top1 ? top1.name : '', href: top1 ? 'оффер.html?id=' + top1.id : '#catalog' }]);
+  // пакет: два первых из «Популярного» + приветственные баллы + продукты банка
+  const two = O.filter(o => o.popRank < 999).sort((a, b) => a.popRank - b.popRank).slice(0, 2);
+  $('#packG').innerHTML = two.map(o => tile(o, '<span class="chip-up">В пакете выгоднее</span>')).join('')
+    + '<div class="stile"><span class="bank">А</span><span><span class="tg">Альфа‑Выгодно</span><br><b>Приветственные баллы</b></span><span class="v">Сумма по правилам пакета</span></div>'
+    + '<div class="stile"><span class="bank">₽</span><span><span class="tg">Альфа‑Банк</span><br><b>Расчётный счёт и бизнес-карта</b></span><span class="v">Подключить вместе</span></div>';
+})();
+</script>
+</body>
+</html>

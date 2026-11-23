@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Предложение партнёра: прод и доработки</title>
+<link rel="stylesheet" href="assets/общее.css">
+<style>
+  .top { background: var(--tint, #D6E6FF); }
+  .hdr.light { background: transparent; color: var(--text); }
+  .hdr.light .nav a { color: var(--text); } .hdr.light .nav a:hover { background: rgba(15, 25, 55, .06); }
+  .hdr.light .search-btn svg { filter: invert(1); }
+  .hdr.light .btn-glass { background: rgba(15, 25, 55, .1); color: var(--text); }
+  .ohero { padding: 56px 0 136px; }
+  .ohero .g { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: center; }
+  .ohero .lead { margin-top: 24px; max-width: 520px; }
+  .ohero .btn { margin-top: 40px; }
+  .ohero .big { width: 236px; height: 236px; border-radius: 56px; justify-self: center; box-shadow: 0 20px 60px rgba(30, 60, 120, .18); background: #fff; }
+  .tag-new { display: inline-flex; height: 24px; padding: 0 9px; align-items: center; border-radius: 6px; background: var(--new); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px; margin-bottom: 16px; }
+  .cnt-o { margin-top: 20px; color: var(--text-2); font-size: 15px; }
+  .cond { background: var(--grey); border-radius: 32px; padding: 32px; }
+  .oc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; } .oc-list li { position: relative; padding-left: 28px; font-size: 16px; line-height: 24px; } .oc-list li::before { content: ''; position: absolute; left: 6px; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+  .oc-more { display: inline-block; margin: 24px 0 0 28px; font-weight: 500; border-bottom: 1px solid currentColor; }
+  .cond .btn { margin-top: 20px; white-space: normal; height: auto; min-height: 48px; padding: 12px 20px; text-align: center; }
+  @media (max-width: 960px) { .ohero .g { grid-template-columns: 1fr; } .ohero .big { width: 160px; height: 160px; border-radius: 40px; } }
+  .otags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .otags .chip { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: .3px; color: #fff; }
+  .chip.top { background: var(--top); } .chip.hot { background: var(--hot); font-variant-numeric: tabular-nums; }
+  .ohero .act2 { display: flex; align-items: center; gap: 16px; margin-top: 40px; flex-wrap: wrap; } .ohero .act2 .btn { margin-top: 0; }
+  .pcount.light span { color: var(--text-2); } .pcount.light b { color: var(--text); }
+  .oboost { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; font-size: 16px; color: var(--text-2); } .oboost .x2 { background: #FFE7E5; color: var(--red); font-weight: 700; border-radius: 6px; padding: 0 6px; }
+
+  /* страница Яндекс Директа как на проде (5 скринов Максима 22.11) */
+  .hdr.light .wrap { height: 82px; } .hdr.light .nav a { font-weight: 500; }
+  .ohero { padding: 68px 0 72px; } .ohero .g { grid-template-columns: 570px 1fr; gap: 0; }
+  .ohero .big { box-shadow: none; background: none; border-radius: 0; } /* на цветном хиро у логотипа не торчат белые углы */ .ohero .big.plain { border-radius: 0; background: none; width: 240px; height: 240px; }
+  .otags[hidden] { display: none; }
+  .otiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 40px; } .otiles[hidden] { display: none; }
+  .otile { position: relative; box-sizing: border-box; height: 198px; border-radius: 24px; padding: 24px; background: rgba(15, 25, 55, .06); }
+  .otile b { display: block; font-size: 18px; line-height: 22px; letter-spacing: .38px; } .otile p { margin-top: 4px; font-size: 14px; line-height: 20px; }
+  .otile img { position: absolute; right: 24px; bottom: 24px; width: 48px; height: 48px; mix-blend-mode: multiply; }
+  .sec-light.flat { border-radius: 0; }
+  .tabs[data-tabs="o"] button { min-width: 129px; } .tabs[data-tabs="faq"] button { min-width: 204px; }
+  .cond.main { position: relative; box-sizing: border-box; min-height: 340px; background: var(--grey) url(assets/img/yd/cond.png) no-repeat center / 100% auto; }
+  .cond.main .oc-list { max-width: 611px; gap: 12px; } .cond.main .oc-list li { padding-left: 16px; } .cond.main .oc-list li::before { left: 1px; top: 10px; width: 4px; height: 4px; }
+  .cond.main .oc-more { display: inline-flex; align-items: center; gap: 12px; box-sizing: border-box; height: 48px; margin: 24px 0 0; padding: 0 24px; border: 0; border-radius: 8px; background: var(--grey-2); font-size: 16px; }
+  .cond.main .oc-more img { width: 16px; height: 16px; }
+  .cond.about { box-sizing: border-box; min-height: 340px; display: grid; grid-template-columns: minmax(0, 1fr) 500px; gap: 24px; align-items: center; } .cond.about img { width: 100%; } .cond.about img[hidden] { display: none; }
+  .cond.about a { border-bottom: 1px solid currentColor; }
+  .sec-light .block { margin-top: 128px; } .how .form-outer { margin-top: 40px; }
+  .why3 { margin-top: 0; }
+  .why3 .card { padding-bottom: 32px; background: linear-gradient(to bottom, transparent 120px, var(--grey) 120px); min-height: 388px; box-sizing: border-box; }
+  .why3 .card > img { display: block; width: 100%; } .why3 .card .h4 { margin: 24px 32px 0; } .why3 .card p { margin: 8px 32px 0; }
+  .more-act { display: flex; align-items: center; gap: 8px; } .more-act .btn { margin-right: 16px; }
+  .more-act .ar { width: 40px; height: 40px; border-radius: 50%; background: var(--grey-2); display: flex; align-items: center; justify-content: center; } .more-act .ar:disabled { opacity: .35; cursor: default; }
+  .more .sec-head { margin-bottom: 40px; }
+  .more-row { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 48px) / 3); gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; } .more-row::-webkit-scrollbar { display: none; }
+  .mcard { position: relative; box-sizing: border-box; height: 380px; padding: 224px 24px 24px; background: no-repeat center top / 100% auto; text-align: center; color: var(--text); scroll-snap-align: start; }
+  .mcard b { display: block; font-size: 22px; line-height: 26px; letter-spacing: .2px; } .mcard p { margin-top: 8px; font-size: 16px; line-height: 24px; }
+  .sec-light.flat > .pad { padding-bottom: 128px; }
+  .cond.main .oc-list li, .why3 .card p, .how .step .card p, .mcard p { letter-spacing: -.26px; }
+  @media (min-width: 1181px) { .hdr.light .logo { margin-right: 16px; } .hdr.light .nav a { padding-left: 16px; padding-right: 16px; } .hdr.light .hdr-r .btn { padding-left: 20px; padding-right: 20px; } }
+  #faq .acc-q .q { max-width: 800px; } .why3 .card p { margin-right: 16px; } /* переносы как на скринах прода */
+  @media (max-width: 1180px) { .ohero .g { grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; } .otiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 960px) { .ohero .g { grid-template-columns: minmax(0, 1fr); } .ohero .big, .ohero .big.plain { width: 160px; height: 160px; grid-row: 1; } .cond.main { background-image: none; } .cond.about { grid-template-columns: minmax(0, 1fr); }
+    .more-row { grid-auto-columns: calc((100% - 24px) / 2); } .mcard { height: auto; min-height: 380px; padding-top: 60%; } }
+  @media (max-width: 600px) { .ohero { padding: 32px 0 48px; } .otiles { grid-template-columns: minmax(0, 1fr); gap: 12px; } .otile { height: auto; min-height: 112px; padding-right: 88px; } .sec-light .block { margin-top: 72px; }
+    .ohero h1 { font-size: 32px; line-height: 36px; } .tabs[data-tabs="o"] button, .tabs[data-tabs="faq"] button { min-width: 0; padding: 0 14px; font-size: 14px; }
+    .more-row { grid-auto-columns: 86%; gap: 12px; } .more-act .ar { display: none; } }
+  @media (min-width: 961px) { .hdr.light .wrap { height: 82px; } } /* на скринах прода 22.11 шапка оффера ниже, чем на остальных */
+  @media (max-width: 768px) { .sec-light.flat > .pad { padding-bottom: 64px; } .sec-light .block { margin-top: 64px; } }
+</style>
+</head>
+<body>
+<div class="top">
+  <div id="hdr"></div>
+  <section class="ohero"><div class="wrap"><div class="g">
+    <div>
+      <div class="otags"><span class="chip hot" id="tagHot" hidden></span><span class="tag-new dr" data-f="new" id="tagNew" data-dr="Тег «Новое» · BRD тега, рендер 11.11" hidden>НОВОЕ</span><span class="chip top" data-f="top" id="tagTop" data-dr="Метка «Топ-10» · BRD рейтинга" hidden>ТОП-10</span></div>
+      <div class="oboost" id="oBoost" data-f="hot2" hidden></div>
+      <h1 class="h1" id="oH1"></h1>
+      <p class="lead" id="oLead"></p>
+      <div class="act2"><button class="btn btn-red" id="oGet">Получить</button>
+        <div class="pcount light" data-f="counter" id="oCnt" data-dr="Счётчик участников · BRD v33, сц. 4" hidden><img src="assets/img/avatars.png" alt=""><div><span>Воспользовались предложением</span><b id="oCntN"></b></div></div></div>
+    </div>
+    <img class="big" id="oLogo" alt="">
+  </div><div class="otiles" id="oTiles" hidden></div></div></section>
+</div>
+
+<div class="sec-light flat">
+  <div class="wrap pad">
+    <div class="sec-head"><h2 class="h2">Подробности предложения</h2><div class="tabs" data-tabs="o"><button data-tab="c" class="on">Условия</button><button data-tab="p">О партнёре</button></div></div>
+    <div data-pane="o:c"><div class="cond main"><ul class="oc-list" id="oCond"></ul><a class="oc-more" id="oProd" target="_blank" rel="noopener"><img src="assets/img/yd/pdf.svg" alt="">Подробные условия</a></div></div>
+    <div data-pane="o:p" hidden><div class="cond about"><div><div class="h4" id="oName"></div><p style="margin-top:8px" id="oDesc"></p></div><img id="oAbout" src="assets/img/yd/about.png" alt="" hidden></div></div>
+
+    <div class="block how" id="offer">
+      <h2 class="h2">Как получить предложение для бизнеса</h2>
+      <div class="tabs" data-tabs="how"><button data-tab="no" class="on">Не клиент Альфа‑Бизнес</button><button data-tab="yes">Клиент Альфа-Бизнес</button></div>
+      <div data-pane="how:no">
+        <div class="steps"><div class="line"></div>
+          <div class="step"><div class="num"><img src="assets/img/step-1.svg" alt="1"></div><div class="card"><div class="h4">Оставьте заявку</div><p>Заполните форму и откройте <br class="d">бесплатный счёт для бизнеса</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-2.svg" alt="2"></div><div class="card"><div class="h4">Войдите в интернет-банк <br class="d">Альфа‑Бизнес</div><p>Авторизуйтесь под своими <br class="d">учётными данными</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-3.svg" alt="3"></div><div class="card"><div class="h4">Начните получать выгоду</div><p>Перейдите в раздел <b>Альфа‑Выгодно</b> <br class="d">и пользуйтесь предложениями <br class="d">от банка и партнёров</p></div></div>
+        </div>
+        <div class="form-outer" id="form" data-form="Отправить заявку"></div>
+      </div>
+      <div data-pane="how:yes" hidden>
+        <div class="steps"><div class="line"></div>
+          <div class="step"><div class="num"><img src="assets/img/step-1.svg" alt="1"></div><div class="card"><div class="h4">Войдите в интернет-банк Альфа‑Бизнес</div><p>Авторизуйтесь под своими учётными данными</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-2.svg" alt="2"></div><div class="card"><div class="h4">Откройте Альфа-Выгодно</div><p>Найдите предложение партнёра в разделе</p></div></div>
+          <div class="step"><div class="num"><img src="assets/img/step-3.svg" alt="3"></div><div class="card"><div class="h4">Получите выгоду</div><p>Следуйте инструкции в карточке предложения</p></div></div>
+        </div>
+        <a class="btn btn-m btn-red after" href="https://link.alfabank.ru/partner-offers?utm_medium=site_main" target="_blank" rel="noopener">Получить</a>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2 class="h2" style="margin-bottom:40px">Почему выгодно быть клиентом <br class="d">Альфа‑Банка</h2>
+      <div class="grid3 why3">
+        <div class="card"><img src="assets/img/why-1.png" alt=""><div class="h4">Простой старт без затрат</div><p>Подключим счёт онлайн за 5 минут, <br class="d">без платы за открытие <br class="d">и обслуживание</p></div>
+        <div class="card"><img src="assets/img/why-2.png" alt=""><div class="h4">Лучшая программа лояльности</div><p>Начисляем баллы за действия <br class="d">по счёту — тратьте их на услуги банка <br class="d">и партнёров или меняйте на рубли</p></div>
+        <div class="card"><img src="assets/img/why-3.png" alt=""><div class="h4">Кэшбэк баллами до 10%</div><p>Возвращаем до 10% за расходы <br class="d">по бизнес-карте в 5 категориях <br class="d">на выбор или в 4 категориях и 1% <br class="d">на всё каждый месяц</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="sec-head"><h2 class="h2">Полезно знать</h2><div class="tabs" data-tabs="faq"><button data-tab="q" class="on">Частые вопросы</button><button data-tab="o">Другие предложения</button></div></div>
+      <div data-pane="faq:q" class="acc" id="faq">
+        <div class="acc-item" data-yd><button class="acc-q"><span class="q">Что можно рекламировать в Яндекс Директе?</span></button><div class="acc-a"><p>Что захотите: сайт, магазин на маркетплейсе, сообщество ВКонтакте, телеграм-канал или мобильное приложение. А если сайта нет, просто расскажите о вашем бизнесе — Директ создаст рекламное предложение.</p></div></div>
+        <div class="acc-item" data-yd><button class="acc-q"><span class="q">Как работает Мастер кампаний в Яндекс Директе?</span></button><div class="acc-a"><p>Мастер кампаний помогает запустить рекламу на каждом шаге: предлагает варианты заголовков, текстов объявлений и изображений. А ещё — подсказывает аудиторию. Когда реклама запустится, Мастер кампаний сам проанализирует её и направит на те площадки, где есть ваши потенциальные клиенты.</p></div></div>
+        <div class="acc-item" data-yd><button class="acc-q"><span class="q">На каких площадках появится реклама?</span></button><div class="acc-a"><p>Реклама вашего бизнеса появится на площадках Яндекса: в Поиске и на 55 000+ сайтов партнёров рекламной сети.</p></div></div>
+        <div class="acc-item" data-yd><button class="acc-q"><span class="q">Как получить кэшбэк и когда он придёт на счёт?</span></button><div class="acc-a"><p>Кэшбэк начисляется баллами на счёт программы лояльности Альфа‑Выгодно для бизнеса.</p><p>Выплатим его в течение 2 месяцев после календарного месяца, в котором вы совершали оплату. Например, если оплачивали в сентябре, то кэшбэк на бонусный счёт придёт до конца ноября.</p></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">На что можно потратить баллы?</span></button><div class="acc-a"><ul><li>Конвертировать в рубли: 1 балл = 1 ₽</li><li>Оплатить банковские продукты. Например, пакеты услуг Быстрое развитие и Активные расчёты</li><li>Обменять на подарочные сертификаты, скидки и бонусы от наших партнёров</li></ul></div></div>
+        <div class="acc-item"><button class="acc-q"><span class="q">Где можно ознакомиться с правилами программы Альфа‑Выгодно <br class="d">для бизнеса?</span></button><div class="acc-a"><p>Ознакомьтесь с подробными правилами <a href="https://alfabank.servicecdn.ru/site-upload/35/e6/2245/Pravila_PL-2.pdf" target="_blank" rel="noopener">по ссылке</a>.</p></div></div>
+      </div>
+      <div data-pane="faq:o" hidden class="acc"><div class="acc-item"><button class="acc-q"><span class="q">Все предложения партнёров Альфа‑Банка</span></button><div class="acc-a" id="seo"></div></div></div>
+    </div>
+
+    <div class="block more">
+      <div class="sec-head"><h2 class="h2">Вам также может понравиться</h2><div class="more-act"><a class="btn btn-s btn-grey" href="витрина.html#catalog">Посмотреть всё</a><button class="ar" id="mL" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m15 6-6 6 6 6"/></svg></button><button class="ar" id="mR" aria-label="Вперёд"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 6 6 6-6 6"/></svg></button></div></div>
+      <div class="more-row" id="moreRow">
+        <a class="mcard" href="альфа-пятница.html" style="background-image:url(assets/img/yd/more-friday.png)"><b>Суперкэшбэк до 100% <br class="d">или услуги от партнёров</b><p>Откройте счёт заранее, чтобы успеть <br class="d">принять участие в акции</p></a>
+        <a class="mcard" href="оффер.html?slug=restik" style="background-image:url(assets/img/yd/more-restik.png)"><b>Restik</b><p>2 месяца бесплатной <br class="d">автоматизации бизнеса</p></a>
+        <a class="mcard" href="оффер.html?slug=hhru" style="background-image:url(assets/img/yd/more-hh.png)"><b>HeadHunter</b><p>Скидка 80% на первую вакансию <br class="d">на hh.ru</p></a>
+        <a class="mcard" href="оффер.html?slug=kontur_nds" style="background-image:url(assets/img/yd/more-kontur.png)"><b>Контур.НДС+</b><p>Демодоступ на 3 дня <br class="d">на тариф для УСН</p></a>
+        <a class="mcard" href="оффер.html?slug=megafontarget" style="background-image:url(assets/img/yd/more-megafon.png)"><b>МегаФон Таргет</b><p>Бесплатно 3000 рекламных смс <br class="d">от МегаФон Таргет</p></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ftr"></div>
+
+<script>
+window.PAGE = {
+  id: 'оффер', title: 'Страница предложения', url: 'alfabank.ru/sme/loyalty/offers/<партнёр>/', snap: '18.11.2026',
+  dr: [
+    { key: 'new', name: 'Тег «Новое» на странице предложения', sel: '#tagNew',
+      what: 'Синяя метка над заголовком у предложений, опубликованных меньше 30 дней назад. Видна на новых офферах (например, СДЭК для бизнеса).',
+      src: 'BRD «Тег „Новое“»: Confluence v48 (выгрузка 20.11) и локальная редакция 18.11 (BRD-тег-новое.md) и рендер макеты/тег-новое-2026-11/страница-оффера-desktop.png.',
+      cond: '«новые» назначены условно (4 оффера с наибольшим id), 30 дней в BRD предложены, не утверждены.' },
+    { key: 'top', name: 'Метка «Топ-10» на странице предложения', sel: '#tagTop',
+      what: 'Розовая метка над заголовком, если предложение в десятке самых активируемых за месяц. Видна, например, у Яндекс Директа, открытого с витрины. Слот один: Горящий, потом Новое, потом Топ-10.',
+      src: 'BRD «Рейтинг партнёрских офферов», Confluence v38 (выгрузка 20.11), сц. 4: тег «Топ 10» на странице партнёрского предложения. Мастер-план 2027: рейтинг, Q1.',
+      cond: 'десятка условная, как на витрине.' },
+    { key: 'counter', name: 'Счётчик участников на странице предложения', sel: '#oCnt',
+      what: 'Рядом с кнопкой «Получить»: аватарки и «Воспользовались предложением: N клиентов», если их 20 и больше (в v33 активации; «уникальные клиенты» в правках 18.11, не утверждены).',
+      src: 'BRD «Счётчик участников», Confluence v33, сценарий 4 (оффер); на лендинге по Максиму 20.11. Вид как у счётчика из макета «Счётчик участников [26.10.2026]», отдельного макета лендинга нет. Мастер-план 2027: Q1.',
+      cond: 'числа придуманы, те же, что на карточке витрины. Цвет хиро тот же, что у карточки витрины: с прода снят только у Яндекс Директа, у остальных условный, по логотипу.' },
+    { key: 'hot2', name: 'Горящие 2.0: временно лучшие условия', sel: '#oBoost',
+      what: 'У предложения с временно улучшенными условиями над заголовком «было» зачёркнуто, «×2» и дата окончания, в заголовке «стало», плюс таймер «Горящий».',
+      src: 'Мастер-план 2027, строка «Горящие 2.0: временно лучшие условия» (гипотеза): «было → стало», таймер, дата окончания. Q3 разработка.',
+      cond: 'гипотеза без BRD и макета. Те же два предложения, что на витрине, и Яндекс Директ при открытии страницы без параметров (Максим 22.11): промокод 10 000 → 20 000 ₽, выдумано для показа. С выключенной доработкой заголовок и условия как на проде.' },
+    // ===== гипотезы и доработки мастер-плана, строки 18–28 (20.11) =====
+    { key: 'voc', name: 'Опросник: кнопка VOC', sel: '.fb.voc .vpill',
+      what: 'Внизу справа небольшая чёрная кнопка «Оцените программу лояльности», на телефоне круглая без подписи (Максим 22.11: не должна забирать на себя внимание). После первого действия на странице карточка раскрывается сама: вопрос, 5 звёзд и поле «Что конкретно вызвало у вас трудности?». Вид и вопрос поля по просьбе Максима 20.11: значок сбоку был плохо виден.',
+      src: 'Мастер-план 2027, раздел «Прочие гипотезы и доработки» (скрин Максима 20.11, _скрины-максима/2026-11-20-мастер-план-строки-13-30.png), строка 26 (доработка): «Опросник. Кнопка VOC на всех страницах и в мобильной версии», кнопка обратной связи после действия. Вид как у виджета оценки на проде Пятницы (FeedbackForm, снимок 18.11).',
+      cond: 'вопрос и момент показа придуманы.' },
+  ],
+  vocQ: 'Понятно, как получить предложение?', vocAfter: '#oGet, [data-tab]',
+  notes: [
+    'Мастер-план, строка 18 «Значок Лояльности для сайтов партнёров»: доработка для сайтов партнёров, не для этой страницы, убрана (Максим 20.11). Шапка раздела на странице оффера тоже не показана.',
+    'Без параметров открыт Яндекс Директ (Максим 22.11) как предложение с временно лучшими условиями: метка «Горящий» с таймером и ×2 к промокоду, это демо. По ссылке с витрины тот же Директ обычный, с меткой «ТОП-10». Тег «Новое» виден на новых предложениях, например СДЭК.',
+    'Метка «Горящий» с таймером на лендинге как на проде (BRD горящих v88; 20.11 горящий один, MarketGuru, проверено вживую, снимка нет).', 'Страница Яндекс Директа собрана по пяти скринам прода от Максима 22.11, ответы на вопросы и «О партнёре» из снимка 18.11. Первая карточка «Вам также может понравиться» со скрина 22.11, четвёртая и пятая из снимка 18.11, на скринах их не видно. У остальных предложений это шаблон: заголовок, описание, логотип и строка условий из каталога витрины; плитки и вопросы про партнёра не перенесены.'],
+};
+</script>
+<script src="assets/данные.js"></script>
+<script src="assets/цвета-партнёров.js"></script>
+<script src="assets/футер.js"></script>
+<script src="assets/общее.js"></script>
+<script>
+(function () {
+  const p = new URLSearchParams(location.search); const O = window.DATA.offers;
+  const BOOST = {}; O.filter(x => !x.hot && !x.top && !x.new && /^(до )?\d{1,2}%$/.test(x.value.trim()) && parseInt(x.value.replace(/\D/g, ''), 10) <= 25).slice(0, 2).forEach((x, i) => { const n = parseInt(x.value.replace(/\D/g, ''), 10); BOOST[x.id] = { was: x.value.trim(), now: x.value.trim().replace(String(n), String(n * 2)), end: ['2026-11-27T23:59:59+03:00', '2026-11-30T23:59:59+03:00'][i], till: ['до 27 ноября', 'до 30 ноября'][i] }; });
+  // без параметров открыт Яндекс Директ (Максим 22.11) как горящий с временно лучшими условиями (Максим 20.11); по ссылкам витрины он обычный, с «ТОП-10»
+  const picked = O.find(x => String(x.id) === p.get('id')) || O.find(x => x.slug === p.get('slug'));
+  const o = picked || O.find(x => x.slug === 'yandex-direct') || O[0], YD = o.slug === 'yandex-direct';
+  if (YD && !picked) BOOST[o.id] = { promo: ['10\u202f000', '20\u202f000'], end: '2026-11-30T23:59:59+03:00', till: 'до 30 ноября' };
+  document.title = `${o.name}: предложение для бизнеса`;
+  document.getElementById('oH1').textContent = `${o.label} ${o.value}`.replace(/\s+/g, ' ');
+  document.getElementById('oLead').textContent = `${o.name}. ${o.desc}`;
+  document.getElementById('oLogo').src = o.logo; document.getElementById('oLogo').alt = o.name;
+  document.getElementById('oProd').href = YD ? 'https://alfabank.servicecdn.ru/site-presets/fe/43/391/bally_YD_YB_v2.pdf' : o.url;
+  const PR = '10\u202f000', BR = ' <br class="d">';
+  const YD_H1 = `Кэшбэк до\u00a0100%${BR}и\u00a0промокод на\u00a0<span data-promo>${PR}</span>\u00a0₽${BR}за\u00a0первое пополнение${BR}счёта в\u00a0Яндекс\u00a0Директ`;
+  if (YD) {
+    document.getElementById('oLead').textContent = 'Простой запуск рекламы с\u00a0подсказками на\u00a0каждом шаге';
+    const lg = document.getElementById('oLogo'); lg.src = 'assets/img/yd/logo.png'; lg.classList.add('plain');
+    const T = [['Выгодно вдвойне', `Верните до\u00a0100% кэшбэком${BR}и\u00a0получите ещё <span data-promo>${PR}</span>\u00a0₽${BR}на\u00a0рекламу по\u00a0промокоду`], ['Просто', `Получайте подсказки${BR}на\u00a0каждом шаге`], ['Охват', `Вас увидят в\u00a0Поиске, Картах${BR}и\u00a0Рекламной сети`], ['Выгодно', `Платите только за\u00a0действия${BR}клиентов`]];
+    const el = document.getElementById('oTiles'); el.hidden = false;
+    el.innerHTML = T.map((x, i) => `<div class="otile"><b>${x[0]}</b><p>${x[1]}</p><img src="assets/img/yd/t${i + 1}.png" alt=""></div>`).join('');
+    document.getElementById('oAbout').hidden = false;
+  } else document.querySelectorAll('#faq [data-yd]').forEach(x => x.remove()); // вопросы про Директ на других предложениях не показываем
+  // условия с боевой страницы: Яндекс Директ из снимка прода 18.11 (вкладка «Условия»); у остальных пока только строка каталога витрины
+  const COND = { 'yandex-direct': ["Для получения кэшбэка пополните счёт в личном кабинете Яндекс Директ бизнес‑картой или с помощью расчётного счёта в Альфа‑Банке", "Предложением могут воспользоваться все клиенты Альфа‑Банка и Яндекс Директа, если последняя рекламная кампания закончилась 365 дней назад и более, и те клиенты, которые до этого не воспользовались предложением от Яндекс Бизнес", "Предложение распространяется на пополнение счёта в Яндекс Директ. Минимальная сумма пополнения — 15 000 ₽ единым платежом", "Максимальный размер кэшбэка — 15 000 баллов. Получить баллы можно только за первое пополнение счёта", "Дополнительно можно получить <span data-promo>10 000</span> ₽ на рекламный счёт при применении промокода", "Сроки акции: 4.02.2026 по 30.11.2026 включительно"] };
+  document.getElementById('oCond').innerHTML = (COND[o.slug] || [`${o.label} ${o.value}`.replace(/\s+/g, ' ') + '. ' + o.desc]).map(x => `<li>${x}</li>`).join('');
+  document.getElementById('oName').textContent = o.name; document.getElementById('oDesc').textContent = o.desc;
+  if (YD) document.getElementById('oDesc').innerHTML = 'Сервис для простого привлечения клиентов в интернете. Учим простому привлечению клиентов в интернете <a href="https://kurs.alfabank.ru/my-education/gde-brat-klientov-prodvizhenie-v-yandekse/" target="_blank" rel="noopener">на Альфа‑Курсе</a>';
+  document.getElementById('seo').innerHTML = (window.DATA.seoGlav || []).map(g => `<div class="seo-g"><h4>${g.title}</h4><div class="seo-links">${g.links.map(l => `<a href="${l.href}" target="_blank" rel="noopener">${l.t}</a>`).join('')}</div></div>`).join('');
+  const mr = document.getElementById('moreRow'), mL = document.getElementById('mL'), mR = document.getElementById('mR');
+  const mUpd = () => { mL.disabled = mr.scrollLeft < 4; mR.disabled = mr.scrollLeft + mr.clientWidth >= mr.scrollWidth - 4; };
+  const mGo = d => mr.scrollBy({ left: d * (mr.firstElementChild.offsetWidth + 24), behavior: 'smooth' });
+  mL.onclick = () => mGo(-1); mR.onclick = () => mGo(1); mr.addEventListener('scroll', mUpd, { passive: true }); addEventListener('resize', mUpd); mUpd();
+  if (o.new) document.getElementById('tagNew').hidden = false;
+  const { nf, plural } = window.fmt;
+  if (o.users >= 20) { document.getElementById('oCnt').hidden = false; document.getElementById('oCntN').textContent = `${nf(o.users)} ${plural(o.users, 'клиент', 'клиента', 'клиентов')}`; }
+  // «Горящие 2.0»: те же два предложения, что на витрине (тот же отбор)
+  const h1 = document.getElementById('oH1'), base = h1.textContent; let state = null;
+  function hot() {
+    const b = BOOST[o.id] && window.proto.on('hot2') ? BOOST[o.id] : null;
+    const end = o.hot ? Date.parse(o.hotEnd) : b ? Date.parse(b.end) : 0;
+    const t = document.getElementById('tagHot'); t.hidden = !end;
+    if (end) { const ms = Math.max(0, end - Date.now()), q = n => String(n).padStart(2, '0'); t.textContent = `${q(Math.floor(ms / 864e5))}:${q(Math.floor(ms % 864e5 / 36e5))}:${q(Math.floor(ms % 36e5 / 6e4))}:${q(Math.floor(ms % 6e4 / 1e3))}`; }
+    const on = k => window.proto.on(k), slotNew = !end && o.new && on('new'); // один слот метки: Горящий, потом Новое, потом Топ-10
+    document.getElementById('tagNew').hidden = !!end || !o.new; document.getElementById('tagTop').hidden = !!end || !o.top || slotNew;
+    document.querySelector('.otags').hidden = !(end || slotNew || (o.top && on('top')));
+    const ob = document.getElementById('oBoost'), st = b ? (b.promo ? 'promo' : 'num') : ''; ob.hidden = !b;
+    if (st === state) return; state = st; // заголовок перерисовываем только при смене, не каждую секунду
+    if (b) ob.innerHTML = `<s>${b.promo ? `Промокод на ${b.promo[0]}\u00a0₽` : `${o.label} ${b.was}`}</s><span class="x2">×2</span><span>${b.till}</span>`;
+    if (YD) { h1.innerHTML = YD_H1; document.querySelectorAll('[data-promo]').forEach(x => { x.textContent = b && b.promo ? b.promo[1] : PR; }); }
+    else h1.textContent = b ? `${o.label} ${b.now}` : base;
+  }
+  hot(); setInterval(hot, 1000); document.addEventListener('drchange', hot);
+  const tint = () => document.querySelector('.top').style.setProperty('--tint', window.proto.on('counter') ? ((window.TINT || {})[o.id] || {}).c || '#D6E6FF' : '#D6E6FF'); // цвет тот же, что у карточки витрины
+  tint(); document.addEventListener('drchange', tint);
+  document.getElementById('oGet').onclick = () => document.getElementById('offer').scrollIntoView({ behavior: 'smooth' }); // на проде кнопка якорит на #offer, «Как получить предложение»
+  document.getElementById('ftr').dataset.crumbs = JSON.stringify([['Малый бизнес и ИП', 'https://alfabank.ru/sme/'], ['Лучшая программа лояльности для бизнеса', 'главная.html']].concat(YD ? [['Кэшбэк до 100% и промокод на 10 000 ₽ за первое пополнение счёта в Яндекс Директ', '']] : [['Предложения от партнёров', 'витрина.html'], [o.name, '']]));
+})();
+</script>
+<script>document.addEventListener('DOMContentLoaded', () => { const h = document.querySelector('.hdr'); if (h) h.classList.add('light'); });</script>
+</body>
+</html>
