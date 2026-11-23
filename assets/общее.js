@@ -188,10 +188,10 @@
     bar.addEventListener('click', e => {
       const s = e.target.closest('[data-sw]');
       if (s) { e.preventDefault(); const k = s.dataset.sw;
-        if (k === 'dr') { const v = !anyOn(); window.proto.all(v); toast(v ? 'Все доработки включены' : 'Как на проде 18.11.2026'); }
+        if (k === 'dr') { const v = !anyOn(); window.proto.all(v); toast(v ? 'Все доработки включены' : 'Как на проде: снимки 18.11, оффер по скринам 22.11'); }
         else { const v = !s.classList.contains('on'); s.classList.toggle('on', v); store.set('marks', v); document.body.classList.toggle('marks', v); toast(v ? 'Метки доработок показаны' : 'Метки скрыты'); } }
       if (e.target.closest('[data-fl]')) pop.hidden = !pop.hidden;
-      const al = e.target.closest('[data-all]'); if (al) { const v = al.dataset.all === '1'; window.proto.all(v); toast(v ? 'Все доработки включены' : 'Как на проде 18.11.2026'); }
+      const al = e.target.closest('[data-all]'); if (al) { const v = al.dataset.all === '1'; window.proto.all(v); toast(v ? 'Все доработки включены' : 'Как на проде: снимки 18.11, оффер по скринам 22.11'); }
       if (e.target.closest('[data-drawer]')) { e.preventDefault(); if (pop) pop.hidden = true; dw.classList.add('open'); }
       if (e.target.closest('.min')) { const c = !bar.classList.contains('collapsed'); bar.classList.toggle('collapsed', c); store.set('coll', c); e.target.closest('.min').textContent = c ? '▸' : '▾'; }
     });

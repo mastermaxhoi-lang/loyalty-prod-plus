@@ -344,7 +344,7 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible), input[type=checkb
 
 /* 26. опросник заметнее (Максим 20.11): подписанная кнопка внизу справа вместо значка сбоку, карточка с полем «Что конкретно вызвало у вас трудности?». У Пятницы свой боевой .fb, его не трогает */
 .fb.voc { top: auto; bottom: 24px; right: 24px; }
-.fb.voc .vpill { display: flex; align-items: center; gap: 8px; height: 44px; width: auto; padding: 0 16px 0 14px; border-radius: 22px; background: var(--black); color: #fff; border: 1px solid rgba(255, 255, 255, .2); font-weight: 400; font-size: 14px; box-shadow: none; } /* чёрная, не красная и не серая (Максим 22.11); тонкая кромка, чтобы не пропадала на чёрном фоне */
+.fb.voc .vpill { display: flex; align-items: center; gap: 8px; height: 44px; width: auto; padding: 0 16px 0 14px; border-radius: 22px; background: var(--black); color: #fff; border: 1px solid rgba(255, 255, 255, .2); font-weight: 400; font-size: 14px; box-shadow: none; } /* не красная (Максим 22.11); чёрный выбран мной, решение за Максимом; тонкая кромка, чтобы не пропадала на чёрном фоне */
 .fb.voc .vpill svg { width: 18px; height: 18px; }
 .fb.voc .vpill:hover { background: var(--dark-2); }
 .fb.voc.open .vpill { display: none; }
